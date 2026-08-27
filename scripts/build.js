@@ -15,10 +15,10 @@ const PROXY_BASE = (process.env.PROXY_BASE || "https://vavoo-iptv-proxy.vavoo-ip
 const EPG_UPSTREAM_URL =
   process.env.EPG_UPSTREAM_URL ||
   "https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz";
-// URL publique où sera hébergé l'EPG généré
+// URL publique où sera hébergé l'EPG généré (déduite automatiquement du dépôt)
 const EPG_URL =
   process.env.EPG_URL ||
-  "https://raw.githubusercontent.com/[TON_USER]/[TON_REPO]/main/epg.xml"; // À remplacer par ton user/repo
+  `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY || "TON_USER/TON_REPO"}/main/epg.xml`;
 
 // Filtre éventuel par pays (ex: "France") – vide = tous
 const COUNTRY_FILTER = process.env.COUNTRY_FILTER || "";
@@ -134,7 +134,7 @@ function normalizeForCategory(name) {
   return s;
 }
 
-// Règles de catégorisation (largement inspirées de l'original, mais applicables à tous pays)
+// Règles de catégorisation
 const CATEGORY_RULES = [
   {
     name: "Radyo",
@@ -391,7 +391,7 @@ function toXMLTV(items, vavooToEpgId, upstreamChannels, upstreamProgByChannel) {
   }
   return (
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
-    `<tv generator-info-name="vavoo-iptv-all" generator-info-url="https://github.com/[TON_USER]/[TON_REPO]">\n` +
+    `<tv generator-info-name="vavoo-iptv-all" generator-info-url="https://github.com/${process.env.GITHUB_REPOSITORY || "TON_USER/TON_REPO"}">\n` +
     `${channels.join("\n")}\n` +
     `${programmes.join("\n")}\n` +
     `</tv>\n`
