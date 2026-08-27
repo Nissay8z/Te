@@ -162,9 +162,6 @@
   <channel id="192175381483ed67bc8d27">
     <display-name>AMAZON PRIME 1+</display-name>
   </channel>
-  <channel id="1549714397654c54631a08">
-    <display-name>AMAZON PRIME 2</display-name>
-  </channel>
   <channel id="1258724883356bb28f96a0">
     <display-name>AMAZON PRIME 2+</display-name>
   </channel>
@@ -176,9 +173,6 @@
   </channel>
   <channel id="258695433034433ac372ee">
     <display-name>AMAZON PRIME 4</display-name>
-  </channel>
-  <channel id="941418393ee4558cb9e4a">
-    <display-name>AMAZON PRIME 4+</display-name>
   </channel>
   <channel id="1957516182fd1f4fbd5e7b">
     <display-name>AMAZON PRIME 5 [LIVE DURING EVENTS ONLY]</display-name>
@@ -198,9 +192,6 @@
   <channel id="921329291c49ec1552b55">
     <display-name>AMAZON PRIME 8 [LIVE DURING EVENTS ONLY]</display-name>
     <icon src="https://logo.huhu.to/logo?c=921329291.png"/>
-  </channel>
-  <channel id="3449741077ec58c502a8cc">
-    <display-name>AMAZON PRIME 8</display-name>
   </channel>
   <channel id="3727168653ec22aa96caae">
     <display-name>AMAZON PRIME 8+</display-name>
@@ -240,9 +231,6 @@
     <display-name>BBC TOP GEAR FRANCE</display-name>
     <icon src="https://logo.huhu.to/logo?c=3236859882.png"/>
   </channel>
-  <channel id="202244615e7ec7f6c04a5">
-    <display-name>BE: ELEVEN PRO LEAGUE 3</display-name>
-  </channel>
   <channel id="3247154919fa043765f088">
     <display-name>BE: ELEVEN PRO LEAGUES 1</display-name>
   </channel>
@@ -254,9 +242,6 @@
   </channel>
   <channel id="10970887232c733f6d060a">
     <display-name>BE: ELEVENSPORT 2</display-name>
-  </channel>
-  <channel id="2379103821d8e2fabc654a">
-    <display-name>BE: ELEVENSPORT 3</display-name>
   </channel>
   <channel id="beIN.SPORTS.1.tr">
     <display-name>beIN SPORTS 1</display-name>
@@ -725,6 +710,9 @@
   <channel id="2581411094f7c9ddaed910">
     <display-name>CANAL+ ACTION</display-name>
   </channel>
+  <channel id="3856042964fb24f530c4bc">
+    <display-name>CANAL+ ACTION</display-name>
+  </channel>
   <channel id="3655983806eda3054f7e69">
     <display-name>CANAL+ BOX OFFICE</display-name>
     <icon src="https://logo.huhu.to/logo?c=3655983806.png"/>
@@ -775,6 +763,10 @@
   </channel>
   <channel id="2904368955e509670e2735">
     <display-name>CANAL+ ELLES</display-name>
+  </channel>
+  <channel id="1649874389963b6f1dc072">
+    <display-name>CANAL+ FAMILY</display-name>
+    <icon src="https://logo.huhu.to/logo?c=1649874389.png"/>
   </channel>
   <channel id="298747715234a3a02669b8">
     <display-name>CANAL+</display-name>
@@ -1319,12 +1311,6 @@
   <channel id="24063007580e7fa9a4753e">
     <display-name>DAZN LIGUE 1 7</display-name>
   </channel>
-  <channel id="353326775968d382e65a62">
-    <display-name>DAZN LIGUE 1 8</display-name>
-  </channel>
-  <channel id="1447898874e227029556f1">
-    <display-name>DAZN LIGUE 1 8</display-name>
-  </channel>
   <channel id="10630504022c1c4f737b5e">
     <display-name>DAZN LIGUE 1 8</display-name>
   </channel>
@@ -1393,6 +1379,9 @@
   <channel id="357894050d7f96e94e22f">
     <display-name>DISNEY JUNIOR</display-name>
   </channel>
+  <channel id="4072150322035a105f553c">
+    <display-name>DISNEY JUNIOR</display-name>
+  </channel>
   <channel id="3237934255bfec4e787a8b">
     <display-name>DISNEY XD</display-name>
   </channel>
@@ -1459,8 +1448,17 @@
   <channel id="EUROSPORT.1.HD.tr">
     <display-name>EUROSPORT 1 HD</display-name>
   </channel>
+  <channel id="597408884d314da6b81b8">
+    <display-name>EUROSPORT 360 1 [LIVE DURING EVENTS ONLY]</display-name>
+  </channel>
   <channel id="416490377469e91723e4f8">
     <display-name>EUROSPORT 360 1</display-name>
+  </channel>
+  <channel id="137059344260c88d5f92f">
+    <display-name>EUROSPORT 360 2</display-name>
+  </channel>
+  <channel id="8941377603ce440d1c713">
+    <display-name>EUROSPORT 360 3</display-name>
   </channel>
   <channel id="2271979952a9b6216d42fb">
     <display-name>EUROSPORT 360 4</display-name>
@@ -1505,9 +1503,6 @@
   </channel>
   <channel id="4257492120d1b73d1358ea">
     <display-name>FILMRISE SÉRIES FRANCE</display-name>
-  </channel>
-  <channel id="12700426158042beba1916">
-    <display-name>FILMRISE Z NATION</display-name>
   </channel>
   <channel id="32996736666290bfd50694">
     <display-name>FOOT+</display-name>
@@ -1808,7 +1803,10 @@
     <display-name>M6</display-name>
     <icon src="https://logo.huhu.to/logo?c=2264106144.png"/>
   </channel>
-  <channel id="688242401078f5e51c480">
+  <channel id="3435456326462b8ebc1f88">
+    <display-name>M6</display-name>
+  </channel>
+  <channel id="381306877060a38e6f63e1">
     <display-name>M6</display-name>
   </channel>
   <channel id="29783704130ceb4c2ce4bd">
@@ -2191,6 +2189,9 @@
   <channel id="13407393374bf726974d70">
     <display-name>OCS CHOC</display-name>
   </channel>
+  <channel id="1215276492f2faf82424fc">
+    <display-name>OCS CHOC</display-name>
+  </channel>
   <channel id="191621715269241a8f3a34">
     <display-name>OCS CITY</display-name>
   </channel>
@@ -2552,9 +2553,6 @@
   <channel id="41503886821eb0565c3750">
     <display-name>RMC SPORT 13</display-name>
   </channel>
-  <channel id="425544469138297bd647ca">
-    <display-name>RMC SPORT 14</display-name>
-  </channel>
   <channel id="8230620938326140591cc">
     <display-name>RMC SPORT 15</display-name>
   </channel>
@@ -2566,9 +2564,6 @@
   </channel>
   <channel id="41715645264a1b399848f2">
     <display-name>RMC SPORT 5 (BACKUP)</display-name>
-  </channel>
-  <channel id="112859757368f91ed0052f">
-    <display-name>RMC SPORT 6</display-name>
   </channel>
   <channel id="287305687457b957946f68">
     <display-name>RMC SPORT 6 (BACKUP)</display-name>
