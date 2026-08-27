@@ -168,11 +168,14 @@
   <channel id="1957516182fd1f4fbd5e7b">
     <display-name>AMAZON PRIME 5 [LIVE DURING EVENTS ONLY]</display-name>
   </channel>
-  <channel id="795341786f0dcb9bf5fa3">
-    <display-name>AMAZON PRIME 5+</display-name>
+  <channel id="145305056422c10c6fde04">
+    <display-name>AMAZON PRIME 5</display-name>
   </channel>
   <channel id="1736796901974167c58544">
     <display-name>AMAZON PRIME 6 [LIVE DURING EVENTS ONLY]</display-name>
+  </channel>
+  <channel id="36252418955c743cdbc9a2">
+    <display-name>AMAZON PRIME 6</display-name>
   </channel>
   <channel id="1768063540271941c63c7a">
     <display-name>AMAZON PRIME 7 [LIVE DURING EVENTS ONLY]</display-name>
@@ -837,6 +840,9 @@
   </channel>
   <channel id="2904368955e509670e2735">
     <display-name>CANAL+ ELLES</display-name>
+  </channel>
+  <channel id="4007062954bb448913d299">
+    <display-name>CANAL+ FAMILY</display-name>
   </channel>
   <channel id="298747715234a3a02669b8">
     <display-name>CANAL+</display-name>
@@ -1920,6 +1926,23 @@
   <channel id="358938874021b76307d20e">
     <display-name>M6 MUSIC</display-name>
   </channel>
+  <channel id="32799170581348b92d0676">
+    <display-name>M6 MUSIC</display-name>
+  </channel>
+  <channel id="2351494974c3c23b93051">
+    <display-name>MAISON &amp; TRAVAUX TV</display-name>
+    <icon src="https://logo.huhu.to/logo?c=235149497.png"/>
+  </channel>
+  <channel id="1005158644a1514fb44316">
+    <display-name>MANDARIN TV</display-name>
+  </channel>
+  <channel id="3781018265a0de3a4a5f34">
+    <display-name>MANGAS</display-name>
+  </channel>
+  <channel id="1703130591ccf5ff520f76">
+    <display-name>MANGAS</display-name>
+    <icon src="https://logo.huhu.to/logo?c=1703130591.png"/>
+  </channel>
   <channel id="139408412ba8e0ae7a800">
     <display-name>MANGAS</display-name>
   </channel>
@@ -2600,9 +2623,6 @@
   <channel id="26373815756a4d77c529a1">
     <display-name>RMC SPORT 5</display-name>
   </channel>
-  <channel id="3667084567dedc49870796">
-    <display-name>RMC SPORT 6</display-name>
-  </channel>
   <channel id="3891489959393d7c27b0c5">
     <display-name>RMC SPORT 7</display-name>
   </channel>
@@ -2888,6 +2908,10 @@
   <channel id="3738924449f1aa2b8a8570">
     <display-name>TLC</display-name>
     <icon src="https://logo.huhu.to/logo?c=3738924449.png"/>
+  </channel>
+  <channel id="361211396f33e971ef526">
+    <display-name>TMC</display-name>
+    <icon src="https://logo.huhu.to/logo?c=361211396.png"/>
   </channel>
   <channel id="1149078876048c6fd8939d">
     <display-name>TMC</display-name>
