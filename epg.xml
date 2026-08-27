@@ -1057,9 +1057,6 @@
   <channel id="1130040907908d5d939484">
     <display-name>BEIN PREMUIM3 SD .b</display-name>
   </channel>
-  <channel id="220261155188f3ecca1437">
-    <display-name>BEIN SERIES 1 HD .b</display-name>
-  </channel>
   <channel id="23109036401894813687b">
     <display-name>BEIN SERIES 2 HD .b</display-name>
   </channel>
@@ -1440,6 +1437,9 @@
   </channel>
   <channel id="1658085002f16866f26154">
     <display-name>BEINSPORT AR 3 PREMIUM .b</display-name>
+  </channel>
+  <channel id="235494098719040d2b9a97">
+    <display-name>BEINSPORT AR 6 .b</display-name>
   </channel>
   <channel id="3667859262604673a3574c">
     <display-name>BEITOLABBAS TV CHANNEL (720P) .b</display-name>
@@ -2713,15 +2713,8 @@
   <channel id="2184784415245c8436a251">
     <display-name>MBC MASR 1 (FHD) .b</display-name>
   </channel>
-  <channel id="416375452bbdacaa5f60a">
-    <display-name>MBC MASR 1 USA (FHD) .b</display-name>
-  </channel>
   <channel id="467356702c7601e14bdd0">
     <display-name>MBC MASR 2 (FHD) .b</display-name>
-  </channel>
-  <channel id="1564640134f8422a9f1a22">
-    <display-name>MBC MASR 2 .b</display-name>
-    <icon src="https://logo.huhu.to/logo?c=1564640134.png"/>
   </channel>
   <channel id="20765524753704e83438c2">
     <display-name>MBC MAX .b</display-name>
