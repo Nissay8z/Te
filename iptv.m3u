@@ -91,14 +91,14 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3638789513f8ccd703cc28
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2470227399426cd35299c7
 #EXTINF:-1 tvg-id="3154735344f1a60a8f8e27" tvg-name="ADN TV+ .c" tvg-logo="" group-title="Diğer",ADN TV+ .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3154735344f1a60a8f8e27
-#EXTINF:-1 tvg-id="435250608d3ee7b699982" tvg-name="AF: NOLLYWOOD .b" tvg-logo="" group-title="Diğer",AF: NOLLYWOOD .b
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/435250608d3ee7b699982
 #EXTINF:-1 tvg-id="2290952272f961b542eda7" tvg-name="AFRICA 24 .c" tvg-logo="https://logo.huhu.to/logo?c=2290952272.png" group-title="Diğer",AFRICA 24 .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2290952272f961b542eda7
 #EXTINF:-1 tvg-id="53479946456dcee6704fc" tvg-name="ALPE D HUEZ TV .c" tvg-logo="" group-title="Diğer",ALPE D HUEZ TV .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/53479946456dcee6704fc
 #EXTINF:-1 tvg-id="81737034162dae716442d" tvg-name="ALTICE STUDIO HD .s" tvg-logo="" group-title="Diğer",ALTICE STUDIO HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/81737034162dae716442d
+#EXTINF:-1 tvg-id="35369626225a05e7e12c75" tvg-name="AMAZON PRIME 1 HD .b" tvg-logo="" group-title="Diğer",AMAZON PRIME 1 HD .b
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/35369626225a05e7e12c75
 #EXTINF:-1 tvg-id="1545259425cb24d5bb8630" tvg-name="AMAZON PRIME 2 [LIVE DURING EVENTS ONLY] .s" tvg-logo="" group-title="Diğer",AMAZON PRIME 2 [LIVE DURING EVENTS ONLY] .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1545259425cb24d5bb8630
 #EXTINF:-1 tvg-id="1258724883356bb28f96a0" tvg-name="AMAZON PRIME 2 HD+ .b" tvg-logo="" group-title="Diğer",AMAZON PRIME 2 HD+ .b
@@ -125,8 +125,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/25224599104c29e5513b65
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1736796901974167c58544
 #EXTINF:-1 tvg-id="36252418955c743cdbc9a2" tvg-name="AMAZON PRIME 6 HD .b" tvg-logo="" group-title="Diğer",AMAZON PRIME 6 HD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/36252418955c743cdbc9a2
-#EXTINF:-1 tvg-id="3844871996d251721d919" tvg-name="AMAZON PRIME 6 HD+ .b" tvg-logo="" group-title="Diğer",AMAZON PRIME 6 HD+ .b
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3844871996d251721d919
 #EXTINF:-1 tvg-id="1768063540271941c63c7a" tvg-name="AMAZON PRIME 7 [LIVE DURING EVENTS ONLY] .s" tvg-logo="" group-title="Diğer",AMAZON PRIME 7 [LIVE DURING EVENTS ONLY] .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1768063540271941c63c7a
 #EXTINF:-1 tvg-id="348048825acd0661c7838" tvg-name="AMAZON PRIME 7 HD .b" tvg-logo="" group-title="Diğer",AMAZON PRIME 7 HD .b
@@ -409,8 +407,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3717538119811335a8ce45
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/33644893130fb5cb54214e
 #EXTINF:-1 tvg-id="56184602947b7f40432a5" tvg-name="CANAL ALPHA JURA .c" tvg-logo="https://logo.huhu.to/logo?c=561846029.png" group-title="Diğer",CANAL ALPHA JURA .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/56184602947b7f40432a5
-#EXTINF:-1 tvg-id="520753959dc6cda3b8cce" tvg-name="CANAL CINEMA HD .s" tvg-logo="" group-title="Film",CANAL CINEMA HD .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/520753959dc6cda3b8cce
 #EXTINF:-1 tvg-id="23512675130ba387ea038e" tvg-name="CANAL D .c" tvg-logo="https://logo.huhu.to/logo?c=2351267513.png" group-title="Diğer",CANAL D .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/23512675130ba387ea038e
 #EXTINF:-1 tvg-id="1545493919f92fd67c2706" tvg-name="CANAL DECALE HD .b" tvg-logo="" group-title="Diğer",CANAL DECALE HD .b
@@ -491,16 +487,12 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2391426657c4f98516e90
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/879877845da1b3610d9d8
 #EXTINF:-1 tvg-id="35227424882caef6e52bc3" tvg-name="CANAL PLAY 8 FHD .s" tvg-logo="" group-title="Diğer",CANAL PLAY 8 FHD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/35227424882caef6e52bc3
-#EXTINF:-1 tvg-id="1521723897d82fbbfa51c" tvg-name="CANAL PLAY 9 .c" tvg-logo="" group-title="Diğer",CANAL PLAY 9 .c
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1521723897d82fbbfa51c
 #EXTINF:-1 tvg-id="33305304595f685fa16477" tvg-name="CANAL PLAY 9 FHD .s" tvg-logo="" group-title="Diğer",CANAL PLAY 9 FHD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/33305304595f685fa16477
 #EXTINF:-1 tvg-id="12810486615413a79acd8b" tvg-name="CANAL PLUS C NEMA .b" tvg-logo="" group-title="Diğer",CANAL PLUS C NEMA .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/12810486615413a79acd8b
 #EXTINF:-1 tvg-id="268436332130b3acf31d04" tvg-name="CANAL SAVOIR .c" tvg-logo="https://logo.huhu.to/logo?c=2684363321.png" group-title="Diğer",CANAL SAVOIR .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/268436332130b3acf31d04
-#EXTINF:-1 tvg-id="42898657499ab32aacb6ad" tvg-name="CANAL SERIES HD .b" tvg-logo="" group-title="Dizi",CANAL SERIES HD .b
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/42898657499ab32aacb6ad
 #EXTINF:-1 tvg-id="250936388888b0d5791039" tvg-name="CANAL SERIES HD .s" tvg-logo="" group-title="Dizi",CANAL SERIES HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/250936388888b0d5791039
 #EXTINF:-1 tvg-id="224685472416f6779d42ee" tvg-name="CANAL SPORT .b" tvg-logo="" group-title="Spor",CANAL SPORT .b
@@ -531,8 +523,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/7815381974235226e525c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2132350685adf758f9c2d8
 #EXTINF:-1 tvg-id="2898387495718e66ec3be" tvg-name="CANAL+ CINEMA FHD .s" tvg-logo="" group-title="Film",CANAL+ CINEMA FHD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2898387495718e66ec3be
-#EXTINF:-1 tvg-id="9740778764179b9c92456" tvg-name="CANAL+ CINEMA HD .s" tvg-logo="" group-title="Film",CANAL+ CINEMA HD .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/9740778764179b9c92456
 #EXTINF:-1 tvg-id="1199637350be10be08cffa" tvg-name="CANAL+ CINEMA OUEST HD .b" tvg-logo="" group-title="Film",CANAL+ CINEMA OUEST HD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1199637350be10be08cffa
 #EXTINF:-1 tvg-id="3602737855a4e6ebf3fc10" tvg-name="CANAL+ CINEMAS 4K .b" tvg-logo="" group-title="Film",CANAL+ CINEMAS 4K .b
@@ -601,12 +591,22 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/222145760057ddc371c243
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/318888772844652b7cdbc9
 #EXTINF:-1 tvg-id="910695632bbabea992e63" tvg-name="CANAL+ LIVE 4 .c" tvg-logo="https://logo.huhu.to/logo?c=910695632.png" group-title="Diğer",CANAL+ LIVE 4 .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/910695632bbabea992e63
+#EXTINF:-1 tvg-id="910695632bbabea992e63" tvg-name="CANAL+ LIVE 4 .c" tvg-logo="https://logo.huhu.to/logo?c=910695632.png" group-title="Diğer",CANAL+ LIVE 4 .c
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/910695632bbabea992e63
+#EXTINF:-1 tvg-id="30340284573fcf6a3e2193" tvg-name="CANAL+ LIVE 4 HD .b" tvg-logo="" group-title="Diğer",CANAL+ LIVE 4 HD .b
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/30340284573fcf6a3e2193
 #EXTINF:-1 tvg-id="30340284573fcf6a3e2193" tvg-name="CANAL+ LIVE 4 HD .b" tvg-logo="" group-title="Diğer",CANAL+ LIVE 4 HD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/30340284573fcf6a3e2193
 #EXTINF:-1 tvg-id="18718448099b53ddbec13" tvg-name="CANAL+ LIVE 5 .c" tvg-logo="https://logo.huhu.to/logo?c=187184480.png" group-title="Diğer",CANAL+ LIVE 5 .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/18718448099b53ddbec13
+#EXTINF:-1 tvg-id="18718448099b53ddbec13" tvg-name="CANAL+ LIVE 5 .c" tvg-logo="https://logo.huhu.to/logo?c=187184480.png" group-title="Diğer",CANAL+ LIVE 5 .c
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/18718448099b53ddbec13
 #EXTINF:-1 tvg-id="2021497143662473e8da2d" tvg-name="CANAL+ LIVE 5 HD .b" tvg-logo="" group-title="Diğer",CANAL+ LIVE 5 HD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2021497143662473e8da2d
+#EXTINF:-1 tvg-id="2021497143662473e8da2d" tvg-name="CANAL+ LIVE 5 HD .b" tvg-logo="" group-title="Diğer",CANAL+ LIVE 5 HD .b
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2021497143662473e8da2d
+#EXTINF:-1 tvg-id="1284001712f5c8ff8f27bc" tvg-name="CANAL+ LIVE 6 .c" tvg-logo="https://logo.huhu.to/logo?c=1284001712.png" group-title="Diğer",CANAL+ LIVE 6 .c
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1284001712f5c8ff8f27bc
 #EXTINF:-1 tvg-id="1284001712f5c8ff8f27bc" tvg-name="CANAL+ LIVE 6 .c" tvg-logo="https://logo.huhu.to/logo?c=1284001712.png" group-title="Diğer",CANAL+ LIVE 6 .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1284001712f5c8ff8f27bc
 #EXTINF:-1 tvg-id="41430955085adf8724ea44" tvg-name="CANAL+ LIVE 6 HD .b" tvg-logo="" group-title="Diğer",CANAL+ LIVE 6 HD .b
@@ -1199,14 +1199,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3435456326462b8ebc1f88
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/381306877060a38e6f63e1
 #EXTINF:-1 tvg-id="29783704130ceb4c2ce4bd" tvg-name="M6 INTERNATIONAL .c" tvg-logo="https://logo.huhu.to/logo?c=2978370413.png" group-title="Diğer",M6 INTERNATIONAL .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/29783704130ceb4c2ce4bd
-#EXTINF:-1 tvg-id="38871521898e03f2cfd86d" tvg-name="M6 MUSIC (BACKUP) .s" tvg-logo="" group-title="Diğer",M6 MUSIC (BACKUP) .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/38871521898e03f2cfd86d
-#EXTINF:-1 tvg-id="4154285296f902b73b0d28" tvg-name="M6 MUSIC .c" tvg-logo="https://logo.huhu.to/logo?c=4154285296.png" group-title="Diğer",M6 MUSIC .c
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/4154285296f902b73b0d28
-#EXTINF:-1 tvg-id="7435919714613b22a77d1" tvg-name="M6 MUSIC .s" tvg-logo="" group-title="Diğer",M6 MUSIC .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/7435919714613b22a77d1
-#EXTINF:-1 tvg-id="285936085861281a838c2f" tvg-name="M6 MUSIC HD .b" tvg-logo="" group-title="Diğer",M6 MUSIC HD .b
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/285936085861281a838c2f
 #EXTINF:-1 tvg-id="358938874021b76307d20e" tvg-name="M6 MUSIC HD .s" tvg-logo="" group-title="Diğer",M6 MUSIC HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/358938874021b76307d20e
 #EXTINF:-1 tvg-id="32799170581348b92d0676" tvg-name="M6 MUSIC SD .b" tvg-logo="" group-title="Diğer",M6 MUSIC SD .b
@@ -1589,8 +1581,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/28562619388e75dc592e05
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2893363456b3ad7a65ff86
 #EXTINF:-1 tvg-id="4198743891b3aa5f1b46ea" tvg-name="RMC SPORT 1 UHD .b" tvg-logo="" group-title="Spor",RMC SPORT 1 UHD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/4198743891b3aa5f1b46ea
-#EXTINF:-1 tvg-id="2195294466e7b94a1092d4" tvg-name="RMC SPORT 10 [LIVE DURING EVENTS ONLY] .s" tvg-logo="" group-title="Spor",RMC SPORT 10 [LIVE DURING EVENTS ONLY] .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2195294466e7b94a1092d4
 #EXTINF:-1 tvg-id="7960862604c7f0da38151" tvg-name="RMC SPORT 13 .s" tvg-logo="https://logo.huhu.to/logo?c=796086260.png" group-title="Spor",RMC SPORT 13 .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/7960862604c7f0da38151
 #EXTINF:-1 tvg-id="2639500260d2bc1d613f18" tvg-name="RMC SPORT 14 .s" tvg-logo="https://logo.huhu.to/logo?c=2639500260.png" group-title="Spor",RMC SPORT 14 .s
@@ -1639,8 +1629,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/387360263980a2ec423852
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3894334400583a0c794e0
 #EXTINF:-1 tvg-id="113322869163d918ab9302" tvg-name="RMC SPORT 4 HD .b" tvg-logo="" group-title="Spor",RMC SPORT 4 HD .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/113322869163d918ab9302
-#EXTINF:-1 tvg-id="26373815756a4d77c529a1" tvg-name="RMC SPORT 5 .s" tvg-logo="" group-title="Spor",RMC SPORT 5 .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/26373815756a4d77c529a1
 #EXTINF:-1 tvg-id="3891489959393d7c27b0c5" tvg-name="RMC SPORT 7 .s" tvg-logo="" group-title="Spor",RMC SPORT 7 .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3891489959393d7c27b0c5
 #EXTINF:-1 tvg-id="1705245558adbef2ac1044" tvg-name="RMC SPORT 8 .s" tvg-logo="" group-title="Spor",RMC SPORT 8 .s
@@ -1799,6 +1787,10 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/17522320208e62334baa89
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/965401356d56a26be4f45
 #EXTINF:-1 tvg-id="12869143765e4bc62e1bc" tvg-name="TIJI .b" tvg-logo="" group-title="Diğer",TIJI .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/12869143765e4bc62e1bc
+#EXTINF:-1 tvg-id="3472686258a52d47096aef" tvg-name="TIJI .c" tvg-logo="https://logo.huhu.to/logo?c=3472686258.png" group-title="Diğer",TIJI .c
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3472686258a52d47096aef
+#EXTINF:-1 tvg-id="381228029420ab3e3544f6" tvg-name="TIJI FHD .s" tvg-logo="" group-title="Diğer",TIJI FHD .s
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/381228029420ab3e3544f6
 #EXTINF:-1 tvg-id="61014295140065dfc1ba9" tvg-name="TIJI HD .s" tvg-logo="" group-title="Diğer",TIJI HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/61014295140065dfc1ba9
 #EXTINF:-1 tvg-id="2248897642e41a1d725e8f" tvg-name="TIPIK .c" tvg-logo="https://logo.huhu.to/logo?c=2248897642.png" group-title="Diğer",TIPIK .c

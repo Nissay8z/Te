@@ -146,9 +146,6 @@
   <channel id="3154735344f1a60a8f8e27">
     <display-name>ADN TV+ .c</display-name>
   </channel>
-  <channel id="435250608d3ee7b699982">
-    <display-name>AF: NOLLYWOOD .b</display-name>
-  </channel>
   <channel id="2290952272f961b542eda7">
     <display-name>AFRICA 24 .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=2290952272.png"/>
@@ -158,6 +155,9 @@
   </channel>
   <channel id="81737034162dae716442d">
     <display-name>ALTICE STUDIO HD .s</display-name>
+  </channel>
+  <channel id="35369626225a05e7e12c75">
+    <display-name>AMAZON PRIME 1 HD .b</display-name>
   </channel>
   <channel id="1545259425cb24d5bb8630">
     <display-name>AMAZON PRIME 2 [LIVE DURING EVENTS ONLY] .s</display-name>
@@ -197,9 +197,6 @@
   </channel>
   <channel id="36252418955c743cdbc9a2">
     <display-name>AMAZON PRIME 6 HD .b</display-name>
-  </channel>
-  <channel id="3844871996d251721d919">
-    <display-name>AMAZON PRIME 6 HD+ .b</display-name>
   </channel>
   <channel id="1768063540271941c63c7a">
     <display-name>AMAZON PRIME 7 [LIVE DURING EVENTS ONLY] .s</display-name>
@@ -576,9 +573,6 @@
     <display-name>CANAL ALPHA JURA .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=561846029.png"/>
   </channel>
-  <channel id="520753959dc6cda3b8cce">
-    <display-name>CANAL CINEMA HD .s</display-name>
-  </channel>
   <channel id="23512675130ba387ea038e">
     <display-name>CANAL D .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=2351267513.png"/>
@@ -701,9 +695,6 @@
   <channel id="35227424882caef6e52bc3">
     <display-name>CANAL PLAY 8 FHD .s</display-name>
   </channel>
-  <channel id="1521723897d82fbbfa51c">
-    <display-name>CANAL PLAY 9 .c</display-name>
-  </channel>
   <channel id="33305304595f685fa16477">
     <display-name>CANAL PLAY 9 FHD .s</display-name>
   </channel>
@@ -713,9 +704,6 @@
   <channel id="268436332130b3acf31d04">
     <display-name>CANAL SAVOIR .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=2684363321.png"/>
-  </channel>
-  <channel id="42898657499ab32aacb6ad">
-    <display-name>CANAL SERIES HD .b</display-name>
   </channel>
   <channel id="250936388888b0d5791039">
     <display-name>CANAL SERIES HD .s</display-name>
@@ -764,9 +752,6 @@
   </channel>
   <channel id="2898387495718e66ec3be">
     <display-name>CANAL+ CINEMA FHD .s</display-name>
-  </channel>
-  <channel id="9740778764179b9c92456">
-    <display-name>CANAL+ CINEMA HD .s</display-name>
   </channel>
   <channel id="1199637350be10be08cffa">
     <display-name>CANAL+ CINEMA OUEST HD .b</display-name>
@@ -1812,19 +1797,6 @@
     <display-name>M6 INTERNATIONAL .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=2978370413.png"/>
   </channel>
-  <channel id="38871521898e03f2cfd86d">
-    <display-name>M6 MUSIC (BACKUP) .s</display-name>
-  </channel>
-  <channel id="4154285296f902b73b0d28">
-    <display-name>M6 MUSIC .c</display-name>
-    <icon src="https://logo.huhu.to/logo?c=4154285296.png"/>
-  </channel>
-  <channel id="7435919714613b22a77d1">
-    <display-name>M6 MUSIC .s</display-name>
-  </channel>
-  <channel id="285936085861281a838c2f">
-    <display-name>M6 MUSIC HD .b</display-name>
-  </channel>
   <channel id="358938874021b76307d20e">
     <display-name>M6 MUSIC HD .s</display-name>
   </channel>
@@ -2452,9 +2424,6 @@
   <channel id="4198743891b3aa5f1b46ea">
     <display-name>RMC SPORT 1 UHD .b</display-name>
   </channel>
-  <channel id="2195294466e7b94a1092d4">
-    <display-name>RMC SPORT 10 [LIVE DURING EVENTS ONLY] .s</display-name>
-  </channel>
   <channel id="7960862604c7f0da38151">
     <display-name>RMC SPORT 13 .s</display-name>
     <icon src="https://logo.huhu.to/logo?c=796086260.png"/>
@@ -2532,9 +2501,6 @@
   </channel>
   <channel id="113322869163d918ab9302">
     <display-name>RMC SPORT 4 HD .b</display-name>
-  </channel>
-  <channel id="26373815756a4d77c529a1">
-    <display-name>RMC SPORT 5 .s</display-name>
   </channel>
   <channel id="3891489959393d7c27b0c5">
     <display-name>RMC SPORT 7 .s</display-name>
@@ -2791,6 +2757,13 @@
   </channel>
   <channel id="12869143765e4bc62e1bc">
     <display-name>TIJI .b</display-name>
+  </channel>
+  <channel id="3472686258a52d47096aef">
+    <display-name>TIJI .c</display-name>
+    <icon src="https://logo.huhu.to/logo?c=3472686258.png"/>
+  </channel>
+  <channel id="381228029420ab3e3544f6">
+    <display-name>TIJI FHD .s</display-name>
   </channel>
   <channel id="61014295140065dfc1ba9">
     <display-name>TIJI HD .s</display-name>
