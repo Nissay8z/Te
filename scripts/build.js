@@ -10,10 +10,10 @@ const M3U_FILE = path.join(__dirname, "..", "iptv.m3u");
 const EPG_FILE = path.join(__dirname, "..", "epg.xml");
 const FETCH_TIMEOUT_MS = 20000;
 
-// Liste des proxies (le premier qui répond sera utilisé)
+// Proxies (le premier qui répond sera utilisé)
 const PROXY_BASES = [
   process.env.PROXY_BASE || "https://vavoo-iptv-proxy.vavoo-iptv.workers.dev",
-  "https://vavoo-proxy.herokuapp.com", // autre proxy (à vérifier)
+  // Ajoute d'autres proxies si besoin
 ].filter(Boolean);
 
 // EPG upstream
@@ -25,6 +25,7 @@ const EPG_URL =
   process.env.EPG_URL ||
   `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY || "TON_USER/TON_REPO"}/main/epg.xml`;
 
+// Filtre pays (ex: "France") – laisser vide pour tout
 const COUNTRY_FILTER = process.env.COUNTRY_FILTER || "";
 
 // ===== HEADERS =====
@@ -32,23 +33,12 @@ const HEADERS = {
   "content-type": "application/json; charset=utf-8",
   accept: "*/*",
   "accept-language": "fr-FR,fr;q=0.9,en;q=0.8",
-  "cache-control": "no-cache",
-  pragma: "no-cache",
   origin: "https://vavoo.to",
   referer: "https://vavoo.to/live",
-  dnt: "1",
-  "sec-ch-ua":
-    '"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"',
-  "sec-ch-ua-mobile": "?0",
-  "sec-ch-ua-platform": '"macOS"',
-  "sec-fetch-dest": "empty",
-  "sec-fetch-mode": "cors",
-  "sec-fetch-site": "same-origin",
-  "user-agent":
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
 };
 
-// ===== FETCH CATALOG =====
+// ===== RÉCUPÉRATION DU CATALOGUE =====
 function buildBody(cursor) {
   return JSON.stringify({
     language: "fr",
@@ -65,7 +55,6 @@ function buildBody(cursor) {
 
 async function fetchPage(cursor) {
   const body = buildBody(cursor);
-  let lastErr;
   for (let attempt = 1; attempt <= 5; attempt++) {
     try {
       const res = await fetch(CATALOG_URL, {
@@ -74,17 +63,16 @@ async function fetchPage(cursor) {
         body,
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      if (data && data.error) throw new Error(`Vavoo error: ${data.error}`);
+      if (data?.error) throw new Error(`Vavoo error: ${data.error}`);
       return data;
     } catch (err) {
-      lastErr = err;
-      console.warn(`Tentative ${attempt} échouée (${err.message}). Nouvel essai...`);
-      await new Promise((r) => setTimeout(r, 1000 * attempt));
+      console.warn(`Tentative ${attempt} échouée (${err.message})`);
+      await new Promise(r => setTimeout(r, 1000 * attempt));
     }
   }
-  throw lastErr;
+  throw new Error("Impossible de récupérer le catalogue après 5 tentatives.");
 }
 
 async function fetchAll() {
@@ -95,22 +83,71 @@ async function fetchAll() {
     page++;
     const data = await fetchPage(cursor);
     if (Array.isArray(data.items)) items.push(...data.items);
-    console.log(`Page ${page}: ${data.items?.length ?? 0} chaînes`);
+    console.log(`📡 Page ${page}: ${data.items?.length ?? 0} chaînes`);
     cursor = data.nextCursor ?? null;
   } while (cursor);
   return items;
 }
 
-// ===== CATÉGORISATION =====
+// ===== NETTOYAGE DES NOMS =====
+function cleanName(raw) {
+  let name = String(raw || "");
+  // Supprime les suffixes .s .b .c .hd .sd .fhd .uhd etc.
+  name = name.replace(/\s*\.(s|b|c|hd|sd|fhd|uhd|hevc|raw)\b/gi, "");
+  // Supprime "4K TR:" et autres préfixes inutiles
+  name = name.replace(/^\s*4K TR:\s*/i, "");
+  name = name.replace(/^\s*4K\s*/i, "");
+  // Supprime les mentions de qualité en fin de ligne
+  name = name.replace(/\s+(UHD|FHD|HD\+|HD|SD|HEVC|RAW|H265|4K|8K|FEED|LIVE|BACKUP|PREMIERE)\b/gi, "");
+  // Supprime les espaces multiples
+  name = name.replace(/\s+/g, " ").trim();
+  return name;
+}
+
+// ===== CATÉGORISATION EN FRANÇAIS =====
 function categorize(name) {
-  const s = String(name || "").toLowerCase();
-  if (/discovery|nat geo|history|animal planet|viasat|bbc earth|love nature|tlc|docu/i.test(s))
+  const s = name.toLowerCase();
+
+  // Pays
+  if (/\bfrance\b|\bfrench\b|tf1|m6|france 2|france 3|france 4|france 5|arte|canal|13 eme rue|paris|première|ciné|cinema/i.test(s))
+    return "France";
+  if (/\buk\b|\bgreat britain\b|\bengland\b|\bscotland\b|bbc|itv|sky news|channel 4|channel 5/i.test(s))
+    return "Royaume-Uni";
+  if (/\busa\b|\bamerica\b|\bus\b|cnn|fox news|abc|nbc|cbs|hbo|showtime|starz/i.test(s))
+    return "USA";
+  if (/\bgermany\b|\bdeutsch\b|ard|zdf|das erste|prosieben|sat\.1|rtl/i.test(s))
+    return "Allemagne";
+  if (/\bitaly\b|\bitalia\b|rai|canale|mediaset|la7|sky italia/i.test(s))
+    return "Italie";
+  if (/\bspain\b|\bespaña\b|rtve|antena 3|telecinco|la sexta|cuatro/i.test(s))
+    return "Espagne";
+  if (/\bportugal\b|\bportuguês\b|rtp|sic|tvi/i.test(s))
+    return "Portugal";
+  if (/\bnetherlands\b|\bholland\b|\bnederland\b|rtl|sbs|npo/i.test(s))
+    return "Pays-Bas";
+  if (/\bpoland\b|\bpolski\b|tvp|polsat|tvn/i.test(s))
+    return "Pologne";
+  if (/\brussia\b|\brussian\b|rtr|ntv|1tv|rossiya/i.test(s))
+    return "Russie";
+  if (/\bturkey\b|\bturk\b|trt|kanal d|atv|show tv|star tv|fox|now/i.test(s))
+    return "Turquie";
+  if (/\bromania\b|\bromân\b|digi|antena|pro tv|romania tv/i.test(s))
+    return "Roumanie";
+  if (/\bbulgaria\b|\bbulgar\b|bnt|nova|bTV/i.test(s))
+    return "Bulgarie";
+  if (/\bcroatia\b|\bcroat\b|hrt|nova|rtl/i.test(s))
+    return "Croatie";
+  if (/\balbania\b|\balban\b|rtsh|top channel|tv klan/i.test(s))
+    return "Albanie";
+  if (/\barabia\b|\bsaudi\b|\bemirats\b|\buae\b|mbc|roya|dubai|al arabiya/i.test(s))
+    return "Arabie";
+
+  // Genres (après les pays)
+  if (/documentaire|docu|discovery|nat geo|history|animal planet|viasat|bbc earth|love nature|tlc|planète/i.test(s))
     return "Documentaire";
-  if (/cartoon|disney|nick|baby|kids|children|animation|dessin|paw|peppa|ben 10|spider|barbie/i.test(s))
-    return "Jeunesse";
-  if (/sport|foot|tennis|f1|nba|bein sport|eurosport|spor/i.test(s))
+  if (/sport|foot|tennis|f1|nba|bein sport|eurosport|spor|spor/i.test(s))
     return "Sport";
-  if (/cinema|film|movie|sinema|fx|box office|horror|comedy|drama|action/i.test(s))
+  if (/film|cinema|movie|sinema|box office|horror|comedy|drama|action|fx/i.test(s))
     return "Cinéma";
   if (/series|dizi|série/i.test(s))
     return "Séries";
@@ -120,36 +157,17 @@ function categorize(name) {
     return "Actualités";
   if (/religion|diyanet|akıt|kudus|semerkand|islam|christian/i.test(s))
     return "Religieux";
-  if (/france|french/i.test(s))
-    return "France";
-  if (/uk|gb|british|england/i.test(s))
-    return "UK";
-  if (/usa|america/i.test(s))
-    return "USA";
-  if (/germany|deutsch|allemagne/i.test(s))
-    return "Allemagne";
-  if (/italy|italia/i.test(s))
-    return "Italie";
-  if (/spain|españa/i.test(s))
-    return "Espagne";
-  if (/portugal|portuguese/i.test(s))
-    return "Portugal";
-  if (/netherlands|holland|nederland/i.test(s))
-    return "Pays-Bas";
-  if (/poland|polski/i.test(s))
-    return "Pologne";
-  if (/russia|russian/i.test(s))
-    return "Russie";
-  if (/turkey|turc|turk/i.test(s))
-    return "Turquie";
+  if (/jeunesse|kids|children|animation|cartoon|disney|nick|baby|paw|peppa|ben 10|spider|barbie/i.test(s))
+    return "Jeunesse";
+
   return "Général";
 }
 
-// ===== RÉSOLUTION DU PROXY FONCTIONNEL =====
+// ===== RÉSOLUTION DU PROXY =====
 async function findWorkingProxy() {
   for (const proxy of PROXY_BASES) {
     try {
-      const testUrl = `${proxy}/play/test`; // on teste avec un ID bidon
+      const testUrl = `${proxy}/play/test`;
       const res = await fetch(testUrl, { method: "HEAD", signal: AbortSignal.timeout(5000) });
       if (res.status === 200 || res.status === 302) {
         console.log(`✅ Proxy fonctionnel : ${proxy}`);
@@ -157,7 +175,7 @@ async function findWorkingProxy() {
       }
     } catch (_) {}
   }
-  console.warn("⚠️ Aucun proxy fonctionnel. Les URLs brutes seront utilisées.");
+  console.warn("⚠️ Aucun proxy fonctionnel. URLs brutes utilisées.");
   return null;
 }
 
@@ -166,23 +184,20 @@ function escapeAttr(value) {
   return String(value ?? "").replace(/\r?\n/g, " ").replace(/"/g, "'");
 }
 
-function sanitizeName(name) {
-  return String(name ?? "").replace(/\r?\n/g, " ").trim();
-}
-
 function toM3U(items, vavooToEpgId, proxyBase) {
   const header = `#EXTM3U url-tvg="${escapeAttr(EPG_URL)}" x-tvg-url="${escapeAttr(EPG_URL)}"`;
   const lines = [header];
   for (const it of items) {
     if (!it || !it.url) continue;
     const vavooId = it.ids?.id ?? "";
-    const name = sanitizeName(it.name);
-    if (!name) continue;
-    const group = categorize(name);
+    const rawName = it.name || "Inconnu";
+    const clean = cleanName(rawName);
+    const displayName = clean || rawName;
+    const group = categorize(displayName);
     const tvgId = vavooToEpgId.get(vavooId) || vavooId;
     const streamUrl = proxyBase ? `${proxyBase}/play/${vavooId}` : it.url;
     lines.push(
-      `#EXTINF:-1 tvg-id="${escapeAttr(tvgId)}" tvg-name="${escapeAttr(name)}" tvg-logo="${escapeAttr(it.logo || "")}" group-title="${escapeAttr(group)}",${name}`
+      `#EXTINF:-1 tvg-id="${escapeAttr(tvgId)}" tvg-name="${escapeAttr(displayName)}" tvg-logo="${escapeAttr(it.logo || "")}" group-title="${escapeAttr(group)}",${displayName}`
     );
     lines.push(streamUrl);
   }
@@ -282,19 +297,20 @@ function toXMLTV(items, vavooToEpgId, upstreamChannels, upstreamProgByChannel) {
   for (const it of items) {
     const vavooId = it?.ids?.id;
     if (!vavooId) continue;
-    const name = sanitizeName(it.name);
-    if (!name) continue;
+    const rawName = it.name || "Inconnu";
+    const displayName = cleanName(rawName);
+    if (!displayName) continue;
     const routedId = vavooToEpgId.get(vavooId) || vavooId;
     if (seen.has(routedId)) continue;
     seen.add(routedId);
     const sourceCh = upstreamChannels.get(routedId) || null;
     const sourceProgs = upstreamProgByChannel.get(routedId) || [];
-    const displayName = sourceCh?.names?.[0] || name;
+    const epgName = sourceCh?.names?.[0] || displayName;
     const icon = sourceCh?.icon || it.logo || "";
     const iconTag = icon ? `\n    <icon src="${xmlEscape(icon)}"/>` : "";
     channels.push(
       `  <channel id="${xmlEscape(routedId)}">\n` +
-      `    <display-name>${xmlEscape(displayName)}</display-name>${iconTag}\n  </channel>`
+      `    <display-name>${xmlEscape(epgName)}</display-name>${iconTag}\n  </channel>`
     );
     for (const p of sourceProgs) {
       programmes.push(
@@ -315,19 +331,18 @@ async function main() {
   if (COUNTRY_FILTER) console.log(`Filtre pays : ${COUNTRY_FILTER}`);
   else console.log("🌍 Tous les pays seront inclus.");
 
-  // 1. Récupérer toutes les chaînes
   const items = await fetchAll();
   console.log(`📡 ${items.length} chaînes trouvées.`);
 
-  // 2. Trier pour stabilité
+  // Tri
   items.sort((a, b) => (a.name || "").localeCompare(b.name || "fr"));
 
-  // 3. Trouver un proxy fonctionnel
+  // Proxy
   const proxyBase = await findWorkingProxy();
   if (proxyBase) console.log(`🌐 Proxy utilisé : ${proxyBase}`);
-  else console.warn("⚠️ Aucun proxy – les URLs brutes seront utilisées (peuvent être bloquées).");
+  else console.warn("⚠️ Aucun proxy – URLs brutes.");
 
-  // 4. Récupérer l'EPG upstream
+  // EPG upstream
   let upstreamChannels = new Map();
   let upstreamProgByChannel = new Map();
   try {
@@ -343,16 +358,17 @@ async function main() {
     console.warn(`⚠️ EPG non disponible (${err.message}).`);
   }
 
-  // 5. Associer les IDs EPG
+  // Association EPG
   const upstreamIdx = buildMatchIndex(upstreamChannels);
   const vavooToEpgId = new Map();
   let matched = 0;
   for (const it of items) {
     const vavooId = it?.ids?.id;
     if (!vavooId) continue;
-    const name = sanitizeName(it.name);
-    if (!name) continue;
-    const upstreamId = matchUpstreamId(name, upstreamIdx);
+    const rawName = it.name || "";
+    const displayName = cleanName(rawName);
+    if (!displayName) continue;
+    const upstreamId = matchUpstreamId(displayName, upstreamIdx);
     if (upstreamId) {
       vavooToEpgId.set(vavooId, upstreamId);
       matched++;
@@ -362,24 +378,25 @@ async function main() {
   }
   console.log(`🔗 EPG lié à ${matched}/${items.length} chaînes.`);
 
-  // 6. Générer la M3U
+  // M3U
   const m3u = toM3U(items, vavooToEpgId, proxyBase);
   await fs.writeFile(M3U_FILE, m3u, "utf8");
   console.log(`✅ M3U générée : ${M3U_FILE} (${m3u.length} octets, ${items.length} chaînes)`);
 
-  // 7. Générer l'EPG
+  // EPG
   const epg = toXMLTV(items, vavooToEpgId, upstreamChannels, upstreamProgByChannel);
   await fs.writeFile(EPG_FILE, epg, "utf8");
   const countP = (epg.match(/<programme /g) || []).length;
   const countC = (epg.match(/<channel /g) || []).length;
   console.log(`✅ EPG généré : ${EPG_FILE} (${epg.length} octets, ${countC} chaînes, ${countP} programmes)`);
 
-  // 8. Statistiques des catégories
+  // Stats
   const dist = new Map();
   for (const it of items) {
-    const name = sanitizeName(it.name);
-    if (name) {
-      const c = categorize(name);
+    const rawName = it.name || "";
+    const displayName = cleanName(rawName);
+    if (displayName) {
+      const c = categorize(displayName);
       dist.set(c, (dist.get(c) || 0) + 1);
     }
   }
