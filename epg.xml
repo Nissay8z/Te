@@ -156,9 +156,6 @@
   <channel id="81737034162dae716442d">
     <display-name>ALTICE STUDIO</display-name>
   </channel>
-  <channel id="35369626225a05e7e12c75">
-    <display-name>AMAZON PRIME 1</display-name>
-  </channel>
   <channel id="192175381483ed67bc8d27">
     <display-name>AMAZON PRIME 1+</display-name>
   </channel>
@@ -233,9 +230,6 @@
   </channel>
   <channel id="3247154919fa043765f088">
     <display-name>BE: ELEVEN PRO LEAGUES 1</display-name>
-  </channel>
-  <channel id="1325703428d1afd555dfe0">
-    <display-name>BE: ELEVEN PRO LEAGUES 2</display-name>
   </channel>
   <channel id="34882993120f2b5c2ce4c5">
     <display-name>BE: ELEVENSPORT 1</display-name>
@@ -548,6 +542,9 @@
   <channel id="3717538119811335a8ce45">
     <display-name>CANAL + LIGUE 1</display-name>
   </channel>
+  <channel id="2307221187cdc6efea38cc">
+    <display-name>CANAL + SPORTS 1</display-name>
+  </channel>
   <channel id="33644893130fb5cb54214e">
     <display-name>CANAL ALPHA</display-name>
   </channel>
@@ -723,6 +720,10 @@
   <channel id="8210443791c934dc94e58">
     <display-name>CANAL+ BOX OFFICE</display-name>
   </channel>
+  <channel id="3980730104297e5d74da47">
+    <display-name>CANAL+ CINEMA</display-name>
+    <icon src="https://logo.huhu.to/logo?c=3980730104.png"/>
+  </channel>
   <channel id="7815381974235226e525c">
     <display-name>CANAL+ CINEMA</display-name>
   </channel>
@@ -736,9 +737,6 @@
     <display-name>CANAL+ CINEMA OUEST</display-name>
   </channel>
   <channel id="3602737855a4e6ebf3fc10">
-    <display-name>CANAL+ CINEMAS</display-name>
-  </channel>
-  <channel id="671953108443817005992">
     <display-name>CANAL+ CINEMAS</display-name>
   </channel>
   <channel id="1092403852958115d9680b">
@@ -2189,9 +2187,6 @@
   <channel id="13407393374bf726974d70">
     <display-name>OCS CHOC</display-name>
   </channel>
-  <channel id="1215276492f2faf82424fc">
-    <display-name>OCS CHOC</display-name>
-  </channel>
   <channel id="191621715269241a8f3a34">
     <display-name>OCS CITY</display-name>
   </channel>
@@ -2553,6 +2548,9 @@
   <channel id="41503886821eb0565c3750">
     <display-name>RMC SPORT 13</display-name>
   </channel>
+  <channel id="425544469138297bd647ca">
+    <display-name>RMC SPORT 14</display-name>
+  </channel>
   <channel id="8230620938326140591cc">
     <display-name>RMC SPORT 15</display-name>
   </channel>
@@ -2564,6 +2562,9 @@
   </channel>
   <channel id="41715645264a1b399848f2">
     <display-name>RMC SPORT 5 (BACKUP)</display-name>
+  </channel>
+  <channel id="112859757368f91ed0052f">
+    <display-name>RMC SPORT 6</display-name>
   </channel>
   <channel id="287305687457b957946f68">
     <display-name>RMC SPORT 6 (BACKUP)</display-name>
@@ -2692,9 +2693,6 @@
   <channel id="3076159608b5a417c45084">
     <display-name>STINGRAY CLASSICA</display-name>
     <icon src="https://logo.huhu.to/logo?c=3076159608.png"/>
-  </channel>
-  <channel id="350896249c8fae8947470">
-    <display-name>SUNDANCE TV</display-name>
   </channel>
   <channel id="210674861187fc41ac93dc">
     <display-name>SYFY</display-name>
