@@ -2,8 +2,8 @@ name: Build IPTV M3U (All Countries)
 
 on:
   schedule:
-    - cron: "0 */6 * * *"       # Toutes les 6 heures
-  workflow_dispatch:            # Déclenchement manuel possible
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -26,16 +26,14 @@ jobs:
         with:
           node-version: "22"
 
-      # Aucune dépendance externe, mais npm install ne fait rien
       - name: Install dependencies
         run: npm install --no-audit --no-progress
 
       - name: Generate iptv.m3u and epg.xml
         env:
-          PROXY_BASE: ${{ vars.PROXY_BASE || 'https://vavoo-iptv-proxy.vavoo-iptv.workers.dev' }}
+          PROXY_BASE: ${{ vars.PROXY_BASE || '' }}
           EPG_UPSTREAM_URL: ${{ vars.EPG_UPSTREAM_URL || 'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz' }}
           COUNTRY_FILTER: ${{ vars.COUNTRY_FILTER || '' }}
-          # L'URL publique de l'EPG sera construite automatiquement dans le script
         run: npm run build
 
       - name: Commit and push if changed
@@ -47,5 +45,5 @@ jobs:
             git commit -m "chore: update iptv.m3u / epg.xml ($(date -u +'%Y-%m-%d %H:%M UTC'))"
             git push
           else
-            echo "No changes in iptv.m3u or epg.xml"
+            echo "No changes"
           fi
