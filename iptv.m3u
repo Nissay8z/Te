@@ -745,6 +745,8 @@ https://vavoo.to/vavoo-iptv/play/2756225323d66c2d2340f9
 https://vavoo.to/vavoo-iptv/play/1588397957e81b96f9e2
 #EXTINF:-1 tvg-id="22786097730b32792104c" tvg-name="CINE EMOTION HD .b" tvg-logo="" group-title="Général",CINE EMOTION HD .b
 https://vavoo.to/vavoo-iptv/play/22786097730b32792104c
+#EXTINF:-1 tvg-id="20822805044642b90cf20a" tvg-name="CINE FAMIZ .c" tvg-logo="" group-title="Général",CINE FAMIZ .c
+https://vavoo.to/vavoo-iptv/play/20822805044642b90cf20a
 #EXTINF:-1 tvg-id="37191264208beaab60b7e5" tvg-name="CINE FAMIZ HD .b" tvg-logo="" group-title="Général",CINE FAMIZ HD .b
 https://vavoo.to/vavoo-iptv/play/37191264208beaab60b7e5
 #EXTINF:-1 tvg-id="336074375a15a0dca0457" tvg-name="CINE FRISSON HD .b" tvg-logo="" group-title="Général",CINE FRISSON HD .b
@@ -1145,8 +1147,6 @@ https://vavoo.to/vavoo-iptv/play/38373319428576fb860cef
 https://vavoo.to/vavoo-iptv/play/281187115867a6b89dfeb3
 #EXTINF:-1 tvg-id="39214023264b1192d56d1b" tvg-name="L EQUIPE LIVE .c" tvg-logo="https://logo.huhu.to/logo?c=3921402326.png" group-title="Général",L EQUIPE LIVE .c
 https://vavoo.to/vavoo-iptv/play/39214023264b1192d56d1b
-#EXTINF:-1 tvg-id="28332612215ed46704e673" tvg-name="L EQUIPE LIVE 1 .b" tvg-logo="" group-title="Général",L EQUIPE LIVE 1 .b
-https://vavoo.to/vavoo-iptv/play/28332612215ed46704e673
 #EXTINF:-1 tvg-id="113813193cc8c8ce7408e" tvg-name="LA CHAINE METEO .c" tvg-logo="https://logo.huhu.to/logo?c=113813193.png" group-title="Général",LA CHAINE METEO .c
 https://vavoo.to/vavoo-iptv/play/113813193cc8c8ce7408e
 #EXTINF:-1 tvg-id="2136022010abfd1159ec5f" tvg-name="LA CHAINE METEO .s" tvg-logo="" group-title="Général",LA CHAINE METEO .s

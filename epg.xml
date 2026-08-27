@@ -1100,6 +1100,9 @@
   <channel id="22786097730b32792104c">
     <display-name>CINE EMOTION HD .b</display-name>
   </channel>
+  <channel id="20822805044642b90cf20a">
+    <display-name>CINE FAMIZ .c</display-name>
+  </channel>
   <channel id="37191264208beaab60b7e5">
     <display-name>CINE FAMIZ HD .b</display-name>
   </channel>
@@ -1720,9 +1723,6 @@
   <channel id="39214023264b1192d56d1b">
     <display-name>L EQUIPE LIVE .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=3921402326.png"/>
-  </channel>
-  <channel id="28332612215ed46704e673">
-    <display-name>L EQUIPE LIVE 1 .b</display-name>
   </channel>
   <channel id="113813193cc8c8ce7408e">
     <display-name>LA CHAINE METEO .c</display-name>
