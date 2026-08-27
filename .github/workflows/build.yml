@@ -1,4 +1,4 @@
-name: Build IPTV M3U (All Countries)
+name: Build IPTV M3U
 
 on:
   schedule:
@@ -33,8 +33,6 @@ jobs:
 
       - name: Generate iptv.m3u and epg.xml
         env:
-          PROXY_BASE: ${{ vars.PROXY_BASE || 'https://vavoo-iptv-proxy.vavoo-iptv.workers.dev' }}
-          EPG_UPSTREAM_URL: ${{ vars.EPG_UPSTREAM_URL || 'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz' }}
           COUNTRY_FILTER: ${{ vars.COUNTRY_FILTER || '' }}
         run: npm run build
 
@@ -45,7 +43,8 @@ jobs:
           if [[ -n "$(git status --porcelain iptv.m3u epg.xml)" ]]; then
             git add iptv.m3u epg.xml
             git commit -m "chore: update iptv.m3u / epg.xml ($(date -u +'%Y-%m-%d %H:%M UTC'))"
-            git pull --rebase origin main
+            # Récupère les derniers changements distants et rebase
+            git pull --rebase origin main || git rebase --abort && git pull --rebase origin main
             git push origin main
           else
             echo "No changes"
