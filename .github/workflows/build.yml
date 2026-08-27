@@ -1,0 +1,51 @@
+name: Build IPTV M3U (All Countries)
+
+on:
+  schedule:
+    # Toutes les 6 heures
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build.js"
+      - ".github/workflows/build.yml"
+      - "package.json"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-progress
+
+      - name: Generate iptv.m3u and epg.xml
+        env:
+          PROXY_BASE: ${{ vars.PROXY_BASE || 'https://vavoo-iptv-proxy.vavoo-iptv.workers.dev' }}
+          EPG_UPSTREAM_URL: ${{ vars.EPG_UPSTREAM_URL || 'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz' }}
+          # Optionnel : filtrer par pays (ex: "France") – laisser vide pour tout
+          COUNTRY_FILTER: ${{ vars.COUNTRY_FILTER || '' }}
+        run: npm run build
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain iptv.m3u epg.xml)" ]]; then
+            git add iptv.m3u epg.xml
+            git commit -m "chore: update iptv.m3u / epg.xml ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            git push
+          else
+            echo "No changes in iptv.m3u or epg.xml"
+          fi
