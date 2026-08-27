@@ -20,6 +20,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Récupère tout l'historique pour pouvoir faire un rebase propre
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,7 +34,7 @@ jobs:
 
       - name: Generate iptv.m3u and epg.xml
         env:
-          PROXY_BASE: ${{ vars.PROXY_BASE || '' }}
+          PROXY_BASE: ${{ vars.PROXY_BASE || 'https://vavoo-iptv-proxy.vavoo-iptv.workers.dev' }}
           EPG_UPSTREAM_URL: ${{ vars.EPG_UPSTREAM_URL || 'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz' }}
           COUNTRY_FILTER: ${{ vars.COUNTRY_FILTER || '' }}
         run: npm run build
@@ -40,10 +43,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Vérifie si des fichiers ont changé
           if [[ -n "$(git status --porcelain iptv.m3u epg.xml)" ]]; then
             git add iptv.m3u epg.xml
             git commit -m "chore: update iptv.m3u / epg.xml ($(date -u +'%Y-%m-%d %H:%M UTC'))"
-            git push
+            
+            # 🔥 Étape cruciale : récupère les derniers changements distants et rebase
+            git pull --rebase origin main
+            
+            # Pousse les modifications
+            git push origin main
           else
-            echo "No changes"
+            echo "No changes in iptv.m3u or epg.xml"
           fi
