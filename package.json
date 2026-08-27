@@ -1,14 +1,10 @@
 {
-  "name": "vavoo-iptv-all",
+  "name": "vavoo-iptv",
   "version": "1.0.0",
-  "description": "Génère une playlist M3U complète de Vavoo (tous pays) et un EPG.",
-  "main": "scripts/build.js",
   "scripts": {
     "build": "node scripts/build.js"
   },
   "engines": {
     "node": ">=22"
-  },
-  "author": "",
-  "license": "MIT"
+  }
 }
