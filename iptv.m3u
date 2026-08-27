@@ -79,8 +79,6 @@ https://vavoo.to/vavoo-iptv/play/10479552824e6c088c2ed3
 https://vavoo.to/vavoo-iptv/play/36312714244a1cb42670fd
 #EXTINF:-1 tvg-id="27294836163cd6fc90bbf8" tvg-name="AB3" tvg-logo="" group-title="Arabia",AB3
 https://vavoo.to/vavoo-iptv/play/27294836163cd6fc90bbf8
-#EXTINF:-1 tvg-id="280946384746cb078ae176" tvg-name="AB3" tvg-logo="" group-title="Arabia",AB3
-https://vavoo.to/vavoo-iptv/play/280946384746cb078ae176
 #EXTINF:-1 tvg-id="340010148454b4b576c9f3" tvg-name="ACTION" tvg-logo="" group-title="Arabia",ACTION
 https://vavoo.to/vavoo-iptv/play/340010148454b4b576c9f3
 #EXTINF:-1 tvg-id="1316428074762ad2aa63dd" tvg-name="ACTION" tvg-logo="https://logo.huhu.to/logo?c=1316428074.png" group-title="Arabia",ACTION
@@ -99,28 +97,22 @@ https://vavoo.to/vavoo-iptv/play/2290952272f961b542eda7
 https://vavoo.to/vavoo-iptv/play/53479946456dcee6704fc
 #EXTINF:-1 tvg-id="81737034162dae716442d" tvg-name="ALTICE STUDIO" tvg-logo="" group-title="Arabia",ALTICE STUDIO
 https://vavoo.to/vavoo-iptv/play/81737034162dae716442d
-#EXTINF:-1 tvg-id="192175381483ed67bc8d27" tvg-name="AMAZON PRIME 1+" tvg-logo="" group-title="Arabia",AMAZON PRIME 1+
-https://vavoo.to/vavoo-iptv/play/192175381483ed67bc8d27
+#EXTINF:-1 tvg-id="1545259425cb24d5bb8630" tvg-name="AMAZON PRIME 2 [LIVE DURING EVENTS ONLY]" tvg-logo="" group-title="Arabia",AMAZON PRIME 2 [LIVE DURING EVENTS ONLY]
+https://vavoo.to/vavoo-iptv/play/1545259425cb24d5bb8630
 #EXTINF:-1 tvg-id="1258724883356bb28f96a0" tvg-name="AMAZON PRIME 2+" tvg-logo="" group-title="Arabia",AMAZON PRIME 2+
 https://vavoo.to/vavoo-iptv/play/1258724883356bb28f96a0
 #EXTINF:-1 tvg-id="139232088076812ff95181" tvg-name="AMAZON PRIME 3 [LIVE DURING EVENTS ONLY]" tvg-logo="" group-title="Arabia",AMAZON PRIME 3 [LIVE DURING EVENTS ONLY]
 https://vavoo.to/vavoo-iptv/play/139232088076812ff95181
-#EXTINF:-1 tvg-id="243195987591bffdc37fcf" tvg-name="AMAZON PRIME 3" tvg-logo="" group-title="Arabia",AMAZON PRIME 3
-https://vavoo.to/vavoo-iptv/play/243195987591bffdc37fcf
-#EXTINF:-1 tvg-id="258695433034433ac372ee" tvg-name="AMAZON PRIME 4" tvg-logo="" group-title="Arabia",AMAZON PRIME 4
-https://vavoo.to/vavoo-iptv/play/258695433034433ac372ee
 #EXTINF:-1 tvg-id="1957516182fd1f4fbd5e7b" tvg-name="AMAZON PRIME 5 [LIVE DURING EVENTS ONLY]" tvg-logo="" group-title="Arabia",AMAZON PRIME 5 [LIVE DURING EVENTS ONLY]
 https://vavoo.to/vavoo-iptv/play/1957516182fd1f4fbd5e7b
 #EXTINF:-1 tvg-id="795341786f0dcb9bf5fa3" tvg-name="AMAZON PRIME 5+" tvg-logo="" group-title="Arabia",AMAZON PRIME 5+
 https://vavoo.to/vavoo-iptv/play/795341786f0dcb9bf5fa3
 #EXTINF:-1 tvg-id="1736796901974167c58544" tvg-name="AMAZON PRIME 6 [LIVE DURING EVENTS ONLY]" tvg-logo="" group-title="Arabia",AMAZON PRIME 6 [LIVE DURING EVENTS ONLY]
 https://vavoo.to/vavoo-iptv/play/1736796901974167c58544
-#EXTINF:-1 tvg-id="3844871996d251721d919" tvg-name="AMAZON PRIME 6+" tvg-logo="" group-title="Arabia",AMAZON PRIME 6+
-https://vavoo.to/vavoo-iptv/play/3844871996d251721d919
+#EXTINF:-1 tvg-id="36252418955c743cdbc9a2" tvg-name="AMAZON PRIME 6" tvg-logo="" group-title="Arabia",AMAZON PRIME 6
+https://vavoo.to/vavoo-iptv/play/36252418955c743cdbc9a2
 #EXTINF:-1 tvg-id="1768063540271941c63c7a" tvg-name="AMAZON PRIME 7 [LIVE DURING EVENTS ONLY]" tvg-logo="" group-title="Arabia",AMAZON PRIME 7 [LIVE DURING EVENTS ONLY]
 https://vavoo.to/vavoo-iptv/play/1768063540271941c63c7a
-#EXTINF:-1 tvg-id="348048825acd0661c7838" tvg-name="AMAZON PRIME 7" tvg-logo="" group-title="Arabia",AMAZON PRIME 7
-https://vavoo.to/vavoo-iptv/play/348048825acd0661c7838
 #EXTINF:-1 tvg-id="921329291c49ec1552b55" tvg-name="AMAZON PRIME 8 [LIVE DURING EVENTS ONLY]" tvg-logo="https://logo.huhu.to/logo?c=921329291.png" group-title="Arabia",AMAZON PRIME 8 [LIVE DURING EVENTS ONLY]
 https://vavoo.to/vavoo-iptv/play/921329291c49ec1552b55
 #EXTINF:-1 tvg-id="3727168653ec22aa96caae" tvg-name="AMAZON PRIME 8+" tvg-logo="" group-title="Arabia",AMAZON PRIME 8+
@@ -463,6 +455,8 @@ https://vavoo.to/vavoo-iptv/play/936131532e81e84e5995e
 https://vavoo.to/vavoo-iptv/play/992030178d7c558b49246
 #EXTINF:-1 tvg-id="5488761753ada380f98f1" tvg-name="CANAL PLAY 5" tvg-logo="" group-title="France",CANAL PLAY 5
 https://vavoo.to/vavoo-iptv/play/5488761753ada380f98f1
+#EXTINF:-1 tvg-id="2336317620aef848fc3364" tvg-name="CANAL PLAY 6" tvg-logo="" group-title="France",CANAL PLAY 6
+https://vavoo.to/vavoo-iptv/play/2336317620aef848fc3364
 #EXTINF:-1 tvg-id="4232364266e2472ba501b" tvg-name="CANAL PLAY 6" tvg-logo="" group-title="France",CANAL PLAY 6
 https://vavoo.to/vavoo-iptv/play/4232364266e2472ba501b
 #EXTINF:-1 tvg-id="30556346922dea32a37f3d" tvg-name="CANAL PLAY 7" tvg-logo="" group-title="France",CANAL PLAY 7
@@ -533,6 +527,8 @@ https://vavoo.to/vavoo-iptv/play/116160273261086bd8c99a
 https://vavoo.to/vavoo-iptv/play/3625345371a7f0ef9f1db5
 #EXTINF:-1 tvg-id="2904368955e509670e2735" tvg-name="CANAL+ ELLES" tvg-logo="" group-title="France",CANAL+ ELLES
 https://vavoo.to/vavoo-iptv/play/2904368955e509670e2735
+#EXTINF:-1 tvg-id="4007062954bb448913d299" tvg-name="CANAL+ FAMILY" tvg-logo="" group-title="France",CANAL+ FAMILY
+https://vavoo.to/vavoo-iptv/play/4007062954bb448913d299
 #EXTINF:-1 tvg-id="298747715234a3a02669b8" tvg-name="CANAL+" tvg-logo="" group-title="France",CANAL+
 https://vavoo.to/vavoo-iptv/play/298747715234a3a02669b8
 #EXTINF:-1 tvg-id="3271278010f4217cd17c4c" tvg-name="CANAL+ FOOT" tvg-logo="https://logo.huhu.to/logo?c=3271278010.png" group-title="France",CANAL+ FOOT
@@ -563,6 +559,8 @@ https://vavoo.to/vavoo-iptv/play/86925638869470b089467
 https://vavoo.to/vavoo-iptv/play/1508654689ee9eaa64cbd6
 #EXTINF:-1 tvg-id="242933169ce3a7d28a887" tvg-name="CANAL+ KIDS" tvg-logo="" group-title="France",CANAL+ KIDS
 https://vavoo.to/vavoo-iptv/play/242933169ce3a7d28a887
+#EXTINF:-1 tvg-id="579962899b774e7e9111f" tvg-name="CANAL+ KIDS" tvg-logo="" group-title="France",CANAL+ KIDS
+https://vavoo.to/vavoo-iptv/play/579962899b774e7e9111f
 #EXTINF:-1 tvg-id="2961896896423adc0dde84" tvg-name="CANAL+ 1" tvg-logo="" group-title="France",CANAL+ 1
 https://vavoo.to/vavoo-iptv/play/2961896896423adc0dde84
 #EXTINF:-1 tvg-id="4231501773035144b87561" tvg-name="CANAL+ 1" tvg-logo="" group-title="France",CANAL+ 1
@@ -599,6 +597,8 @@ https://vavoo.to/vavoo-iptv/play/191105587226d2643bd4d7
 https://vavoo.to/vavoo-iptv/play/97888621888cbcee65789
 #EXTINF:-1 tvg-id="4088984017beba33442562" tvg-name="CANAL+ 8" tvg-logo="https://logo.huhu.to/logo?c=4088984017.png" group-title="France",CANAL+ 8
 https://vavoo.to/vavoo-iptv/play/4088984017beba33442562
+#EXTINF:-1 tvg-id="898021432c8140ef3f0a3" tvg-name="CANAL+ MOTOGP" tvg-logo="" group-title="France",CANAL+ MOTOGP
+https://vavoo.to/vavoo-iptv/play/898021432c8140ef3f0a3
 #EXTINF:-1 tvg-id="5999318711f859cb06886" tvg-name="CANAL+ PREMIER LEAGUE" tvg-logo="" group-title="France",CANAL+ PREMIER LEAGUE
 https://vavoo.to/vavoo-iptv/play/5999318711f859cb06886
 #EXTINF:-1 tvg-id="3850478651d212e5d318fd" tvg-name="CANAL+ PREMIER LEAGUE" tvg-logo="" group-title="France",CANAL+ PREMIER LEAGUE
@@ -625,8 +625,6 @@ https://vavoo.to/vavoo-iptv/play/296255235587d472eb18c8
 https://vavoo.to/vavoo-iptv/play/1012399982f41e3c10e6d6
 #EXTINF:-1 tvg-id="2391290436f997307577fc" tvg-name="CANAL+ SPORT" tvg-logo="" group-title="France",CANAL+ SPORT
 https://vavoo.to/vavoo-iptv/play/2391290436f997307577fc
-#EXTINF:-1 tvg-id="116254965023a728fd4dc8" tvg-name="CANAL+ SPORT 1" tvg-logo="https://logo.huhu.to/logo?c=1162549650.png" group-title="France",CANAL+ SPORT 1
-https://vavoo.to/vavoo-iptv/play/116254965023a728fd4dc8
 #EXTINF:-1 tvg-id="166360823804f0381d753d" tvg-name="CANAL+ SPORT 1" tvg-logo="" group-title="France",CANAL+ SPORT 1
 https://vavoo.to/vavoo-iptv/play/166360823804f0381d753d
 #EXTINF:-1 tvg-id="3987186253371f2e642afd" tvg-name="CANAL+ SPORT 2" tvg-logo="" group-title="France",CANAL+ SPORT 2
@@ -641,6 +639,8 @@ https://vavoo.to/vavoo-iptv/play/18148197605eb108ea4ea5
 https://vavoo.to/vavoo-iptv/play/734571466186630381174
 #EXTINF:-1 tvg-id="1027079906da60d032d097" tvg-name="CANAL+ SPORT" tvg-logo="" group-title="France",CANAL+ SPORT
 https://vavoo.to/vavoo-iptv/play/1027079906da60d032d097
+#EXTINF:-1 tvg-id="2966142802a95f1626785d" tvg-name="CANAL+ SPORT 5" tvg-logo="https://logo.huhu.to/logo?c=2966142802.png" group-title="France",CANAL+ SPORT 5
+https://vavoo.to/vavoo-iptv/play/2966142802a95f1626785d
 #EXTINF:-1 tvg-id="38820032844b5bca92234c" tvg-name="CANAL+ SPORT 5" tvg-logo="" group-title="France",CANAL+ SPORT 5
 https://vavoo.to/vavoo-iptv/play/38820032844b5bca92234c
 #EXTINF:-1 tvg-id="453019939d84e34676bf0" tvg-name="CANAL+ SPORT" tvg-logo="" group-title="France",CANAL+ SPORT
@@ -855,8 +855,8 @@ https://vavoo.to/vavoo-iptv/play/34440630190bbcd61d7dd1
 https://vavoo.to/vavoo-iptv/play/2757347699d552162c7f0b
 #EXTINF:-1 tvg-id="1137130696ef08bd217b90" tvg-name="DAZN LIGUE 1 6" tvg-logo="" group-title="Arabia",DAZN LIGUE 1 6
 https://vavoo.to/vavoo-iptv/play/1137130696ef08bd217b90
-#EXTINF:-1 tvg-id="718720656a928c34ac328" tvg-name="DAZN LIGUE 1 6" tvg-logo="" group-title="Arabia",DAZN LIGUE 1 6
-https://vavoo.to/vavoo-iptv/play/718720656a928c34ac328
+#EXTINF:-1 tvg-id="2202452461df700a16ef2" tvg-name="DAZN LIGUE 1 7" tvg-logo="" group-title="Arabia",DAZN LIGUE 1 7
+https://vavoo.to/vavoo-iptv/play/2202452461df700a16ef2
 #EXTINF:-1 tvg-id="25988419569bf080bab8ad" tvg-name="DAZN LIGUE 1 9" tvg-logo="" group-title="Arabia",DAZN LIGUE 1 9
 https://vavoo.to/vavoo-iptv/play/25988419569bf080bab8ad
 #EXTINF:-1 tvg-id="71890501725664c6e8f6f" tvg-name="DAZN RISE (WOMEN SPORT ONLY)" tvg-logo="" group-title="Arabia",DAZN RISE (WOMEN SPORT ONLY)
@@ -1109,6 +1109,8 @@ https://vavoo.to/vavoo-iptv/play/12084697951ce54bb90ea6
 https://vavoo.to/vavoo-iptv/play/286307272239f45a9230cb
 #EXTINF:-1 tvg-id="35831909107b2a99535be0" tvg-name="ITV UN VILLAGE FRANÇAIS" tvg-logo="" group-title="United Kingdom",ITV UN VILLAGE FRANÇAIS
 https://vavoo.to/vavoo-iptv/play/35831909107b2a99535be0
+#EXTINF:-1 tvg-id="5042475271b46c9b27ca1" tvg-name="J ONE" tvg-logo="https://logo.huhu.to/logo?c=504247527.png" group-title="Arabia",J ONE
+https://vavoo.to/vavoo-iptv/play/5042475271b46c9b27ca1
 #EXTINF:-1 tvg-id="1635196197e35d694bc067" tvg-name="J ONE" tvg-logo="" group-title="Arabia",J ONE
 https://vavoo.to/vavoo-iptv/play/1635196197e35d694bc067
 #EXTINF:-1 tvg-id="874035777bcae83ee8339" tvg-name="J-ONE" tvg-logo="" group-title="Arabia",J-ONE
@@ -1129,6 +1131,8 @@ https://vavoo.to/vavoo-iptv/play/38373319428576fb860cef
 https://vavoo.to/vavoo-iptv/play/281187115867a6b89dfeb3
 #EXTINF:-1 tvg-id="39214023264b1192d56d1b" tvg-name="L EQUIPE" tvg-logo="https://logo.huhu.to/logo?c=3921402326.png" group-title="Arabia",L EQUIPE
 https://vavoo.to/vavoo-iptv/play/39214023264b1192d56d1b
+#EXTINF:-1 tvg-id="28332612215ed46704e673" tvg-name="L EQUIPE 1" tvg-logo="" group-title="Arabia",L EQUIPE 1
+https://vavoo.to/vavoo-iptv/play/28332612215ed46704e673
 #EXTINF:-1 tvg-id="113813193cc8c8ce7408e" tvg-name="LA CHAINE METEO" tvg-logo="https://logo.huhu.to/logo?c=113813193.png" group-title="Arabia",LA CHAINE METEO
 https://vavoo.to/vavoo-iptv/play/113813193cc8c8ce7408e
 #EXTINF:-1 tvg-id="2136022010abfd1159ec5f" tvg-name="LA CHAINE METEO" tvg-logo="" group-title="Arabia",LA CHAINE METEO
@@ -1155,10 +1159,10 @@ https://vavoo.to/vavoo-iptv/play/1953594991014d918ed4db
 https://vavoo.to/vavoo-iptv/play/462699660a4667002b3b2
 #EXTINF:-1 tvg-id="38667486141f1f5289f63" tvg-name="LE FIGARO" tvg-logo="" group-title="Arabia",LE FIGARO
 https://vavoo.to/vavoo-iptv/play/38667486141f1f5289f63
-#EXTINF:-1 tvg-id="7540022269562ef03a32a" tvg-name="LEQUIPE" tvg-logo="" group-title="Arabia",LEQUIPE
-https://vavoo.to/vavoo-iptv/play/7540022269562ef03a32a
 #EXTINF:-1 tvg-id="651059749c5aad4d1565b" tvg-name="LES NOUVEAUX DETECTIVES" tvg-logo="https://logo.huhu.to/logo?c=651059749.png" group-title="Arabia",LES NOUVEAUX DETECTIVES
 https://vavoo.to/vavoo-iptv/play/651059749c5aad4d1565b
+#EXTINF:-1 tvg-id="2856093806e592dc83f6d" tvg-name="LIGUE 1+" tvg-logo="" group-title="Arabia",LIGUE 1+
+https://vavoo.to/vavoo-iptv/play/2856093806e592dc83f6d
 #EXTINF:-1 tvg-id="50595211279541f13e894" tvg-name="LIGUE1+" tvg-logo="" group-title="Arabia",LIGUE1+
 https://vavoo.to/vavoo-iptv/play/50595211279541f13e894
 #EXTINF:-1 tvg-id="11254631361208c3647512" tvg-name="LIGUE1+ 2" tvg-logo="" group-title="Arabia",LIGUE1+ 2
@@ -1195,18 +1199,6 @@ https://vavoo.to/vavoo-iptv/play/358938874021b76307d20e
 https://vavoo.to/vavoo-iptv/play/32799170581348b92d0676
 #EXTINF:-1 tvg-id="2351494974c3c23b93051" tvg-name="MAISON & TRAVAUX TV" tvg-logo="https://logo.huhu.to/logo?c=235149497.png" group-title="Arabia",MAISON & TRAVAUX TV
 https://vavoo.to/vavoo-iptv/play/2351494974c3c23b93051
-#EXTINF:-1 tvg-id="2351494974c3c23b93051" tvg-name="MAISON & TRAVAUX TV" tvg-logo="https://logo.huhu.to/logo?c=235149497.png" group-title="Arabia",MAISON & TRAVAUX TV
-https://vavoo.to/vavoo-iptv/play/2351494974c3c23b93051
-#EXTINF:-1 tvg-id="1005158644a1514fb44316" tvg-name="MANDARIN TV" tvg-logo="" group-title="Arabia",MANDARIN TV
-https://vavoo.to/vavoo-iptv/play/1005158644a1514fb44316
-#EXTINF:-1 tvg-id="1005158644a1514fb44316" tvg-name="MANDARIN TV" tvg-logo="" group-title="Arabia",MANDARIN TV
-https://vavoo.to/vavoo-iptv/play/1005158644a1514fb44316
-#EXTINF:-1 tvg-id="3781018265a0de3a4a5f34" tvg-name="MANGAS" tvg-logo="" group-title="Arabia",MANGAS
-https://vavoo.to/vavoo-iptv/play/3781018265a0de3a4a5f34
-#EXTINF:-1 tvg-id="3781018265a0de3a4a5f34" tvg-name="MANGAS" tvg-logo="" group-title="Arabia",MANGAS
-https://vavoo.to/vavoo-iptv/play/3781018265a0de3a4a5f34
-#EXTINF:-1 tvg-id="1703130591ccf5ff520f76" tvg-name="MANGAS" tvg-logo="https://logo.huhu.to/logo?c=1703130591.png" group-title="Arabia",MANGAS
-https://vavoo.to/vavoo-iptv/play/1703130591ccf5ff520f76
 #EXTINF:-1 tvg-id="139408412ba8e0ae7a800" tvg-name="MANGAS" tvg-logo="" group-title="Arabia",MANGAS
 https://vavoo.to/vavoo-iptv/play/139408412ba8e0ae7a800
 #EXTINF:-1 tvg-id="401237472a1e90e56167a" tvg-name="MANGAS" tvg-logo="" group-title="Arabia",MANGAS
@@ -1549,6 +1541,8 @@ https://vavoo.to/vavoo-iptv/play/235106601922765d099ee0
 https://vavoo.to/vavoo-iptv/play/37905311685b668ac8d224
 #EXTINF:-1 tvg-id="4100689874e4f474bc38f3" tvg-name="RFM TV" tvg-logo="" group-title="Arabia",RFM TV
 https://vavoo.to/vavoo-iptv/play/4100689874e4f474bc38f3
+#EXTINF:-1 tvg-id="4197312592de677f26e1da" tvg-name="RFM TV MUSIC" tvg-logo="" group-title="Portugal",RFM TV MUSIC
+https://vavoo.to/vavoo-iptv/play/4197312592de677f26e1da
 #EXTINF:-1 tvg-id="2642050442743edf3d3496" tvg-name="RFM TV" tvg-logo="" group-title="Arabia",RFM TV
 https://vavoo.to/vavoo-iptv/play/2642050442743edf3d3496
 #EXTINF:-1 tvg-id="2957270266f8a57fc4d110" tvg-name="RMC DECOUVERTE" tvg-logo="https://logo.huhu.to/logo?c=2957270266.png" group-title="Arabia",RMC DECOUVERTE
@@ -1579,6 +1573,8 @@ https://vavoo.to/vavoo-iptv/play/2195294466e7b94a1092d4
 https://vavoo.to/vavoo-iptv/play/235289851552be0bdeb8f5
 #EXTINF:-1 tvg-id="2639500260d2bc1d613f18" tvg-name="RMC SPORT 14" tvg-logo="https://logo.huhu.to/logo?c=2639500260.png" group-title="Arabia",RMC SPORT 14
 https://vavoo.to/vavoo-iptv/play/2639500260d2bc1d613f18
+#EXTINF:-1 tvg-id="38852199726fa0c900bb0d" tvg-name="RMC SPORT 16" tvg-logo="https://logo.huhu.to/logo?c=3885219972.png" group-title="Arabia",RMC SPORT 16
+https://vavoo.to/vavoo-iptv/play/38852199726fa0c900bb0d
 #EXTINF:-1 tvg-id="148710986146a036ede5c4" tvg-name="RMC SPORT 18" tvg-logo="" group-title="Arabia",RMC SPORT 18
 https://vavoo.to/vavoo-iptv/play/148710986146a036ede5c4
 #EXTINF:-1 tvg-id="13513667299550ca3c8165" tvg-name="RMC SPORT 2" tvg-logo="" group-title="Arabia",RMC SPORT 2
@@ -1591,12 +1587,12 @@ https://vavoo.to/vavoo-iptv/play/789832663b122a3dbc3e0
 https://vavoo.to/vavoo-iptv/play/335631470dc3241eb383f
 #EXTINF:-1 tvg-id="3141694283a807493458b1" tvg-name="RMC SPORT 2 ACCESS" tvg-logo="" group-title="Arabia",RMC SPORT 2 ACCESS
 https://vavoo.to/vavoo-iptv/play/3141694283a807493458b1
-#EXTINF:-1 tvg-id="2516059589df8a4a2294fc" tvg-name="RMC SPORT 2" tvg-logo="" group-title="Arabia",RMC SPORT 2
-https://vavoo.to/vavoo-iptv/play/2516059589df8a4a2294fc
 #EXTINF:-1 tvg-id="2246359828a17b3da47b2c" tvg-name="RMC SPORT 2" tvg-logo="" group-title="Arabia",RMC SPORT 2
 https://vavoo.to/vavoo-iptv/play/2246359828a17b3da47b2c
 #EXTINF:-1 tvg-id="1844187641d8333af8b75a" tvg-name="RMC SPORT 3" tvg-logo="" group-title="Arabia",RMC SPORT 3
 https://vavoo.to/vavoo-iptv/play/1844187641d8333af8b75a
+#EXTINF:-1 tvg-id="3095783430fa0422f0a71" tvg-name="RMC SPORT 3" tvg-logo="" group-title="Arabia",RMC SPORT 3
+https://vavoo.to/vavoo-iptv/play/3095783430fa0422f0a71
 #EXTINF:-1 tvg-id="2299442456e853700b064a" tvg-name="RMC SPORT 3 (BACKUP)" tvg-logo="" group-title="Arabia",RMC SPORT 3 (BACKUP)
 https://vavoo.to/vavoo-iptv/play/2299442456e853700b064a
 #EXTINF:-1 tvg-id="457217631ff76abcd781" tvg-name="RMC SPORT 3 ACCESS" tvg-logo="" group-title="Arabia",RMC SPORT 3 ACCESS
@@ -1647,8 +1643,6 @@ https://vavoo.to/vavoo-iptv/play/287305687457b957946f68
 https://vavoo.to/vavoo-iptv/play/24148072590d63bcae2cb3
 #EXTINF:-1 tvg-id="748262697206d933e210e" tvg-name="RMC SPORT 7 (BACKUP)" tvg-logo="" group-title="Arabia",RMC SPORT 7 (BACKUP)
 https://vavoo.to/vavoo-iptv/play/748262697206d933e210e
-#EXTINF:-1 tvg-id="14564133030b5db1ad73dd" tvg-name="RMC SPORT 8" tvg-logo="" group-title="Arabia",RMC SPORT 8
-https://vavoo.to/vavoo-iptv/play/14564133030b5db1ad73dd
 #EXTINF:-1 tvg-id="3927680764c9e05a6809f5" tvg-name="RMC SPORT 8 (BACKUP)" tvg-logo="" group-title="Arabia",RMC SPORT 8 (BACKUP)
 https://vavoo.to/vavoo-iptv/play/3927680764c9e05a6809f5
 #EXTINF:-1 tvg-id="1841130943c007f405ecf9" tvg-name="RMC SPORT 9 (BACKUP)" tvg-logo="" group-title="Arabia",RMC SPORT 9 (BACKUP)
@@ -1799,6 +1793,22 @@ https://vavoo.to/vavoo-iptv/play/41850218641edd3b023e87
 https://vavoo.to/vavoo-iptv/play/353220702250e159aca30d
 #EXTINF:-1 tvg-id="3738924449f1aa2b8a8570" tvg-name="TLC" tvg-logo="https://logo.huhu.to/logo?c=3738924449.png" group-title="Arabia",TLC
 https://vavoo.to/vavoo-iptv/play/3738924449f1aa2b8a8570
+#EXTINF:-1 tvg-id="3738924449f1aa2b8a8570" tvg-name="TLC" tvg-logo="https://logo.huhu.to/logo?c=3738924449.png" group-title="Arabia",TLC
+https://vavoo.to/vavoo-iptv/play/3738924449f1aa2b8a8570
+#EXTINF:-1 tvg-id="361211396f33e971ef526" tvg-name="TMC" tvg-logo="https://logo.huhu.to/logo?c=361211396.png" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/361211396f33e971ef526
+#EXTINF:-1 tvg-id="1149078876048c6fd8939d" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/1149078876048c6fd8939d
+#EXTINF:-1 tvg-id="1149078876048c6fd8939d" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/1149078876048c6fd8939d
+#EXTINF:-1 tvg-id="42285072155d6c7509c2ed" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/42285072155d6c7509c2ed
+#EXTINF:-1 tvg-id="42285072155d6c7509c2ed" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/42285072155d6c7509c2ed
+#EXTINF:-1 tvg-id="354095306cf3cfce56f28" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/354095306cf3cfce56f28
+#EXTINF:-1 tvg-id="354095306cf3cfce56f28" tvg-name="TMC" tvg-logo="" group-title="Arabia",TMC
+https://vavoo.to/vavoo-iptv/play/354095306cf3cfce56f28
 #EXTINF:-1 tvg-id="593664712aace8841df49" tvg-name="TOONAMI" tvg-logo="" group-title="Arabia",TOONAMI
 https://vavoo.to/vavoo-iptv/play/593664712aace8841df49
 #EXTINF:-1 tvg-id="4132905048a27f69176a77" tvg-name="TOONAMI" tvg-logo="https://logo.huhu.to/logo?c=4132905048.png" group-title="Arabia",TOONAMI

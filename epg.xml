@@ -127,9 +127,6 @@
   <channel id="27294836163cd6fc90bbf8">
     <display-name>AB3</display-name>
   </channel>
-  <channel id="280946384746cb078ae176">
-    <display-name>AB3</display-name>
-  </channel>
   <channel id="340010148454b4b576c9f3">
     <display-name>ACTION</display-name>
   </channel>
@@ -159,20 +156,14 @@
   <channel id="81737034162dae716442d">
     <display-name>ALTICE STUDIO</display-name>
   </channel>
-  <channel id="192175381483ed67bc8d27">
-    <display-name>AMAZON PRIME 1+</display-name>
+  <channel id="1545259425cb24d5bb8630">
+    <display-name>AMAZON PRIME 2 [LIVE DURING EVENTS ONLY]</display-name>
   </channel>
   <channel id="1258724883356bb28f96a0">
     <display-name>AMAZON PRIME 2+</display-name>
   </channel>
   <channel id="139232088076812ff95181">
     <display-name>AMAZON PRIME 3 [LIVE DURING EVENTS ONLY]</display-name>
-  </channel>
-  <channel id="243195987591bffdc37fcf">
-    <display-name>AMAZON PRIME 3</display-name>
-  </channel>
-  <channel id="258695433034433ac372ee">
-    <display-name>AMAZON PRIME 4</display-name>
   </channel>
   <channel id="1957516182fd1f4fbd5e7b">
     <display-name>AMAZON PRIME 5 [LIVE DURING EVENTS ONLY]</display-name>
@@ -183,14 +174,11 @@
   <channel id="1736796901974167c58544">
     <display-name>AMAZON PRIME 6 [LIVE DURING EVENTS ONLY]</display-name>
   </channel>
-  <channel id="3844871996d251721d919">
-    <display-name>AMAZON PRIME 6+</display-name>
+  <channel id="36252418955c743cdbc9a2">
+    <display-name>AMAZON PRIME 6</display-name>
   </channel>
   <channel id="1768063540271941c63c7a">
     <display-name>AMAZON PRIME 7 [LIVE DURING EVENTS ONLY]</display-name>
-  </channel>
-  <channel id="348048825acd0661c7838">
-    <display-name>AMAZON PRIME 7</display-name>
   </channel>
   <channel id="921329291c49ec1552b55">
     <display-name>AMAZON PRIME 8 [LIVE DURING EVENTS ONLY]</display-name>
@@ -738,6 +726,9 @@
   <channel id="5488761753ada380f98f1">
     <display-name>CANAL PLAY 5</display-name>
   </channel>
+  <channel id="2336317620aef848fc3364">
+    <display-name>CANAL PLAY 6</display-name>
+  </channel>
   <channel id="4232364266e2472ba501b">
     <display-name>CANAL PLAY 6</display-name>
   </channel>
@@ -850,6 +841,9 @@
   <channel id="2904368955e509670e2735">
     <display-name>CANAL+ ELLES</display-name>
   </channel>
+  <channel id="4007062954bb448913d299">
+    <display-name>CANAL+ FAMILY</display-name>
+  </channel>
   <channel id="298747715234a3a02669b8">
     <display-name>CANAL+</display-name>
   </channel>
@@ -898,6 +892,9 @@
     <display-name>CANAL+ KIDS</display-name>
   </channel>
   <channel id="242933169ce3a7d28a887">
+    <display-name>CANAL+ KIDS</display-name>
+  </channel>
+  <channel id="579962899b774e7e9111f">
     <display-name>CANAL+ KIDS</display-name>
   </channel>
   <channel id="2961896896423adc0dde84">
@@ -962,6 +959,9 @@
     <display-name>CANAL+ 8</display-name>
     <icon src="https://logo.huhu.to/logo?c=4088984017.png"/>
   </channel>
+  <channel id="898021432c8140ef3f0a3">
+    <display-name>CANAL+ MOTOGP</display-name>
+  </channel>
   <channel id="5999318711f859cb06886">
     <display-name>CANAL+ PREMIER LEAGUE</display-name>
   </channel>
@@ -1003,10 +1003,6 @@
   <channel id="2391290436f997307577fc">
     <display-name>CANAL+ SPORT</display-name>
   </channel>
-  <channel id="116254965023a728fd4dc8">
-    <display-name>CANAL+ SPORT 1</display-name>
-    <icon src="https://logo.huhu.to/logo?c=1162549650.png"/>
-  </channel>
   <channel id="166360823804f0381d753d">
     <display-name>CANAL+ SPORT 1</display-name>
   </channel>
@@ -1028,6 +1024,10 @@
   </channel>
   <channel id="1027079906da60d032d097">
     <display-name>CANAL+ SPORT</display-name>
+  </channel>
+  <channel id="2966142802a95f1626785d">
+    <display-name>CANAL+ SPORT 5</display-name>
+    <icon src="https://logo.huhu.to/logo?c=2966142802.png"/>
   </channel>
   <channel id="38820032844b5bca92234c">
     <display-name>CANAL+ SPORT 5</display-name>
@@ -1365,8 +1365,8 @@
   <channel id="1137130696ef08bd217b90">
     <display-name>DAZN LIGUE 1 6</display-name>
   </channel>
-  <channel id="718720656a928c34ac328">
-    <display-name>DAZN LIGUE 1 6</display-name>
+  <channel id="2202452461df700a16ef2">
+    <display-name>DAZN LIGUE 1 7</display-name>
   </channel>
   <channel id="25988419569bf080bab8ad">
     <display-name>DAZN LIGUE 1 9</display-name>
@@ -1775,6 +1775,10 @@
   <channel id="35831909107b2a99535be0">
     <display-name>ITV UN VILLAGE FRANÇAIS</display-name>
   </channel>
+  <channel id="5042475271b46c9b27ca1">
+    <display-name>J ONE</display-name>
+    <icon src="https://logo.huhu.to/logo?c=504247527.png"/>
+  </channel>
   <channel id="1635196197e35d694bc067">
     <display-name>J ONE</display-name>
   </channel>
@@ -1807,6 +1811,9 @@
   <channel id="39214023264b1192d56d1b">
     <display-name>L EQUIPE</display-name>
     <icon src="https://logo.huhu.to/logo?c=3921402326.png"/>
+  </channel>
+  <channel id="28332612215ed46704e673">
+    <display-name>L EQUIPE 1</display-name>
   </channel>
   <channel id="113813193cc8c8ce7408e">
     <display-name>LA CHAINE METEO</display-name>
@@ -1852,12 +1859,12 @@
   <channel id="38667486141f1f5289f63">
     <display-name>LE FIGARO</display-name>
   </channel>
-  <channel id="7540022269562ef03a32a">
-    <display-name>LEQUIPE</display-name>
-  </channel>
   <channel id="651059749c5aad4d1565b">
     <display-name>LES NOUVEAUX DETECTIVES</display-name>
     <icon src="https://logo.huhu.to/logo?c=651059749.png"/>
+  </channel>
+  <channel id="2856093806e592dc83f6d">
+    <display-name>LIGUE 1+</display-name>
   </channel>
   <channel id="50595211279541f13e894">
     <display-name>LIGUE1+</display-name>
@@ -1918,16 +1925,6 @@
   <channel id="2351494974c3c23b93051">
     <display-name>MAISON &amp; TRAVAUX TV</display-name>
     <icon src="https://logo.huhu.to/logo?c=235149497.png"/>
-  </channel>
-  <channel id="1005158644a1514fb44316">
-    <display-name>MANDARIN TV</display-name>
-  </channel>
-  <channel id="3781018265a0de3a4a5f34">
-    <display-name>MANGAS</display-name>
-  </channel>
-  <channel id="1703130591ccf5ff520f76">
-    <display-name>MANGAS</display-name>
-    <icon src="https://logo.huhu.to/logo?c=1703130591.png"/>
   </channel>
   <channel id="139408412ba8e0ae7a800">
     <display-name>MANGAS</display-name>
@@ -2492,6 +2489,9 @@
   <channel id="4100689874e4f474bc38f3">
     <display-name>RFM TV</display-name>
   </channel>
+  <channel id="4197312592de677f26e1da">
+    <display-name>RFM TV MUSIC</display-name>
+  </channel>
   <channel id="2642050442743edf3d3496">
     <display-name>RFM TV</display-name>
   </channel>
@@ -2540,6 +2540,10 @@
     <display-name>RMC SPORT 14</display-name>
     <icon src="https://logo.huhu.to/logo?c=2639500260.png"/>
   </channel>
+  <channel id="38852199726fa0c900bb0d">
+    <display-name>RMC SPORT 16</display-name>
+    <icon src="https://logo.huhu.to/logo?c=3885219972.png"/>
+  </channel>
   <channel id="148710986146a036ede5c4">
     <display-name>RMC SPORT 18</display-name>
   </channel>
@@ -2559,13 +2563,13 @@
   <channel id="3141694283a807493458b1">
     <display-name>RMC SPORT 2 ACCESS</display-name>
   </channel>
-  <channel id="2516059589df8a4a2294fc">
-    <display-name>RMC SPORT 2</display-name>
-  </channel>
   <channel id="2246359828a17b3da47b2c">
     <display-name>RMC SPORT 2</display-name>
   </channel>
   <channel id="1844187641d8333af8b75a">
+    <display-name>RMC SPORT 3</display-name>
+  </channel>
+  <channel id="3095783430fa0422f0a71">
     <display-name>RMC SPORT 3</display-name>
   </channel>
   <channel id="2299442456e853700b064a">
@@ -2643,9 +2647,6 @@
   </channel>
   <channel id="748262697206d933e210e">
     <display-name>RMC SPORT 7 (BACKUP)</display-name>
-  </channel>
-  <channel id="14564133030b5db1ad73dd">
-    <display-name>RMC SPORT 8</display-name>
   </channel>
   <channel id="3927680764c9e05a6809f5">
     <display-name>RMC SPORT 8 (BACKUP)</display-name>
@@ -2893,6 +2894,19 @@
   <channel id="3738924449f1aa2b8a8570">
     <display-name>TLC</display-name>
     <icon src="https://logo.huhu.to/logo?c=3738924449.png"/>
+  </channel>
+  <channel id="361211396f33e971ef526">
+    <display-name>TMC</display-name>
+    <icon src="https://logo.huhu.to/logo?c=361211396.png"/>
+  </channel>
+  <channel id="1149078876048c6fd8939d">
+    <display-name>TMC</display-name>
+  </channel>
+  <channel id="42285072155d6c7509c2ed">
+    <display-name>TMC</display-name>
+  </channel>
+  <channel id="354095306cf3cfce56f28">
+    <display-name>TMC</display-name>
   </channel>
   <channel id="593664712aace8841df49">
     <display-name>TOONAMI</display-name>
