@@ -1,17 +1,22 @@
 // ============================================================
-// VAVOO IPTV PROXY — /play/<id> resolver + HLS rewriter
+// VAVOO.TO IPTV PROXY — /play/<id> resolver + HLS rewriter
+// Vavoo now requires a signed "addonSig" (obtained via a ping call) before
+// catalog/resolve requests from datacenter IPs (like Cloudflare's) are accepted.
 // ============================================================
 
 const CACHE_TTL = 300;
 const CHANNELS_CACHE_KEY = 'vavoo_channels';
-const LANGUAGE = 'fr';
-const REGION = 'FR';
+const LANGUAGE = 'tr';
+const REGION = 'TR';
+const GROUP = 'Turkey';
 
 const BASE_SITES = ['https://vavoo.to', 'https://kool.to'];
 const PING_URL = 'https://www.vavoo.tv/api/app/ping';
 const RESOLVE_PATH = '/mediahubmx-resolve.json';
 const CATALOG_PATH = '/mediahubmx-catalog.json';
 
+// Only these extensions may be fetched via /hls-proxy — keeps it from being
+// abused as a generic open proxy.
 const ALLOWED_EXTENSIONS = new Set([
   '.m3u8', '.ts', '.aac', '.mp3', '.m4s', '.mp4', '.m4a', '.key', '.vtt', '.webvtt'
 ]);
@@ -25,6 +30,10 @@ function pathExtension(urlString) {
     return '';
   }
 }
+
+// ============================================================
+// YARDIMCI FONKSİYONLAR
+// ============================================================
 
 function getCatalogHeaders(signature) {
   return {
@@ -123,7 +132,9 @@ function rewritePlaylist(baseUrl, upstreamUrl, playlist) {
     .join('\n');
 }
 
-// ===== API REQUESTS =====
+// ============================================================
+// API İSTEKLERİ
+// ============================================================
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, {
@@ -185,10 +196,10 @@ async function getAddonSignature() {
       return signature;
     }
   } catch (error) {
-    console.log(`[vavoo] addonSig failed: ${error.message}`);
+    console.log(`[vavoo] addonSig başarısız: ${error.message}`);
   }
 
-  throw new Error('Addon signature could not be obtained');
+  throw new Error('Addon imzası alınamadı');
 }
 
 async function loadCatalog(baseUrl, signature) {
@@ -210,7 +221,7 @@ async function loadCatalog(baseUrl, signature) {
           adult: false,
           search: '',
           sort: '',
-          filter: {},  // pas de filtre de pays
+          filter: { group: GROUP },
           cursor,
           clientVersion: '3.0.2'
         }
@@ -222,7 +233,7 @@ async function loadCatalog(baseUrl, signature) {
         if (item?.type === 'iptv' && item?.url && vavooId) {
           channels.push({
             url: item.url,
-            name: item.name || 'Inconnu',
+            name: item.name || 'Bilinmiyor',
             logo: item.logo || '',
             vavooId
           });
@@ -232,7 +243,7 @@ async function loadCatalog(baseUrl, signature) {
       if (!body?.nextCursor) break;
       cursor = body.nextCursor;
     } catch (error) {
-      console.log(`[vavoo] Catalog loading failed: ${error.message}`);
+      console.log(`[vavoo] Katalog yüklenemedi: ${error.message}`);
       break;
     }
   }
@@ -254,11 +265,11 @@ async function getChannels() {
         return channels;
       }
     } catch (error) {
-      console.log(`[vavoo] Catalog load failed (${baseUrl}): ${error.message}`);
+      console.log(`[vavoo] Katalog yüklenemedi (${baseUrl}): ${error.message}`);
     }
   }
 
-  throw new Error('Impossible de charger le catalogue');
+  throw new Error('Kanal listesi alınamadı');
 }
 
 async function findChannel(id) {
@@ -288,13 +299,14 @@ async function resolveStream(channel) {
       if (body?.url) return body.url;
       if (body?.streamUrl) return body.streamUrl;
     } catch (error) {
-      console.log(`[vavoo] Resolve failed (${baseUrl}): ${error.message}`);
+      console.log(`[vavoo] Çözümleme başarısız (${baseUrl}): ${error.message}`);
     }
   }
 
-  throw new Error(`Impossible de résoudre le flux pour: ${channel.name}`);
+  throw new Error(`Kanal yayını çözümlenemedi: ${channel.name}`);
 }
 
+// Cached katalogda bulunamayan (yeni/yeniden adlandırılmış) kanallar için yedek.
 async function resolveDirect(id) {
   const signature = await getAddonSignature();
   const directUrl = `https://vavoo.to/watch?live=${id}`;
@@ -317,14 +329,16 @@ async function resolveDirect(id) {
       if (body?.url) return body.url;
       if (body?.streamUrl) return body.streamUrl;
     } catch (error) {
-      console.log(`[vavoo] Direct resolve failed (${baseUrl}): ${error.message}`);
+      console.log(`[vavoo] Direkt çözümleme başarısız (${baseUrl}): ${error.message}`);
     }
   }
 
   return null;
 }
 
-// ===== CORS HEADERS =====
+// ============================================================
+// CORS HEADERS
+// ============================================================
 
 function corsHeaders() {
   return {
@@ -335,7 +349,9 @@ function corsHeaders() {
   };
 }
 
-// ===== WORKER HANDLER =====
+// ============================================================
+// WORKER ANA HANDLER
+// ============================================================
 
 export default {
   async fetch(request, env) {
@@ -349,11 +365,13 @@ export default {
     const baseUrl = `${url.protocol}//${url.host}`;
     const path = url.pathname;
 
-    // ===== /play/<id> =====
+    // ============================================================
+    // PLAY - build.js'in ürettiği iptv.m3u içindeki /play/<vavooId> linkleri
+    // ============================================================
     if (path.startsWith('/play/')) {
       const channelId = path.split('/')[2]?.split('|')[0];
       if (!channelId) {
-        return new Response('ID manquant', { status: 400, headers: corsHeaders() });
+        return new Response('Kanal ID eksik', { status: 400, headers: corsHeaders() });
       }
 
       try {
@@ -363,38 +381,45 @@ export default {
           : await resolveDirect(channelId);
 
         if (!streamUrl) {
-          return new Response(`Flux introuvable: ${channelId}`, { status: 404, headers: corsHeaders() });
+          return new Response(`Yayın bulunamadı: ${channelId}`, { status: 404, headers: corsHeaders() });
         }
 
         if (channel) {
-          console.log(`[vavoo] "${channel.name}" résolu: ${describeUrl(streamUrl)}`);
+          console.log(`[vavoo] "${channel.name}" yayını çözümlendi: ${describeUrl(streamUrl)}`);
         }
 
         return await proxyStream(baseUrl, streamUrl);
 
       } catch (error) {
-        console.log(`[vavoo] Erreur: ${error.message}`);
-        return new Response(`Erreur: ${error.message}`, { status: 500, headers: corsHeaders() });
+        console.log(`[vavoo] Yayın hatası: ${error.message}`);
+        return new Response(`Yayın hatası: ${error.message}`, { status: 500, headers: corsHeaders() });
       }
     }
 
-    // ===== /hls-proxy =====
+    // ============================================================
+    // HLS PROXY
+    // ============================================================
     if (path === '/hls-proxy') {
       const upstreamUrl = url.searchParams.get('url');
       if (!upstreamUrl) {
-        return new Response('Paramètre URL manquant', { status: 400, headers: corsHeaders() });
+        return new Response('URL parametresi eksik', { status: 400, headers: corsHeaders() });
       }
 
       try {
         const parsed = new URL(upstreamUrl);
         if (!['http:', 'https:'].includes(parsed.protocol)) {
-          return new Response('Protocole non supporté', { status: 400, headers: corsHeaders() });
+          return new Response('Desteklenmeyen protokol', { status: 400, headers: corsHeaders() });
         }
         const ext = pathExtension(upstreamUrl);
         if (ext && !ALLOWED_EXTENSIONS.has(ext)) {
-          return new Response('Type de fichier non autorisé', { status: 403, headers: corsHeaders() });
+          return new Response('Desteklenmeyen dosya türü', { status: 403, headers: corsHeaders() });
         }
 
+        // Use the same headers as the initial /play/ resolution first — the
+        // upstream CDN session/token appears to be bound to the requester's
+        // User-Agent, so switching UA between the master fetch and the
+        // follow-up playlist/segment fetches causes playback to die right
+        // after the first buffer (looks "fine" then closes instantly).
         let response = await fetch(upstreamUrl, {
           headers: getStreamHeaders()
         });
@@ -408,7 +433,7 @@ export default {
         console.log(`[vavoo] hls-proxy ${describeUrl(upstreamUrl)} -> ${response.status}`);
 
         if (!response.ok) {
-          return new Response(`Erreur serveur: ${response.status}`, { status: response.status, headers: corsHeaders() });
+          return new Response(`Yayın sunucusu hatası: ${response.status}`, { status: response.status, headers: corsHeaders() });
         }
 
         const contentType = response.headers.get('content-type') || '';
@@ -437,28 +462,37 @@ export default {
         });
 
       } catch (error) {
-        console.log(`[vavoo] Erreur proxy: ${error.message}`);
-        return new Response(`Erreur proxy: ${error.message}`, { status: 500, headers: corsHeaders() });
+        console.log(`[vavoo] Proxy hatası: ${error.message}`);
+        return new Response(`Proxy hatası: ${error.message}`, { status: 500, headers: corsHeaders() });
       }
     }
 
-    // ===== Accueil =====
-    return new Response('Utilisation: /play/<id>', {
+    // ============================================================
+    // ANA SAYFA
+    // ============================================================
+    return new Response('Kullanım: /play/<id>', {
       status: 404,
       headers: corsHeaders()
     });
   }
 };
 
+// ============================================================
+// YARDIMCI FONKSİYON: Stream Proxy
+// ============================================================
+
 async function proxyStream(baseUrl, streamUrl) {
+  // Fetch immediately in this same request instead of redirecting to /hls-proxy:
+  // the signed CDN URL appears to be bound to the requester, and a separate
+  // follow-up request (e.g. a player opening the master playlist URL) can 403.
   const response = await fetch(streamUrl, {
     headers: getStreamHeaders()
   });
 
-  console.log(`[vavoo] play ${describeUrl(streamUrl)} -> ${response.status}`);
+  console.log(`[vavoo] play ${describeUrl(streamUrl)} -> ${response.status} (${response.headers.get('content-type') || 'no content-type'})`);
 
   if (!response.ok) {
-    return new Response(`Erreur flux: ${response.status}`, { status: response.status, headers: corsHeaders() });
+    return new Response(`Yayın hatası: ${response.status}`, { status: response.status, headers: corsHeaders() });
   }
 
   const contentType = response.headers.get('content-type') || '';
