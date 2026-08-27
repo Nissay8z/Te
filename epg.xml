@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tv generator-info-name="vavoo-iptv-all" generator-info-url="https://github.com/[TON_USER]/[TON_REPO]">
+<tv generator-info-name="vavoo-iptv-all" generator-info-url="https://github.com/Nissay8z/Te">
   <channel id="40704463696c79db63feff">
     <display-name>13 EME RUE HD .s</display-name>
   </channel>
@@ -1748,6 +1748,9 @@
     <display-name>LCI .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=822873468.png"/>
   </channel>
+  <channel id="1626744356a28180b05b56">
+    <display-name>LCI .s</display-name>
+  </channel>
   <channel id="2200752492108bd20c79b6">
     <display-name>LCN .c</display-name>
     <icon src="https://logo.huhu.to/logo?c=2200752492.png"/>
@@ -2788,13 +2791,6 @@
   </channel>
   <channel id="12869143765e4bc62e1bc">
     <display-name>TIJI .b</display-name>
-  </channel>
-  <channel id="3472686258a52d47096aef">
-    <display-name>TIJI .c</display-name>
-    <icon src="https://logo.huhu.to/logo?c=3472686258.png"/>
-  </channel>
-  <channel id="381228029420ab3e3544f6">
-    <display-name>TIJI FHD .s</display-name>
   </channel>
   <channel id="61014295140065dfc1ba9">
     <display-name>TIJI HD .s</display-name>

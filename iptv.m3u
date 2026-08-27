@@ -1,4 +1,4 @@
-#EXTM3U url-tvg="https://raw.githubusercontent.com/[TON_USER]/[TON_REPO]/main/epg.xml" x-tvg-url="https://raw.githubusercontent.com/[TON_USER]/[TON_REPO]/main/epg.xml"
+#EXTM3U url-tvg="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml" x-tvg-url="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml"
 #EXTINF:-1 tvg-id="40704463696c79db63feff" tvg-name="13 EME RUE HD .s" tvg-logo="" group-title="Diğer",13 EME RUE HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/40704463696c79db63feff
 #EXTINF:-1 tvg-id="1295685361fa92ed799b6a" tvg-name="13EME RUE .b" tvg-logo="" group-title="Diğer",13EME RUE .b
@@ -1161,6 +1161,8 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3428561083cff8b155b93b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3143227243cf66be60548e
 #EXTINF:-1 tvg-id="8228734688467a2cc70b0" tvg-name="LCI .c" tvg-logo="https://logo.huhu.to/logo?c=822873468.png" group-title="Diğer",LCI .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/8228734688467a2cc70b0
+#EXTINF:-1 tvg-id="1626744356a28180b05b56" tvg-name="LCI .s" tvg-logo="" group-title="Diğer",LCI .s
+https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/1626744356a28180b05b56
 #EXTINF:-1 tvg-id="2200752492108bd20c79b6" tvg-name="LCN .c" tvg-logo="https://logo.huhu.to/logo?c=2200752492.png" group-title="Diğer",LCN .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/2200752492108bd20c79b6
 #EXTINF:-1 tvg-id="218551255e835771bbd81" tvg-name="LCP .s" tvg-logo="" group-title="Diğer",LCP .s
@@ -1199,8 +1201,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/381306877060a38e6f63e1
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/29783704130ceb4c2ce4bd
 #EXTINF:-1 tvg-id="38871521898e03f2cfd86d" tvg-name="M6 MUSIC (BACKUP) .s" tvg-logo="" group-title="Diğer",M6 MUSIC (BACKUP) .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/38871521898e03f2cfd86d
-#EXTINF:-1 tvg-id="4154285296f902b73b0d28" tvg-name="M6 MUSIC .c" tvg-logo="https://logo.huhu.to/logo?c=4154285296.png" group-title="Diğer",M6 MUSIC .c
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/4154285296f902b73b0d28
 #EXTINF:-1 tvg-id="4154285296f902b73b0d28" tvg-name="M6 MUSIC .c" tvg-logo="https://logo.huhu.to/logo?c=4154285296.png" group-title="Diğer",M6 MUSIC .c
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/4154285296f902b73b0d28
 #EXTINF:-1 tvg-id="7435919714613b22a77d1" tvg-name="M6 MUSIC .s" tvg-logo="" group-title="Diğer",M6 MUSIC .s
@@ -1799,10 +1799,6 @@ https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/17522320208e62334baa89
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/965401356d56a26be4f45
 #EXTINF:-1 tvg-id="12869143765e4bc62e1bc" tvg-name="TIJI .b" tvg-logo="" group-title="Diğer",TIJI .b
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/12869143765e4bc62e1bc
-#EXTINF:-1 tvg-id="3472686258a52d47096aef" tvg-name="TIJI .c" tvg-logo="https://logo.huhu.to/logo?c=3472686258.png" group-title="Diğer",TIJI .c
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/3472686258a52d47096aef
-#EXTINF:-1 tvg-id="381228029420ab3e3544f6" tvg-name="TIJI FHD .s" tvg-logo="" group-title="Diğer",TIJI FHD .s
-https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/381228029420ab3e3544f6
 #EXTINF:-1 tvg-id="61014295140065dfc1ba9" tvg-name="TIJI HD .s" tvg-logo="" group-title="Diğer",TIJI HD .s
 https://vavoo-iptv-proxy.vavoo-iptv.workers.dev/play/61014295140065dfc1ba9
 #EXTINF:-1 tvg-id="2248897642e41a1d725e8f" tvg-name="TIPIK .c" tvg-logo="https://logo.huhu.to/logo?c=2248897642.png" group-title="Diğer",TIPIK .c
