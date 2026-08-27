@@ -7,4 +7,4 @@ enabled = true
 
 [[kv_namespaces]]
 binding = "VAVOO_KV"
-id = "TON_KV_ID"   # À remplacer après création
+id = "59caf2a43f29435baa74a30f60e1b615"
