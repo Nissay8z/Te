@@ -174,9 +174,6 @@
   <channel id="1736796901974167c58544">
     <display-name>AMAZON PRIME 6 [LIVE DURING EVENTS ONLY]</display-name>
   </channel>
-  <channel id="36252418955c743cdbc9a2">
-    <display-name>AMAZON PRIME 6</display-name>
-  </channel>
   <channel id="1768063540271941c63c7a">
     <display-name>AMAZON PRIME 7 [LIVE DURING EVENTS ONLY]</display-name>
   </channel>
@@ -841,9 +838,6 @@
   <channel id="2904368955e509670e2735">
     <display-name>CANAL+ ELLES</display-name>
   </channel>
-  <channel id="4007062954bb448913d299">
-    <display-name>CANAL+ FAMILY</display-name>
-  </channel>
   <channel id="298747715234a3a02669b8">
     <display-name>CANAL+</display-name>
   </channel>
@@ -961,6 +955,13 @@
   </channel>
   <channel id="898021432c8140ef3f0a3">
     <display-name>CANAL+ MOTOGP</display-name>
+  </channel>
+  <channel id="1368400201e3cbb6f605da">
+    <display-name>CANAL+ MOTOGP</display-name>
+  </channel>
+  <channel id="1280773990a62f35ce57b">
+    <display-name>CANAL+ PREMIER LEAGUE</display-name>
+    <icon src="https://logo.huhu.to/logo?c=128077399.png"/>
   </channel>
   <channel id="5999318711f859cb06886">
     <display-name>CANAL+ PREMIER LEAGUE</display-name>
@@ -1918,13 +1919,6 @@
   </channel>
   <channel id="358938874021b76307d20e">
     <display-name>M6 MUSIC</display-name>
-  </channel>
-  <channel id="32799170581348b92d0676">
-    <display-name>M6 MUSIC</display-name>
-  </channel>
-  <channel id="2351494974c3c23b93051">
-    <display-name>MAISON &amp; TRAVAUX TV</display-name>
-    <icon src="https://logo.huhu.to/logo?c=235149497.png"/>
   </channel>
   <channel id="139408412ba8e0ae7a800">
     <display-name>MANGAS</display-name>
@@ -2894,10 +2888,6 @@
   <channel id="3738924449f1aa2b8a8570">
     <display-name>TLC</display-name>
     <icon src="https://logo.huhu.to/logo?c=3738924449.png"/>
-  </channel>
-  <channel id="361211396f33e971ef526">
-    <display-name>TMC</display-name>
-    <icon src="https://logo.huhu.to/logo?c=361211396.png"/>
   </channel>
   <channel id="1149078876048c6fd8939d">
     <display-name>TMC</display-name>
