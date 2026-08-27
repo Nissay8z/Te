@@ -21,7 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Récupère tout l'historique pour pouvoir faire un rebase propre
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -43,17 +42,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          # Vérifie si des fichiers ont changé
           if [[ -n "$(git status --porcelain iptv.m3u epg.xml)" ]]; then
             git add iptv.m3u epg.xml
             git commit -m "chore: update iptv.m3u / epg.xml ($(date -u +'%Y-%m-%d %H:%M UTC'))"
-            
-            # 🔥 Étape cruciale : récupère les derniers changements distants et rebase
             git pull --rebase origin main
-            
-            # Pousse les modifications
             git push origin main
           else
-            echo "No changes in iptv.m3u or epg.xml"
+            echo "No changes"
           fi
