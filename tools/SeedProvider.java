@@ -10,7 +10,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 public final class SeedProvider extends ContentProvider {
-  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-global.m3u";
+  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-pro-vavoo-local.m3u";
+  static final String V3_URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-global.m3u";
   static final String OLD_URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv.m3u";
   static final String EPG="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml";
   static final Pattern P=Pattern.compile("([a-zA-Z][a-zA-Z0-9-]*)=\"([^\"]*)\"");
@@ -53,6 +54,31 @@ public final class SeedProvider extends ContentProvider {
   static long oldId(SQLiteDatabase db) {
     Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=?",new String[]{OLD_URL});
     try{return c.moveToFirst()?c.getLong(0):-1;}finally{c.close();}
+  }
+  static boolean migrateWorldV3(Context ctx) throws Exception {
+    SQLiteDatabase db=SQLiteDatabase.openDatabase(
+      ctx.getDatabasePath("iptv.db").getPath(),null,SQLiteDatabase.OPEN_READWRITE);
+    try {
+      if(getId(db)>=0)return false;
+      Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=?",new String[]{V3_URL});
+      long id;
+      try {if(!c.moveToFirst())return false;id=c.getLong(0);}finally{c.close();}
+      db.beginTransaction();
+      try {
+        ContentValues p=new ContentValues();
+        p.put("url",URL);p.put("name","VAVOO | TV MONDE");
+        db.update("Playlist",p,"id=?",new String[]{""+id});
+        // Preserve channels, categories, favourites and user settings.
+        db.execSQL(
+          "UPDATE Channel SET url='http://127.0.0.1:18497/play/' || "+
+          "substr(url,instr(url,'/vavoo-iptv/play/')+length('/vavoo-iptv/play/')) "+
+          "WHERE playlistId=? AND url LIKE '%/vavoo-iptv/play/%'",
+          new Object[]{id});
+        db.setTransactionSuccessful();
+        Log.i("VavooSeed","Upgraded existing global V3 to native live resolver");
+        return true;
+      } finally{db.endTransaction();}
+    }finally{db.close();}
   }
   static boolean exists(Context ctx) {
     try {
@@ -124,6 +150,7 @@ public final class SeedProvider extends ContentProvider {
           if(s.startsWith("#EXTINF:")){pending=s;continue;}
           if(s.isEmpty()||s.startsWith("#")||pending==null)continue;
           if(!s.startsWith("https://")&&!s.startsWith("http://")){pending=null;continue;}
+          s=VavooStreamServer.localUrl(s);
           String name=pending.contains(",")?pending.substring(pending.indexOf(',')+1).trim():"";
           if(name.isEmpty())name=attr(pending,"tvg-name");
           if(name.isEmpty()){pending=null;continue;}
@@ -172,12 +199,16 @@ public final class SeedProvider extends ContentProvider {
     }finally{db.close();}
   }
   public boolean onCreate(){
+    VavooStreamServer.start();
     final Context ctx=getContext().getApplicationContext();
     Thread worker=new Thread(new Runnable(){public void run(){
       for(int attempt=0;attempt<30;attempt++){
         SystemClock.sleep(attempt==0?2000:3000);
         try{
           if(!ctx.getDatabasePath("iptv.db").exists())continue;
+          if(migrateWorldV3(ctx)){
+            SystemClock.sleep(700);refresh(ctx);return;
+          }
           if(exists(ctx))return;
           String m3u=load(ctx);
           if(m3u.startsWith("#EXTM3U")&&install(ctx,m3u)){
