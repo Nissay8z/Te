@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Global TV-only VAVOO: public NISSKENZI snapshot + real iptv-org logos."""
 import base64,re,unicodedata,urllib.request
+from urllib.parse import urlparse, unquote
 from pathlib import Path
 from collections import defaultdict,Counter
 
@@ -81,14 +82,23 @@ def main():
   # A separate player-specific playlist keeps local playback URLs out of the public global snapshot.
   local=[]
   for line in result:
-    if line.startswith(("https://","http://")) and "/vavoo-iptv/play/" in line:
-      ident=line.split("/vavoo-iptv/play/",1)[1].split("?",1)[0].strip("/")
-      if not re.fullmatch(r"[A-Za-z0-9_-]{4,120}", ident):
-        raise RuntimeError("Invalid VAVOO identifier in global catalogue")
-      local.append("http://127.0.0.1:18497/play/"+ident)
+    if line.startswith(("https://","http://")):
+      parsed=urlparse(line)
+      # Exactly as NISSKENZI VavooProvider.extractStreamId(): use canonical
+      # /vavoo-iptv/play/<id> or the final VAVOO catalogue path segment.
+      ident=unquote(parsed.path.rstrip("/").split("/")[-1])
+      if ident.lower().endswith(".m3u8"):ident=ident[:-5]
+      if re.fullmatch(r"[A-Za-z0-9_-]{4,120}",ident) and parsed.hostname and any(
+          parsed.hostname.endswith(x) for x in ("vavoo.to","kool.to","vavoo.top","vavoo.net")
+      ):
+        local.append("http://127.0.0.1:18497/play/"+ident)
+      else:local.append(line)
     else:
       local.append(line)
-  assert sum(x.startswith("http://127.0.0.1:18497/play/") for x in local) > 2000
+  converted=sum(x.startswith("http://127.0.0.1:18497/play/") for x in local)
+  print("Original VAVOO URL samples:",[x[2] for x in world[:3]])
+  print("Local playable URL count:",converted, "out of",len(seen))
+  if converted<2000:raise RuntimeError("Cannot derive VAVOO stream identifiers safely")
   LOCAL_OUT.write_text("\n".join(local)+"\n",encoding="utf-8")
   print("Worldwide VAVOO:",len(seen),"channels,",len(countries),"groups,",logos,"logos")
   print(dict(countries))
