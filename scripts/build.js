@@ -32,7 +32,7 @@ const PROXY_BASE = (process.env.PROXY_BASE || "").replace(/\/+$/, "");
 // Where players should fetch the generated XMLTV EPG.
 const EPG_URL =
   process.env.EPG_URL ||
-  "https://raw.githubusercontent.com/kadirmetin/vavoo-iptv/main/epg.xml";
+  "https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml";
 
 // Vavoo requires browser-like headers or it returns { error: "Validation error" }
 const HEADERS = {
@@ -509,48 +509,66 @@ async function fetchJson(url) {
   return res.json();
 }
 
+// Use genuine broadcaster logos from the public iptv-org metadata index.
+// Global names are matched only when unambiguous, or the name gives its country.
+function declaredCountry(name) {
+  const m = String(name || "").match(/^\s*[\[(]\s*([A-Za-z ]{2,30})\s*[\])]/);
+  if (!m) return "";
+  const v = m[1].toUpperCase().replace(/[^A-Z]/g, "");
+  const map = {
+    ALGERIA:"DZ", ALGERIE:"DZ", MOROCCO:"MA", MAROC:"MA",
+    FRANCE:"FR", TURKEY:"TR", TURKIYE:"TR", TURQUIE:"TR",
+    BELGIUM:"BE", BELGIQUE:"BE", GERMANY:"DE", DEUTSCHLAND:"DE",
+    SPAIN:"ES", ITALY:"IT", UK:"GB", UNITEDKINGDOM:"GB",
+    USA:"US", PORTUGAL:"PT", TUNISIA:"TN", TUNISIE:"TN",
+    EGYPT:"EG", EGYPTE:"EG", SAUDIARABIA:"SA"
+  };
+  return map[v] || "";
+}
+
 async function buildLogoIndex() {
   const [channels, logos] = await Promise.all([
     fetchJson(IPTVORG_CHANNELS_URL),
     fetchJson(IPTVORG_LOGOS_URL),
   ]);
-  const trChannels = channels.filter((c) => c && c.country === "TR");
-  const trIds = new Set(trChannels.map((c) => c.id));
-
-  // Prefer in_use=true logos; fall back to first available.
   const chosen = new Map();
+  const score = l =>
+    (l.in_use ? 10 : 0) +
+    (/^(PNG|JPEG|JPG|WEBP)$/i.test(l.format || "") ? 3 : 0);
   for (const l of logos) {
-    if (!l || !trIds.has(l.channel) || !l.url) continue;
-    const current = chosen.get(l.channel);
-    if (!current || (l.in_use && !current.in_use)) {
-      chosen.set(l.channel, l);
-    }
+    if (!l || !l.channel || !/^https:\/\//i.test(l.url || "")) continue;
+    const old = chosen.get(l.channel);
+    if (!old || score(l) > score(old)) chosen.set(l.channel, l);
   }
-
   const idx = new Map();
-  for (const c of trChannels) {
-    const l = chosen.get(c.id);
-    if (!l) continue;
-    const names = [c.name, ...(Array.isArray(c.alt_names) ? c.alt_names : [])];
-    for (const n of names) {
-      if (!n) continue;
-      const k1 = normalizeForMatch(n);
-      const k2 = normalizeStripQuality(k1);
-      if (k1 && !idx.has(k1)) idx.set(k1, l.url);
-      if (k2 && !idx.has(k2)) idx.set(k2, l.url);
+  for (const c of channels) {
+    if (!c || !c.id || !c.country) continue;
+    const logo = chosen.get(c.id);
+    if (!logo) continue;
+    for (const n of [c.name, ...(Array.isArray(c.alt_names) ? c.alt_names : [])]) {
+      const key = normalizeStripQuality(normalizeForMatch(n));
+      if (!key) continue;
+      if (!idx.has(key)) idx.set(key, new Map());
+      idx.get(key).set(c.id, { country: c.country, url: logo.url });
     }
   }
   return idx;
 }
 
 function makeLogoResolver(idx) {
-  if (!idx || idx.size === 0) return null;
+  if (!idx || !idx.size) return null;
   return (vavooName) => {
-    const k1 = normalizeForMatch(vavooName);
-    if (idx.has(k1)) return idx.get(k1);
-    const k2 = normalizeStripQuality(k1);
-    if (idx.has(k2)) return idx.get(k2);
-    return "";
+    const key = normalizeStripQuality(normalizeForMatch(vavooName));
+    let candidates = [...(idx.get(key)?.values() || [])];
+    if (!candidates.length) return "";
+    const country = declaredCountry(vavooName);
+    if (country) candidates = candidates.filter(c => c.country === country);
+    else {
+      // Preserve the original TR-first preference only where unique.
+      const tr = candidates.filter(c => c.country === "TR");
+      if (tr.length === 1) return tr[0].url;
+    }
+    return candidates.length === 1 ? candidates[0].url : "";
   };
 }
 
@@ -580,26 +598,41 @@ async function main() {
     return ai < bi ? -1 : ai > bi ? 1 : 0;
   });
 
-  let upstreamChannels = new Map();
-  let upstreamProgByChannel = new Map();
-  try {
-    const xml = await fetchUpstreamXmltv(EPG_UPSTREAM_URL);
-    const parsed = parseXmltv(xml);
-    upstreamChannels = parsed.channels;
-    for (const p of parsed.programmes) {
-      if (!upstreamProgByChannel.has(p.channel))
-        upstreamProgByChannel.set(p.channel, []);
-      upstreamProgByChannel.get(p.channel).push(p);
+  // Live TV listings from independent real XMLTV providers. Missing EPG stays
+  // missing; we never invent programme titles or broadcast times.
+  const guideUrls = [
+    EPG_UPSTREAM_URL,
+    "https://epgshare01.online/epgshare01/epg_ripper_FR1.xml.gz",
+    "https://iptv-org.github.io/epg/guides/dz/osn.com.epg.xml",
+    "https://epgshare01.online/epgshare01/epg_ripper_BE2.xml.gz",
+    "https://iptv-epg.org/files/epg-tr.xml.gz",
+  ];
+  const upstreamChannels = new Map();
+  const upstreamProgByChannel = new Map();
+  const knownProgrammeChannels = new Set();
+  for (const url of [...new Set(guideUrls)]) {
+    try {
+      const xml = await fetchUpstreamXmltv(url);
+      const parsed = parseXmltv(xml);
+      for (const [id, data] of parsed.channels) {
+        if (!upstreamChannels.has(id)) upstreamChannels.set(id, data);
+      }
+      let accepted = 0;
+      for (const p of parsed.programmes) {
+        // If sources overlap, retain the first feed's schedule per channel.
+        if (knownProgrammeChannels.has(p.channel)) continue;
+        if (!upstreamProgByChannel.has(p.channel))
+          upstreamProgByChannel.set(p.channel, []);
+        upstreamProgByChannel.get(p.channel).push(p);
+        accepted++;
+      }
+      for (const id of upstreamProgByChannel.keys()) knownProgrammeChannels.add(id);
+      console.log("Real EPG " + url + ": " + parsed.channels.size +
+        " stations, " + accepted + " programmes");
+    } catch (err) {
+      console.warn("Optional EPG provider failed (" + url + "): " + err.message);
     }
-    console.log(
-      `Upstream EPG (epgshare01): ${upstreamChannels.size} channels, ${parsed.programmes.length} programmes`
-    );
-  } catch (err) {
-    console.warn(
-      `Upstream EPG unavailable (${err.message}); falling back to Vavoo inline EPG only.`
-    );
   }
-
   const grab = await loadGrabDir(IPTVORG_GRAB_DIR);
   if (grab.channels.size > 0) {
     const grabProgCount = [...grab.progByChannel.values()].reduce(
@@ -618,9 +651,9 @@ async function main() {
   let logoIdx = new Map();
   try {
     logoIdx = await buildLogoIndex();
-    console.log(`Logo index: ${logoIdx.size} name keys → iptv-org TR logos`);
+    console.log(`Logo index: ${logoIdx.size} name keys → global verified iptv-org logos`);
   } catch (err) {
-    console.warn(`Logo index unavailable (${err.message}); logos will be empty.`);
+    console.warn(`Logo index unavailable (${err.message}); retaining VAVOO source logos.`);
   }
   const logoResolver = makeLogoResolver(logoIdx);
 
