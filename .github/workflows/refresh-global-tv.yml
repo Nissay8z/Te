@@ -1,0 +1,35 @@
+name: Refresh VAVOO Global TV M3U
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/build_global_tv.py"
+      - ".github/workflows/refresh-global-tv.yml"
+  schedule:
+    - cron: "17 */6 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: vavoo-global-tv
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate full worldwide TV-only playlist with verified logo matches
+        run: python scripts/build_global_tv.py
+      - name: Commit checked global playlist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add iptv-global.m3u
+          if ! git diff --cached --quiet; then
+            git commit -m "tv: refresh worldwide VAVOO playlist, categories and logos"
+            git push
+          fi
