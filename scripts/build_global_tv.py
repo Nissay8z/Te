@@ -8,6 +8,7 @@ BASE="https://raw.githubusercontent.com/Nissay8z/NISSKENZI/main/morocco-tv/app/s
 ROOT=Path(__file__).resolve().parent.parent
 EPG="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml"
 OUT=ROOT/"iptv-global.m3u"
+LOCAL_OUT=ROOT/"iptv-pro-vavoo-local.m3u"
 
 def fetch(url):
   req=urllib.request.Request(url,headers={"User-Agent":"Nisskenzi-TV-global/1.0"})
@@ -77,6 +78,18 @@ def main():
     countries[country]+=1
   if len(seen)<2000:raise RuntimeError("Too few channels")
   OUT.write_text("\n".join(result)+"\n",encoding="utf-8")
+  # A separate player-specific playlist keeps local playback URLs out of the public global snapshot.
+  local=[]
+  for line in result:
+    if line.startswith(("https://","http://")) and "/vavoo-iptv/play/" in line:
+      ident=line.split("/vavoo-iptv/play/",1)[1].split("?",1)[0].strip("/")
+      if not re.fullmatch(r"[A-Za-z0-9_-]{4,120}", ident):
+        raise RuntimeError("Invalid VAVOO identifier in global catalogue")
+      local.append("http://127.0.0.1:18497/play/"+ident)
+    else:
+      local.append(line)
+  assert sum(x.startswith("http://127.0.0.1:18497/play/") for x in local) > 2000
+  LOCAL_OUT.write_text("\n".join(local)+"\n",encoding="utf-8")
   print("Worldwide VAVOO:",len(seen),"channels,",len(countries),"groups,",logos,"logos")
   print(dict(countries))
 if __name__=="__main__":main()
