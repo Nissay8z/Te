@@ -32,6 +32,25 @@ jobs:
           name: iptv-pro-hook-dex
           path: build/preloader/dex/classes.dex
           retention-days: 7
+      - name: Prepare offline playlist and DEX package for IPTV Pro
+        run: |
+          set -euo pipefail
+          mkdir -p build/preloader/package/assets/vavoo
+          cp iptv.m3u build/preloader/package/assets/vavoo/iptv.m3u
+          cp build/preloader/dex/classes.dex build/preloader/package/classes4.dex
+          python3 - <<'PY'
+          from pathlib import Path
+          f=Path("build/preloader/package/assets/vavoo/iptv.m3u")
+          data=f.read_text(encoding="utf-8")
+          channels=data.count("#EXTINF:")
+          assert data.startswith("#EXTM3U") and channels >= 50, channels
+          print("Bundled offline VAVOO channels:", channels)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iptv-pro-vavoo-offline-payload
+          path: build/preloader/package/
+          retention-days: 7
       - name: Export Android SDK APK signature verifier
         run: cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" build/preloader/apksigner.jar
       - uses: actions/upload-artifact@v4
