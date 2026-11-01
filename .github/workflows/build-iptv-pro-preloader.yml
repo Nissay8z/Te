@@ -8,7 +8,7 @@ on:
       - 'tools/VavooStreamServer.java'
       - '.github/workflows/build-iptv-pro-preloader.yml'
 permissions:
-  contents: write
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,7 +45,10 @@ jobs:
           f=Path("build/preloader/package/assets/vavoo/iptv.m3u")
           data=f.read_text(encoding="utf-8")
           channels=data.count("#EXTINF:")
-          assert data.startswith("#EXTM3U") and channels >= 50, channels
+          assert data.startswith("#EXTM3U") and channels >= 9000, channels
+          localhost=data.count("http://127.0.0.1:18497/play/")
+          assert localhost==channels, f"Missing local VAVOO URLs: {localhost}/{channels}"
+          print("Resolved by native Android provider on-demand:", localhost)
           print("Bundled offline VAVOO channels:", channels)
           PY
       - uses: actions/upload-artifact@v4
@@ -60,9 +63,3 @@ jobs:
           name: android-apksigner-verifier
           path: build/preloader/apksigner.jar
           retention-days: 7
-      - name: Commit generated DEX data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tools/preloader-classes.dex.b64
-          git diff --cached --quiet || { git commit -m "build: compile IPTV Pro VAVOO preloader DEX"; git push; }
