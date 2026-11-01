@@ -32,6 +32,13 @@ jobs:
           name: iptv-pro-hook-dex
           path: build/preloader/dex/classes.dex
           retention-days: 7
+      - name: Export Android SDK APK signature verifier
+        run: cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" build/preloader/apksigner.jar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apksigner-verifier
+          path: build/preloader/apksigner.jar
+          retention-days: 7
       - name: Commit generated DEX data
         run: |
           git config user.name "github-actions[bot]"
