@@ -26,6 +26,12 @@ jobs:
           base64 -w0 build/preloader/dex/classes.dex > tools/preloader-classes.dex.b64
           echo "DEX bytes: $(wc -c < build/preloader/dex/classes.dex)"
           echo "Base64 bytes: $(wc -c < tools/preloader-classes.dex.b64)"
+      - name: Upload standalone DEX for APK injection
+        uses: actions/upload-artifact@v4
+        with:
+          name: iptv-pro-hook-dex
+          path: build/preloader/dex/classes.dex
+          retention-days: 7
       - name: Commit generated DEX data
         run: |
           git config user.name "github-actions[bot]"
