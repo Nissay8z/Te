@@ -1,0 +1,34 @@
+name: Build IPTV Pro preloader DEX
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/SeedProvider.java'
+      - '.github/workflows/build-iptv-pro-preloader.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Android provider and DEX
+        run: |
+          set -euo pipefail
+          SDK="$ANDROID_HOME"
+          mkdir -p build/preloader/classes build/preloader/dex
+          javac -encoding UTF-8 -source 8 -target 8 \
+            -cp "$SDK/platforms/android-35/android.jar" \
+            -d build/preloader/classes tools/SeedProvider.java
+          "$SDK/build-tools/35.0.0/d8" --min-api 32 --lib "$SDK/platforms/android-35/android.jar" \
+            --output build/preloader/dex \
+            $(find build/preloader/classes -name '*.class' | sort)
+          base64 -w0 build/preloader/dex/classes.dex > tools/preloader-classes.dex.b64
+          echo "DEX bytes: $(wc -c < build/preloader/dex/classes.dex)"
+          echo "Base64 bytes: $(wc -c < tools/preloader-classes.dex.b64)"
+      - name: Commit generated DEX data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/preloader-classes.dex.b64
+          git diff --cached --quiet || { git commit -m "build: compile IPTV Pro VAVOO preloader DEX"; git push; }
