@@ -81,7 +81,8 @@ public final class VavooStreamServer {
     }
 
     private static void serve(Socket socket){
-        try(Socket s=socket){
+        try{
+            Socket s=socket;
             BufferedReader headers=new BufferedReader(
                 new InputStreamReader(s.getInputStream(),StandardCharsets.ISO_8859_1));
             String request=headers.readLine();
@@ -125,7 +126,7 @@ public final class VavooStreamServer {
             try{if(!socket.isClosed())reply(socket,502,"text/plain",
                 ("VAVOO resolution/stream error: "+e.getMessage())
                 .getBytes(StandardCharsets.UTF_8));}catch(Exception ignored){}
-        }
+        }finally{try{socket.close();}catch(IOException ignored){}}
     }
 
     private static void relay(Socket socket,URL target,String method,String range)throws Exception {
@@ -141,11 +142,17 @@ public final class VavooStreamServer {
             if(status<200||status>=300)throw new IOException("Upstream HTTP "+status);
             URL source=c.getURL();
             String mime=c.getContentType()==null?"application/octet-stream":c.getContentType();
+            BufferedInputStream incoming=new BufferedInputStream(c.getInputStream());
+            incoming.mark(32);
+            byte[] head=new byte[7];
+            int nr=incoming.read(head);
+            incoming.reset();
             boolean hls=mime.toLowerCase(Locale.ROOT).contains("mpegurl")||
-                source.getPath().toLowerCase(Locale.ROOT).endsWith(".m3u8");
+                source.getPath().toLowerCase(Locale.ROOT).endsWith(".m3u8")||
+                (nr==7&&new String(head,StandardCharsets.UTF_8).equals("#EXTM3U"));
             if(hls){
                 ByteArrayOutputStream buf=new ByteArrayOutputStream();
-                try(InputStream in=c.getInputStream()){
+                try(InputStream in=incoming){
                     byte[] block=new byte[8192];int n;
                     while((n=in.read(block))!=-1){
                         if(buf.size()+n>4*1024*1024)throw new IOException("HLS playlist too large");
@@ -186,7 +193,7 @@ public final class VavooStreamServer {
             h.append("\r\n");
             out.write(h.toString().getBytes(StandardCharsets.ISO_8859_1));
             if(method.equals("HEAD"))return;
-            try(InputStream in=c.getInputStream()){
+            try(InputStream in=incoming){
                 byte[] bytes=new byte[65536];int n;
                 while((n=in.read(bytes))!=-1){out.write(bytes,0,n);}
             }
