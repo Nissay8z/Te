@@ -386,6 +386,7 @@ function normalizeForMatch(name) {
     .replace(/\bOCUK\b/g, "COCUK")
     .replace(/\bM Z K\b/g, "MUZIK")
     .replace(/\bBENG\b/g, "BENGU");
+  s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
   s = s
     .replace(/[İI]/g, "I")
     .replace(/Ü/g, "U")
@@ -396,6 +397,10 @@ function normalizeForMatch(name) {
     .replace(/[^A-Z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+  // Common channel names are not always identical between VAVOO and XMLTV.
+  // Apply only explicitly recognised aliases rather than fuzzy guessing.
+  if (/^2M MAROC(?: HD| FHD)?$/.test(s)) return "2M";
+  if (/^ARRIADIA(?: HD)?$/.test(s)) return "ARRYADIA";
   return s;
 }
 
@@ -606,6 +611,7 @@ async function main() {
     "https://iptv-org.github.io/epg/guides/dz/osn.com.epg.xml",
     "https://epgshare01.online/epgshare01/epg_ripper_BE2.xml.gz",
     "https://iptv-epg.org/files/epg-tr.xml.gz",
+    "https://free-epg.de/api/epg/ma.xml.gz",
   ];
   const upstreamChannels = new Map();
   const upstreamProgByChannel = new Map();
