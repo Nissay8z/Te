@@ -71,8 +71,8 @@ public final class SeedProvider extends ContentProvider {
         // Preserve channels, categories, favourites and user settings.
         db.execSQL(
           "UPDATE Channel SET url='http://127.0.0.1:18497/play/' || "+
-          "substr(url,instr(url,'/vavoo-iptv/play/')+length('/vavoo-iptv/play/')) "+
-          "WHERE playlistId=? AND url LIKE '%/vavoo-iptv/play/%'",
+          "substr(url,instr(url,'/play/')+length('/play/')) "+
+          "WHERE playlistId=? AND url LIKE '%/play/%'",
           new Object[]{id});
         db.setTransactionSuccessful();
         Log.i("VavooSeed","Upgraded existing global V3 to native live resolver");
