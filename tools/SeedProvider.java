@@ -10,7 +10,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 public final class SeedProvider extends ContentProvider {
-  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv.m3u";
+  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-global.m3u";
+  static final String OLD_URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv.m3u";
   static final String EPG="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml";
   static final Pattern P=Pattern.compile("([a-zA-Z][a-zA-Z0-9-]*)=\"([^\"]*)\"");
   static String attr(String s,String n) {
@@ -49,6 +50,10 @@ public final class SeedProvider extends ContentProvider {
     Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=?",new String[]{URL});
     try{return c.moveToFirst()?c.getLong(0):-1;}finally{c.close();}
   }
+  static long oldId(SQLiteDatabase db) {
+    Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=?",new String[]{OLD_URL});
+    try{return c.moveToFirst()?c.getLong(0):-1;}finally{c.close();}
+  }
   static boolean exists(Context ctx) {
     try {
       SQLiteDatabase db=SQLiteDatabase.openDatabase(
@@ -85,8 +90,26 @@ public final class SeedProvider extends ContentProvider {
       db.beginTransaction();
       try{
         if(id<0){
+          // Upgrade our own V2 test playlist instead of leaving the old
+          // Turkey-heavy snapshot next to the new international catalogue.
+          // Other user-installed playlists are not touched.
+          long legacy=oldId(db);
+          if(legacy>=0){
+            String[] ids={""+legacy};
+            db.delete("ChannelCategory","channelId IN (SELECT id FROM Channel WHERE playlistId=?)",ids);
+            db.delete("Channel","playlistId=?",ids);
+            db.delete("Category","playlistId=?",ids);
+            ContentValues newProfile=new ContentValues();
+            newProfile.put("url",URL);
+            newProfile.put("name","VAVOO | TV MONDE");
+            newProfile.put("updateTime",0L);
+            db.update("Playlist",newProfile,"id=?",ids);
+            id=legacy;
+          }
+        }
+        if(id<0){
           ContentValues v=new ContentValues();
-          v.put("url",URL);v.put("name","VAVOO | Live TV");
+          v.put("url",URL);v.put("name","VAVOO | TV MONDE");
           v.put("accessTime",0L);v.put("updateTime",0L);
           v.put("status",2);v.put("enableLive",1);v.put("enableSeries",0);
           v.put("enableVod",0);v.put("format",1);
@@ -132,7 +155,7 @@ public final class SeedProvider extends ContentProvider {
           db.insertOrThrow("ChannelCategory",null,link);
           pending=null;
         }
-        if(num<50)throw new IOException("M3U only has "+num+" channels");
+        if(num<2000)throw new IOException("World M3U incomplete: only "+num+" channels");
         Cursor ec=db.rawQuery("SELECT id FROM TvgSource WHERE url=?",new String[]{EPG});
         boolean exists;
         try {exists=ec.moveToFirst();}finally{ec.close();}
