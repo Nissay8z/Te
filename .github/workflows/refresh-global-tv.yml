@@ -28,7 +28,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add iptv-global.m3u
+          git add iptv-global.m3u iptv-pro-vavoo-local.m3u
           if ! git diff --cached --quiet; then
             git commit -m "tv: refresh worldwide VAVOO playlist, categories and logos"
             git push
