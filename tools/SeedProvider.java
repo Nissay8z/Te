@@ -16,7 +16,21 @@ public final class SeedProvider extends ContentProvider {
   static String attr(String s,String n) {
     Matcher m=P.matcher(s);while(m.find())if(n.equalsIgnoreCase(m.group(1)))return m.group(2);return "";
   }
-  static String load() throws Exception {
+  static String load(Context ctx) throws Exception {
+    // Bundle an actual copy of the playlist inside the APK. This avoids a
+    // silent empty installation if GitHub/VAVOO is unreachable on first launch.
+    try {
+      InputStream in=ctx.getAssets().open("vavoo/iptv.m3u");
+      BufferedReader r=new BufferedReader(new InputStreamReader(in,"UTF-8"));
+      StringBuilder b=new StringBuilder();
+      char[] buf=new char[8192];int n;
+      while((n=r.read(buf))!=-1&&b.length()<12000000)b.append(buf,0,n);
+      r.close();
+      if(b.toString().startsWith("#EXTM3U")&&b.toString().contains("#EXTINF:"))return b.toString();
+    }catch(Exception e){Log.w("VavooSeed","Bundled M3U unavailable, trying network",e);}
+    return loadRemote();
+  }
+  static String loadRemote() throws Exception {
     HttpURLConnection c=(HttpURLConnection)new URL(URL).openConnection();
     c.setConnectTimeout(15000);c.setReadTimeout(20000);
     c.setRequestProperty("User-Agent","Mozilla/5.0 Android IPTV");
@@ -34,6 +48,31 @@ public final class SeedProvider extends ContentProvider {
   static long getId(SQLiteDatabase db) {
     Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=?",new String[]{URL});
     try{return c.moveToFirst()?c.getLong(0):-1;}finally{c.close();}
+  }
+  static boolean exists(Context ctx) {
+    try {
+      SQLiteDatabase db=SQLiteDatabase.openDatabase(
+        ctx.getDatabasePath("iptv.db").getPath(),null,SQLiteDatabase.OPEN_READONLY);
+      try{
+        long id=getId(db);
+        if(id<0)return false;
+        Cursor c=db.rawQuery("SELECT COUNT(*) FROM Channel WHERE playlistId=?",new String[]{""+id});
+        try{return c.moveToFirst()&&c.getInt(0)>50;}finally{c.close();}
+      }finally{db.close();}
+    }catch(Exception ignored){return false;}
+  }
+  static void refresh(Context ctx) {
+    // The original app observes Room transactions; direct external SQLite
+    // writes may not notify its already-open UI. Reopen the launcher once.
+    try {
+      android.content.Intent launch=ctx.getPackageManager()
+          .getLaunchIntentForPackage(ctx.getPackageName());
+      if(launch!=null){
+        launch.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK|
+                        android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ctx.startActivity(launch);
+      }
+    }catch(Exception e){Log.w("VavooSeed","Relaunch failed; manually reopen the app",e);}
   }
   static boolean install(Context ctx,String m3u) throws Exception {
     SQLiteDatabase db=SQLiteDatabase.openDatabase(ctx.getDatabasePath("iptv.db").getPath(),null,SQLiteDatabase.OPEN_READWRITE);
@@ -113,11 +152,17 @@ public final class SeedProvider extends ContentProvider {
     final Context ctx=getContext().getApplicationContext();
     Thread worker=new Thread(new Runnable(){public void run(){
       for(int attempt=0;attempt<30;attempt++){
-        SystemClock.sleep(attempt==0?7000:3500);
+        SystemClock.sleep(attempt==0?2000:3000);
         try{
           if(!ctx.getDatabasePath("iptv.db").exists())continue;
-          String m3u=load();
-          if(m3u.startsWith("#EXTM3U")&&install(ctx,m3u))return;
+          if(exists(ctx))return;
+          String m3u=load(ctx);
+          if(m3u.startsWith("#EXTM3U")&&install(ctx,m3u)){
+            // Give SQLite WAL connections a moment to settle before relaunch.
+            SystemClock.sleep(700);
+            refresh(ctx);
+            return;
+          }
         }catch(Exception e){Log.w("VavooSeed","Auto-import attempt "+attempt,e);}
       }
     }},"IPTV-Pro-VAVOO-import");
