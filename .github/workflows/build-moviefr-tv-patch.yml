@@ -1,0 +1,32 @@
+name: Build MovieFR TV in-app DEX addon
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/moviefr-tv-patch/**'
+      - '.github/workflows/build-moviefr-tv-patch.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile Android TV bridge
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/moviefr-build
+          ANDROID_JAR="$ANDROID_HOME/platforms/android-35/android.jar"
+          javac --release 8 -cp "$ANDROID_JAR" -d /tmp/moviefr-build tools/moviefr-tv-patch/TvInputProvider.java
+          "$ANDROID_HOME/build-tools/35.0.0/d8" --min-api 24 --lib "$ANDROID_JAR" --output . /tmp/moviefr-build/com/nisskenzi/tv/*.class '/tmp/moviefr-build/com/nisskenzi/tv/TvInputProvider$CursorOverlay.class'
+          test -f classes.dex
+          sha256sum classes.dex
+      - uses: actions/upload-artifact@v4
+        with:
+          name: moviefr-tv-dex-addon
+          path: classes.dex
+          retention-days: 7
