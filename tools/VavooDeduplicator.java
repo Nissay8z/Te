@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public final class VavooDeduplicator {
     private static final String TAG="VavooDedupV12";
-    private static final String DONE="dedup_v12_applied";
+    private static final String DONE="dedup_v13_applied";
     private static final String PREFIX="http://127.0.0.1:18497/play/";
     private static final String PROFILE_URL=
         "https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-pro-vavoo-organized.m3u";
