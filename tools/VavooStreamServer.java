@@ -1,6 +1,7 @@
 package ru.iptvremote.android.iptv.vavoo;
 
 import android.net.Uri;
+import android.content.Context;
 import android.util.Log;
 import java.io.*;
 import java.net.*;
@@ -24,6 +25,8 @@ public final class VavooStreamServer {
     public static final int PORT=18497;
     private static final String TAG="VavooStream";
     private static volatile ServerSocket listener;
+    private static volatile Context appContext;
+    public static final String M3U_URL="http://127.0.0.1:"+PORT+"/playlist";
     private static volatile String activeLogicalId="";
     private static volatile long activeAt=0L;
     public static String playingId(){return activeLogicalId;}
@@ -55,6 +58,10 @@ public final class VavooStreamServer {
         }catch(Exception e){return remote;}
     }
 
+    public static synchronized void start(Context ctx){
+        if(ctx!=null)appContext=ctx.getApplicationContext();
+        start();
+    }
     public static synchronized void start(){
         if(listener!=null&&!listener.isClosed())return;
         Thread t=new Thread(new Runnable(){
@@ -133,6 +140,24 @@ public final class VavooStreamServer {
                 String line=headers.readLine();
                 if(line==null||line.length()==0)break;
                 if(line.toLowerCase(Locale.ROOT).startsWith("range:"))range=line.substring(6).trim();
+            }
+            if(route.equals("/playlist")){
+                // Stable local M3U source. Native IPTV Pro refreshes must never
+                // fetch the missing private GitHub organized.m3u URL.
+                Context ctx=appContext;
+                if(ctx==null){reply(s,503,"text/plain","App not ready".getBytes(StandardCharsets.UTF_8));return;}
+                byte[] playlist;
+                try(InputStream f=ctx.getAssets().open("vavoo/iptv.m3u");
+                    ByteArrayOutputStream b=new ByteArrayOutputStream()) {
+                    byte[] buffer=new byte[32768];int n;
+                    while((n=f.read(buffer))!=-1){
+                        if(b.size()+n>12*1024*1024)throw new IOException("Invalid M3U length");
+                        b.write(buffer,0,n);
+                    }
+                    playlist=b.toByteArray();
+                }
+                reply(s,200,"application/x-mpegURL; charset=utf-8",playlist);
+                return;
             }
             if(route.equals("/health")){
                 reply(s,200,"text/plain","VavooStreamServer OK".getBytes(StandardCharsets.UTF_8));return;
