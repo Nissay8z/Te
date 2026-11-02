@@ -32,6 +32,7 @@ public final class VavooStreamServer {
           System.currentTimeMillis()-activeAt<maxMs;
     }
     public static void invalidate(String logicalId){resolved.remove(logicalId);}
+    public static void invalidateAll(){resolved.clear();}
 
     private static final Pattern ATTR_URI=Pattern.compile("URI=\"([^\"]+)\"");
     private static final ConcurrentHashMap<String,Cache> resolved=new ConcurrentHashMap<>();
@@ -84,15 +85,16 @@ public final class VavooStreamServer {
         long now=System.currentTimeMillis();
         if(cached!=null&&cached.until>now)return cached.url;
         java.util.List<VavooVariants.Source> options=VavooVariants.ranked(id);
-        String locked=VavooVariants.mirror(id);
-        String[] mirrors=locked.isEmpty()?VavooVariants.MIRRORS:new String[]{locked};
+        // ONYX preferred mirror comes FIRST, all others remain as fallbacks.
+        String[] mirrors=VavooVariants.orderedMirrors(id);
         if(options.isEmpty()){
             String original=VavooProvider.resolveStream(id);
             resolved.put(id,new Cache(original,now+60000));
             return original;
         }
-        // Shamel strategy: selected alternative first, then quality-ordered
-        // backups; inside each one, try four mirrors if in Auto mode.
+        // ONYX getServers-style ordered alternatives: preserve original
+        // HD/FHD variants, try preferred mirror, then alternative mirrors,
+        // then source IDs from the same canonical channel family.
         Exception last=null;
         int variantsTried=0;
         int limit=VavooVariants.getSelected(id).isEmpty()?3:4;
