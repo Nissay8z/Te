@@ -6,187 +6,227 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
+import android.util.Log;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Android-native duplicate stream drawer (D-pad friendly). IPTV Pro's
- * third-party player has no Smarters settings layout, so we attach one
- * compact "Flux" control to the active player decor, not another TV category.
+ * IPTV Pro's real MediaControllerView layout embeds two VAVOO actions:
+ * "Flux" (HD/FHD/s/b/c) and "Miroir" (the four ONYX host preferences).
+ * Changes restart the SAME channel using PlaybackService / wm0.g without
+ * recreating the activity or returning to the channel list.
  */
 public final class VavooUiHook {
-    private static final int DRAWER_ID=0x1e453aa5;
+    private static final String TAG="VavooPlayerControls";
+    private static final String VIDEO_ACTIVITY=
+        "ru.iptvremote.android.iptv.common.player.VideoActivity";
+    private static final int STRIP_ID=0x1e453aa5;
     private static final Handler MAIN=new Handler(Looper.getMainLooper());
     private static volatile WeakReference<Activity> resumed=new WeakReference<>(null);
     private static volatile boolean installed=false;
+
     private VavooUiHook(){}
-    private static int dp(Context c,int v) {
-        return (int)(v*c.getResources().getDisplayMetrics().density+0.5f);
+    private static int dp(Context c,int value){
+        return (int)(value*c.getResources().getDisplayMetrics().density+0.5f);
     }
+    private static boolean isPlayer(Activity activity){
+        return activity!=null&&VIDEO_ACTIVITY.equals(activity.getClass().getName());
+    }
+
     public static synchronized void install(Application app){
         if(installed)return;
         installed=true;
         app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks(){
-            public void onActivityCreated(Activity a, Bundle b){}
+            public void onActivityCreated(Activity a,Bundle saved){}
             public void onActivityStarted(Activity a){}
             public void onActivityResumed(Activity a){
+                if(!isPlayer(a))return;
                 resumed=new WeakReference<>(a);
-                // Only show after the player actually requests VAVOO playback.
-                if(VavooStreamServer.wasPlayingRecently(3500))onPlaying();
+                if(VavooStreamServer.wasPlayingRecently(12000))onPlaying();
             }
-            public void onActivityPaused(Activity a){remove(a);}
+            public void onActivityPaused(Activity a){}
             public void onActivityStopped(Activity a){}
-            public void onActivitySaveInstanceState(Activity a,Bundle b){}
-            public void onActivityDestroyed(Activity a){remove(a);}
+            public void onActivitySaveInstanceState(Activity a,Bundle out){}
+            public void onActivityDestroyed(Activity a){
+                if(resumed.get()==a)resumed=new WeakReference<>(null);
+            }
         });
     }
+
     public static void onPlaying(){
-        MAIN.post(new Runnable(){@Override public void run(){
+        MAIN.post(()->{
             Activity a=resumed.get();
-            if(a==null||a.isFinishing()||a.isDestroyed())return;
-            String id=VavooStreamServer.playingId();
-            if(VavooVariants.sources(id).isEmpty())return;
-            FrameLayout root=null;
-            View decor=a.getWindow().getDecorView();
-            if(decor instanceof FrameLayout)root=(FrameLayout)decor;
-            if(root==null)return;
-            View existing=root.findViewById(DRAWER_ID);
-            if(existing instanceof TextView){
-                ((TextView)existing).setText("⇄ Flux ("+VavooVariants.sources(id).size()+") · 4 miroirs");
-                return;
-            }
-            TextView button=new TextView(a);
-            button.setId(DRAWER_ID);
-            button.setText("⇄ Flux ("+VavooVariants.sources(id).size()+") · 4 miroirs");
-            button.setTextSize(14);
-            button.setTypeface(null,Typeface.BOLD);
-            button.setTextColor(Color.WHITE);
-            button.setBackgroundColor(Color.argb(235,28,31,44));
-            button.setPadding(dp(a,14),dp(a,10),dp(a,14),dp(a,10));
-            button.setFocusable(true);
-            button.setClickable(true);
-            button.setElevation(dp(a,10));
-            button.setContentDescription("Ouvrir les sources de la chaîne VAVOO");
-            button.setOnClickListener(new View.OnClickListener(){
-                @Override public void onClick(View v){show(a);}
-            });
-            FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                Gravity.END|Gravity.BOTTOM);
-            lp.rightMargin=dp(a,20);
-            lp.bottomMargin=dp(a,80);
-            root.addView(button,lp);
-        }});
+            if(!isPlayer(a)||a.isFinishing()||a.isDestroyed())return;
+            attachIntoNativeControls(a,0);
+        });
     }
-    private static void remove(Activity a){
-        try{
-            View decor=a.getWindow().getDecorView();
-            View v=decor.findViewById(DRAWER_ID);
-            if(v!=null && v.getParent() instanceof ViewGroup)
-                ((ViewGroup)v.getParent()).removeView(v);
-        }catch(Exception ignored){}
-    }
-    private static void show(final Activity a){
+
+    private static void attachIntoNativeControls(Activity a,int attempt){
+        if(a.isFinishing()||a.isDestroyed())return;
         final String id=VavooStreamServer.playingId();
-        final List<VavooVariants.Source> variants=VavooVariants.sources(id);
-        if(variants.isEmpty()){
-            Toast.makeText(a,"Cette chaîne n'a pas d'alternative VAVOO",Toast.LENGTH_LONG).show();
+        if(id==null||VavooVariants.sources(id).isEmpty())return;
+
+        int controlId=a.getResources().getIdentifier("control_bar","id",a.getPackageName());
+        View control=controlId==0?null:a.findViewById(controlId);
+        if(!(control instanceof LinearLayout)){
+            if(attempt<10)MAIN.postDelayed(()->attachIntoNativeControls(a,attempt+1),350);
+            else Log.w(TAG,"The native IPTV Pro player controller was not found.");
             return;
         }
-        ArrayList<String> names=new ArrayList<>();
+        LinearLayout bar=(LinearLayout)control;
+        View old=bar.findViewById(STRIP_ID);
+        if(old instanceof LinearLayout){
+            LinearLayout strip=(LinearLayout)old;
+            if(strip.getChildCount()>=2){
+                TextView first=(TextView)strip.getChildAt(0);
+                first.setText("Flux · "+VavooVariants.sources(id).size());
+                TextView mirror=(TextView)strip.getChildAt(1);
+                mirror.setText(mirrorTitle(id));
+            }
+            return;
+        }
+
+        LinearLayout strip=new LinearLayout(a);
+        strip.setId(STRIP_ID);
+        strip.setOrientation(LinearLayout.HORIZONTAL);
+        strip.setGravity(Gravity.CENTER);
+        strip.setPadding(dp(a,8),dp(a,3),dp(a,8),dp(a,5));
+        TextView sources=createButton(a,"Flux · "+VavooVariants.sources(id).size());
+        TextView mirrors=createButton(a,mirrorTitle(id));
+        sources.setOnClickListener(view->showSources(a));
+        mirrors.setOnClickListener(view->showMirrors(a));
+        LinearLayout.LayoutParams cell=new LinearLayout.LayoutParams(0,dp(a,42),1);
+        cell.setMargins(dp(a,4),0,dp(a,4),0);
+        strip.addView(sources,cell);
+        LinearLayout.LayoutParams second=new LinearLayout.LayoutParams(0,dp(a,42),1);
+        second.setMargins(dp(a,4),0,dp(a,4),0);
+        strip.addView(mirrors,second);
+        // Added inside IPTV Pro's original control_bar; buttons follow its
+        // native show/hide animation and D-pad focus order.
+        bar.addView(strip,0,new LinearLayout.LayoutParams(-1,dp(a,50)));
+        Log.i(TAG,"VAVOO buttons inserted into native IPTV Pro control bar");
+    }
+
+    private static TextView createButton(Activity a,String label){
+        TextView b=new TextView(a);
+        b.setText(label);
+        b.setTextSize(15);
+        b.setTypeface(null,Typeface.BOLD);
+        b.setTextColor(Color.WHITE);
+        b.setGravity(Gravity.CENTER);
+        b.setBackgroundColor(Color.argb(230,30,35,48));
+        b.setFocusable(true);
+        b.setFocusableInTouchMode(false);
+        b.setClickable(true);
+        b.setContentDescription(label+" — changer sans quitter la lecture");
+        b.setElevation(dp(a,2));
+        return b;
+    }
+    private static String mirrorTitle(String id){
         String mirror=VavooVariants.mirror(id);
-        names.add("🌐 Miroir : "+(mirror.isEmpty()?"AUTO (4 serveurs)":mirror)+"  ▾");
-        names.add("⚡ Flux automatique : qualité puis secours");
-        String selected=VavooVariants.getSelected(id);
-        int checked=selected.isEmpty()?1:-1;
+        return "Miroir · "+(mirror.isEmpty()?"Auto":mirror);
+    }
+
+    private static void showSources(final Activity a){
+        final String id=VavooStreamServer.playingId();
+        final List<VavooVariants.Source> variants=VavooVariants.sources(id);
+        if(variants.isEmpty())return;
+        ArrayList<String> names=new ArrayList<>();
+        names.add("Automatique — meilleure qualité et sources de secours");
+        String current=VavooVariants.getSelected(id);
+        int checked=current.isEmpty()?0:-1;
         for(int i=0;i<variants.size();i++){
-            VavooVariants.Source option=variants.get(i);
-            names.add((i+1)+". "+option.name+"  ["+option.score+"]");
-            if(option.id.equals(selected))checked=i+2;
+            VavooVariants.Source source=variants.get(i);
+            names.add(source.name);
+            if(source.id.equals(current))checked=i+1;
         }
         new AlertDialog.Builder(a)
-            .setTitle("⇄ VAVOO · "+variants.size()+" flux / 4 miroirs")
-            .setSingleChoiceItems(names.toArray(new String[0]),checked,
-                (dialog,which)->{
-                    dialog.dismiss();
-                    if(which==0){showMirrors(a,id);return;}
-                    String idToSet=which==1?"":variants.get(which-2).id;
-                    if(!VavooVariants.select(id,idToSet)){
-                        Toast.makeText(a,"Variante indisponible",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    refreshPlayback(a,id);
-                })
-            .setNegativeButton("Fermer",null)
-            .show();
+            .setTitle("VAVOO · Flux de cette chaîne")
+            .setSingleChoiceItems(names.toArray(new String[0]),checked,(dialog,which)->{
+                dialog.dismiss();
+                String next=which==0?"":variants.get(which-1).id;
+                if(VavooVariants.select(id,next))applyAndReplay(a,id);
+            })
+            .setNegativeButton("Fermer",null).show();
     }
-    private static void showMirrors(final Activity a,final String id){
-        String selected=VavooVariants.mirror(id);
-        ArrayList<String> labels=new ArrayList<>();
-        labels.add("⚡ Automatique — rechercher sur les 4 miroirs");
-        int checked=selected.isEmpty()?0:-1;
+
+    private static void showMirrors(final Activity a){
+        final String id=VavooStreamServer.playingId();
+        String current=VavooVariants.mirror(id);
+        ArrayList<String> names=new ArrayList<>();
+        names.add("Automatique — miroirs et secours");
+        int checked=current.isEmpty()?0:-1;
         for(int i=0;i<VavooVariants.MIRRORS.length;i++){
-            String name=VavooVariants.MIRRORS[i];
-            labels.add("🌐 "+name);
-            if(name.equals(selected))checked=i+1;
+            names.add(VavooVariants.MIRRORS[i]);
+            if(VavooVariants.MIRRORS[i].equals(current))checked=i+1;
         }
-        new AlertDialog.Builder(a).setTitle("🌐 Choisir un miroir VAVOO")
-            .setSingleChoiceItems(labels.toArray(new String[0]),checked,
-                (dialog,which)->{
-                    String mirror=which==0?"":VavooVariants.MIRRORS[which-1];
-                    if(VavooVariants.selectMirror(id,mirror)){
-                        dialog.dismiss();
-                        refreshPlayback(a,id);
-                    }
-                })
-            .setNegativeButton("Retour",(dialog,which)->show(a)).show();
+        new AlertDialog.Builder(a).setTitle("VAVOO · Miroir du lecteur")
+            .setSingleChoiceItems(names.toArray(new String[0]),checked,(dialog,which)->{
+                dialog.dismiss();
+                String next=which==0?"":VavooVariants.MIRRORS[which-1];
+                if(VavooVariants.selectMirror(id,next))applyAndReplay(a,id);
+            })
+            .setNegativeButton("Fermer",null).show();
     }
-    private static void refreshPlayback(Activity a,String id){
-        // Never destroy or recreate the current Activity merely to switch a
-        // stream. For non-VideoView players, record choice for next Play.
-        boolean replay=replayOnSameScreen(a,id);
-        Toast.makeText(a,replay?"Source appliquée au lecteur":
-            "Choix enregistré · relance la lecture sur cette chaîne",
-            Toast.LENGTH_LONG).show();
+
+    private static void applyAndReplay(Activity a,String previousId){
+        // Never restart a different channel if the user changed stations while
+        // the selection popup was open.
+        if(!previousId.equals(VavooStreamServer.playingId()))return;
+        boolean restarted=restartNativePlayback(a);
+        attachIntoNativeControls(a,0);
+        Toast.makeText(a,restarted
+            ?"Nouvelle source appliquée · lecture relancée"
+            :"Source enregistrée, redémarrage indisponible",
+            Toast.LENGTH_SHORT).show();
     }
-    private static boolean replayOnSameScreen(Activity a,String id){
-        // Supported direct Android VideoView players can restart without
-        // recreating the Activity. Other IPTV Pro engines are left untouched
-        // rather than closing the player or dropping back to channel list.
+
+    private static Field field(Class<?> type,String name)throws Exception{
+        for(Class<?> current=type;current!=null;current=current.getSuperclass()){
+            try{
+                Field f=current.getDeclaredField(name);
+                f.setAccessible(true);
+                return f;
+            }catch(NoSuchFieldException ignored){}
+        }
+        throw new NoSuchFieldException(name);
+    }
+
+    /**
+     * VideoActivity.H -> PlaybackService.e() -> wm0.g(PlayerStartParams).
+     * This is the native on-screen IPTV Pro VLC/engine "replay current item"
+     * path; no new Intent, Activity.finish or Activity.recreate occurs.
+     * wm0.g schedules playback on the service's existing background queue.
+     */
+    private static boolean restartNativePlayback(Activity a){
         try{
-            VideoView v=findVideo(a.getWindow().getDecorView());
-            if(v!=null){
-                v.setVideoURI(Uri.parse(
-                    "http://127.0.0.1:"+VavooStreamServer.PORT+
-                    "/play/"+Uri.encode(id)+"?switch="+System.currentTimeMillis()));
-                v.start();
-                return true;
-            }
-        }catch(Exception ignored){}
-        return false;
-    }
-    private static VideoView findVideo(View v) {
-        if(v instanceof VideoView)return (VideoView)v;
-        if(v instanceof ViewGroup){
-            ViewGroup g=(ViewGroup)v;
-            for(int i=0;i<g.getChildCount();i++){
-                VideoView result=findVideo(g.getChildAt(i));
-                if(result!=null)return result;
-            }
+            if(!isPlayer(a))return false;
+            Object service=field(a.getClass(),"H").get(a);
+            if(service==null)return false;
+            Object engine=service.getClass().getMethod("e").invoke(service);
+            if(engine==null)return false;
+            Class<?> params=Class.forName(
+                "ru.iptvremote.android.iptv.common.player.PlayerStartParams");
+            Object playbackParameters=params.getDeclaredConstructor().newInstance();
+            Method replay=engine.getClass().getMethod("g",params);
+            replay.invoke(engine,playbackParameters);
+            Log.i(TAG,"Requested player-native replay on the current screen");
+            return true;
+        }catch(Exception error){
+            Log.e(TAG,"IPTV Pro engine replay failed",error);
+            return false;
         }
-        return null;
     }
 }
