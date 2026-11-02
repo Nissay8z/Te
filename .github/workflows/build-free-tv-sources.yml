@@ -1,0 +1,25 @@
+name: Build public free IPTV source snapshots
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/build_free_tv_sources.py"
+      - ".github/workflows/build-free-tv-sources.yml"
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download, validate and normalize public free TV sources
+        run: python scripts/build_free_tv_sources.py
+      - name: Publish verified player-ready M3U payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: free-public-tv-playlists
+          path: build/free-tv/
+          retention-days: 7
