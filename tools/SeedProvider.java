@@ -29,13 +29,17 @@ public final class SeedProvider extends ContentProvider {
   private static final String V3_URL=PREFIX+"iptv-global.m3u";
   private static final String EPG=PREFIX+"epg.xml";
   private static final Pattern P=Pattern.compile("([A-Za-z][A-Za-z0-9-]*)=\"([^\"]*)\"");
+  // Only the two standalone M3U profiles explicitly requested.
+  // ONYX's Vegeta/OLA/TV Hub remain native ONYX providers, NOT fake M3U links.
   private static final String[][] FEEDS={
-    {"free_tv","Free-TV · chaînes gratuites","https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8","450"},
-    {"pluto_fr","Pluto TV · France","https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_fr.m3u","60"},
-    {"samsung_fr","Samsung TV Plus · France","https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/samsungtvplus_fr.m3u","60"},
-    {"plex_fr","Plex TV · France","https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_fr.m3u","60"},
     {"iptv_org","IPTV-org · Pays du monde","https://iptv-org.github.io/iptv/index.country.m3u","900"},
     {"vavoo","VAVOO · TV organisée",V5_URL,"3500"}
+  };
+  private static final String[] RETIRED_FEEDS={
+    "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
+    "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_fr.m3u",
+    "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_fr.m3u",
+    "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/samsungtvplus_fr.m3u"
   };
   private static String attr(String s,String n){
     Matcher m=P.matcher(s);while(m.find())if(n.equalsIgnoreCase(m.group(1)))return m.group(2);return "";
@@ -154,7 +158,7 @@ public final class SeedProvider extends ContentProvider {
       long id=getId(db,url);
       if(id>=0 && count(db,id)>=minimum){
         // Fix V5's accessTime=0 / pages=0 bug without deleting favourites.
-        if(slug.equals("free_tv")||slug.equals("vavoo"))touch(db,id,timestamp);
+        touch(db,id,timestamp);
         return false;
       }
       String path=slug.equals("vavoo")?"vavoo/iptv.m3u":"feeds/"+slug+".m3u";
@@ -184,8 +188,7 @@ public final class SeedProvider extends ContentProvider {
           throw new IOException("Imported "+finalCount+" channels, minimum "+minimum);
         }
         String epg=attr(m3u.split("\\r?\\n",2)[0],"url-tvg");
-        // Avoid pointing every Free-TV channel at one unrelated AL EPG.
-        if(!slug.equals("free_tv"))addGuide(db,id,epg);
+        addGuide(db,id,epg);
         if(slug.equals("vavoo"))addGuide(db,id,EPG);
         touch(db,id,timestamp);
         db.setTransactionSuccessful();
@@ -201,6 +204,30 @@ public final class SeedProvider extends ContentProvider {
       long id=getId(db,V5_URL);
       if(id>=0&&count(db,id)>3000)touch(db,id,now()-15000);
     }finally{db.close();}
+  }
+  private static void removeRetiredTestProfiles(Context ctx){
+    // Remove ONLY the four previously auto-added test profiles.
+    // No user-added URLs or unrelated IPTV playlist are changed.
+    SQLiteDatabase db=null;
+    try{
+      db=SQLiteDatabase.openDatabase(ctx.getDatabasePath("iptv.db").getPath(),
+          null,SQLiteDatabase.OPEN_READWRITE);
+      for(String url:RETIRED_FEEDS){
+        long id=getId(db,url);
+        if(id<0)continue;
+        String[] bind={""+id};
+        db.beginTransaction();
+        try{
+          db.delete("ChannelCategory","channelId IN (SELECT id FROM Channel WHERE playlistId=?)",bind);
+          db.delete("Channel","playlistId=?",bind);
+          db.delete("Category","playlistId=?",bind);
+          db.delete("TvgSource","playlistId=?",bind);
+          db.delete("Playlist","id=?",bind);
+          db.setTransactionSuccessful();
+        }finally{db.endTransaction();}
+      }
+    }catch(Exception e){Log.w(TAG,"Retired profiles cleanup skipped",e);}
+    finally{if(db!=null)db.close();}
   }
   private static void restart(Context ctx){
     try{
@@ -223,11 +250,12 @@ public final class SeedProvider extends ContentProvider {
         Log.e(TAG,"IPTV app database missing after startup");return;
       }
       try{moveOldV5ToCurrent(ctx);}catch(Exception e){Log.w(TAG,"V5 migration check failed",e);}
+      removeRetiredTestProfiles(ctx);
       long base=now();
       boolean addedAny=false;
       int countOK=0;
-      // Free-TV first: user will see a useful live playlist immediately.
-      // Keep this feed at the top of the native playlist history.
+      // IPTV-org first: opens a directly playable public TV catalogue.
+      // VAVOO remains the second native source, with alternative stream drawer.
       for(int i=0;i<FEEDS.length;i++){
         String[] feed=FEEDS[i];
         long access=base-((long)i*12000L);
@@ -236,7 +264,7 @@ public final class SeedProvider extends ContentProvider {
             boolean added=installOne(ctx,feed,access);
             if(added)addedAny=true;
             countOK++;
-            if(i==0 && added){SystemClock.sleep(400);restart(ctx);}
+            // Do not relaunch in the middle of SQLite imports.
             break;
           }catch(Exception e){
             Log.e(TAG,"Source import failed: "+feed[0]+" retry="+retry,e);
@@ -246,7 +274,7 @@ public final class SeedProvider extends ContentProvider {
       }
       Log.i(TAG,"Startup completed: "+countOK+"/"+FEEDS.length+" profiles");
       if(addedAny){SystemClock.sleep(750);restart(ctx);}
-    },"IPTV-Pro-free-TV-v6-import");
+    },"IPTV-Pro-VAVOO-IPTVorg-v7-import");
     worker.setDaemon(true);
     worker.start();
     return true;
