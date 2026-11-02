@@ -80,28 +80,38 @@ public final class VavooStreamServer {
     }
 
     private static String resolve(String id)throws Exception {
-        Cache c=resolved.get(id);
+        Cache cached=resolved.get(id);
         long now=System.currentTimeMillis();
-        if(c!=null&&c.until>now)return c.url;
+        if(cached!=null&&cached.until>now)return cached.url;
         java.util.List<VavooVariants.Source> options=VavooVariants.ranked(id);
+        String locked=VavooVariants.mirror(id);
+        String[] mirrors=locked.isEmpty()?VavooVariants.MIRRORS:new String[]{locked};
         if(options.isEmpty()){
-            String url=VavooProvider.resolveStream(id);
-            if(url==null||!url.startsWith("http"))throw new IOException("No VAVOO media URL");
-            resolved.put(id,new Cache(url,now+75000));
-            return url;
+            String original=VavooProvider.resolveStream(id);
+            resolved.put(id,new Cache(original,now+60000));
+            return original;
         }
+        // Shamel strategy: selected alternative first, then quality-ordered
+        // backups; inside each one, try four mirrors if in Auto mode.
         Exception last=null;
-        for(VavooVariants.Source opt:options){
-            try{
-                String url=VavooProvider.resolveStream(opt.id);
-                if(url==null||!url.startsWith("http"))continue;
-                resolved.put(id,new Cache(url,System.currentTimeMillis()+75000L));
-                Log.i(TAG,"Resolved logical "+id+" through "+opt.name);
-                return url;
-            }catch(Exception e){last=e;Log.w(TAG,"Alternative failed: "+opt.name,e);}
+        int variantsTried=0;
+        int limit=VavooVariants.getSelected(id).isEmpty()?3:4;
+        for(VavooVariants.Source option:options){
+            if(++variantsTried>limit)break;
+            for(String mirror:mirrors){
+                try{
+                    String stream=VavooProvider.resolveStream(option.id,mirror);
+                    if(stream==null||!stream.startsWith("http"))continue;
+                    resolved.put(id,new Cache(stream,System.currentTimeMillis()+60000));
+                    Log.i(TAG,"Live "+id+": "+option.name+" via "+mirror);
+                    return stream;
+                }catch(Exception e){
+                    last=e;
+                    Log.w(TAG,"Live source failed: "+option.name+" via "+mirror+": "+e.getMessage());
+                }
+            }
         }
-        if(last!=null)throw last;
-        throw new IOException("No VAVOO variants could be resolved");
+        throw last!=null?last:new IOException("Aucun flux trouvé sur le miroir choisi");
     }
 
     private static void serve(Socket socket){
