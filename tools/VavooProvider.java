@@ -123,30 +123,46 @@ public final class VavooProvider {
     }
 
     public static String resolveStream(String id) throws IOException, JSONException {
-        if (id == null || id.trim().isEmpty()) {
+        if (id == null || id.trim().isEmpty())
             throw new IOException("ID de chaîne VAVOO vide.");
-        }
         String signature = getAddonSignature();
         IOException lastError = null;
-        for (String base : BASE_URLS) {
-            try {
-                JSONObject payload = new JSONObject();
-                payload.put("language", LANGUAGE);
-                payload.put("region", REGION);
-                payload.put("url", buildPlayUrl(id));
-                payload.put("clientVersion", CLIENT_VERSION);
-
-                String response = postJson(base + "/mediahubmx-resolve.json", payload, signature, true);
-                String stream = extractResolvedUrl(response);
-                if (stream != null && (stream.startsWith("http://") || stream.startsWith("https://"))) {
-                    return stream;
+        // The actual 2026 international snapshot was obtained from kool.to:
+        // its catalogue URLs are /kool-iptv/play/ID, NOT /vavoo-iptv/play/ID.
+        // The previous IPTV Pro build always supplied the wrong source URL.
+        String safeId = Uri.encode(id.trim());
+        String[] originalUrls = {
+            "https://kool.to/kool-iptv/play/" + safeId,
+            "https://vavoo.to/vavoo-iptv/play/" + safeId
+        };
+        String[] hostOrder = {
+            "https://kool.to",
+            "https://vavoo.to",
+            "https://vavoo.top",
+            "https://vavoo.net"
+        };
+        for (String original : originalUrls) {
+            for (String base : hostOrder) {
+                try {
+                    JSONObject payload = new JSONObject();
+                    payload.put("language", LANGUAGE);
+                    payload.put("region", REGION);
+                    payload.put("url", original);
+                    payload.put("clientVersion", CLIENT_VERSION);
+                    String response = postJson(base + "/mediahubmx-resolve.json",
+                                               payload, signature, true);
+                    String stream = extractResolvedUrl(response);
+                    if (stream != null && (stream.startsWith("http://")
+                            || stream.startsWith("https://"))) return stream;
+                    lastError = new IOException("No VAVOO stream from " + host(base));
+                } catch (IOException | JSONException e) {
+                    lastError = e instanceof IOException
+                            ? (IOException)e : new IOException(e.getMessage(), e);
                 }
-                lastError = new IOException("VAVOO n'a renvoyé aucune URL de flux depuis " + host(base) + ".");
-            } catch (IOException | JSONException e) {
-                lastError = e instanceof IOException ? (IOException) e : new IOException(e.getMessage(), e);
             }
         }
-        throw lastError != null ? lastError : new IOException("Impossible de résoudre ce flux VAVOO.");
+        throw lastError != null ? lastError
+             : new IOException("Impossible de résoudre ce flux VAVOO.");
     }
 
     /**
