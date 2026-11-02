@@ -92,8 +92,8 @@ public final class VavooDeduplicator {
         }
         if(has(db,"ChannelExtras")) {
             db.execSQL("INSERT OR IGNORE INTO ChannelExtras "+
-                "(channelId,externalId,description,backgroundIcon,cast,director,genre,rating) "+
-                "SELECT ?,externalId,description,backgroundIcon,cast,director,genre,rating "+
+                "(channelId,externalId,description,backgroundIcon,\"cast\",director,genre,rating) "+
+                "SELECT ?,externalId,description,backgroundIcon,\"cast\",director,genre,rating "+
                 "FROM ChannelExtras WHERE channelId=?",new Object[]{newId,oldId});
         }
         if(has(db,"FavoriteReference")) {
