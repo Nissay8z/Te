@@ -250,9 +250,14 @@ public final class SeedProvider extends ContentProvider {
         Log.e(TAG,"IPTV app database missing after startup");return;
       }
       try{moveOldV5ToCurrent(ctx);}catch(Exception e){Log.w(TAG,"V5 migration check failed",e);}
+      // V11->V12: merge only aliases in the existing VAVOO profile,
+      // preserving Channel preference/EPG/favorite references.
+      int merged=0;
+      try{merged=VavooDeduplicator.migrate(ctx);}
+      catch(Exception e){Log.e(TAG,"VAVOO duplicate migration failed; SQLite rollback",e);}
       removeRetiredTestProfiles(ctx);
       long base=now();
-      boolean addedAny=false;
+      boolean addedAny=merged>0;
       int countOK=0;
       // IPTV-org first: opens a directly playable public TV catalogue.
       // VAVOO remains the second native source, with alternative stream drawer.
