@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 public final class SeedProvider extends ContentProvider {
-  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-pro-vavoo-local.m3u";
+  static final String URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-pro-vavoo-organized.m3u";
   static final String V3_URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-global.m3u";
   static final String OLD_URL="https://raw.githubusercontent.com/Nissay8z/Te/main/iptv.m3u";
   static final String EPG="https://raw.githubusercontent.com/Nissay8z/Te/main/epg.xml";
@@ -135,7 +135,7 @@ public final class SeedProvider extends ContentProvider {
         }
         if(id<0){
           ContentValues v=new ContentValues();
-          v.put("url",URL);v.put("name","VAVOO | TV MONDE");
+          v.put("url",URL);v.put("name","VAVOO | TV ORGANISÉE");
           v.put("accessTime",0L);v.put("updateTime",0L);
           v.put("status",2);v.put("enableLive",1);v.put("enableSeries",0);
           v.put("enableVod",0);v.put("format",1);
@@ -182,7 +182,7 @@ public final class SeedProvider extends ContentProvider {
           db.insertOrThrow("ChannelCategory",null,link);
           pending=null;
         }
-        if(num<2000)throw new IOException("World M3U incomplete: only "+num+" channels");
+        if(num<5000)throw new IOException("Organized live M3U incomplete: only "+num+" channels");
         Cursor ec=db.rawQuery("SELECT id FROM TvgSource WHERE url=?",new String[]{EPG});
         boolean exists;
         try {exists=ec.moveToFirst();}finally{ec.close();}
@@ -199,8 +199,10 @@ public final class SeedProvider extends ContentProvider {
     }finally{db.close();}
   }
   public boolean onCreate(){
-    VavooStreamServer.start();
     final Context ctx=getContext().getApplicationContext();
+    VavooVariants.init(ctx);
+    VavooUiHook.install((android.app.Application)ctx);
+    VavooStreamServer.start();
     Thread worker=new Thread(new Runnable(){public void run(){
       for(int attempt=0;attempt<30;attempt++){
         SystemClock.sleep(attempt==0?2000:3000);
