@@ -15,7 +15,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p export/armeabi-v7a export/arm64-v8a
-          for ver in 3.7.5 3.7.6 3.7.7; do
+          for ver in 3.7.0; do
             echo "--- Trying VideoLAN libvlc-all $ver ---"
             curl -fLsS --retry 3 --max-time 180 "https://repo.maven.apache.org/maven2/org/videolan/android/libvlc-all/$ver/libvlc-all-$ver.aar" -o /tmp/libvlc.aar
             echo "Library paths:"
