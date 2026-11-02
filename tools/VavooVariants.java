@@ -26,6 +26,25 @@ public final class VavooVariants {
     private static final Map<String, List<Source>> SOURCES=new HashMap<>();
     private static SharedPreferences prefs;
     private static boolean initialized=false;
+    public static final String[] MIRRORS={"kool.to","vavoo.to","vavoo.top","vavoo.net"};
+    public static boolean knownMirror(String mirror){
+        for(String s:MIRRORS)if(s.equals(mirror))return true;
+        return false;
+    }
+    public static String mirror(String logicalId){
+        if(prefs==null)return "";
+        String m=prefs.getString("mirror:"+logicalId,"");
+        return knownMirror(m)?m:"";
+    }
+    public static synchronized boolean selectMirror(String logicalId,String mirror){
+        if(prefs==null)return false;
+        if(mirror!=null&&!mirror.isEmpty()&&!knownMirror(mirror))return false;
+        if(mirror==null||mirror.isEmpty())
+            prefs.edit().remove("mirror:"+logicalId).apply();
+        else prefs.edit().putString("mirror:"+logicalId,mirror).apply();
+        VavooStreamServer.invalidate(logicalId);
+        return true;
+    }
     private VavooVariants() {}
     public static synchronized void init(Context context) {
         if(initialized)return;
@@ -61,6 +80,9 @@ public final class VavooVariants {
     public static synchronized List<Source> ranked(String logicalId) {
         List<Source> list=sources(logicalId);
         if(list.isEmpty())return list;
+        // Prefer higher-quality variants on automatic playback, preserving
+        // the exact original names in the stream-selection drawer.
+        java.util.Collections.sort(list,(a,b)->Integer.compare(b.score,a.score));
         String chosen=getSelected(logicalId);
         if(!chosen.isEmpty()){
             for(int i=0;i<list.size();i++){
