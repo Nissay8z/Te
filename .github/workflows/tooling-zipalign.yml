@@ -1,0 +1,22 @@
+name: Export Android APK zipalign tool
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/tooling-zipalign.yml
+permissions:
+  contents: read
+jobs:
+  tool:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Export SDK zipalign
+        run: |
+          cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" ./zipalign
+          chmod +x ./zipalign
+          file ./zipalign
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zipalign-linux-sdk35
+          path: zipalign
+          retention-days: 1
