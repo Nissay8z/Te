@@ -21,6 +21,7 @@ public final class VavooDeduplicator {
     private static final String PREFIX="http://127.0.0.1:18497/play/";
     private static final String PROFILE_URL=
         "https://raw.githubusercontent.com/Nissay8z/Te/main/iptv-pro-vavoo-organized.m3u";
+    private static final String LOCAL_URL=VavooStreamServer.M3U_URL;
     private VavooDeduplicator(){}
 
     private static long channelId(SQLiteDatabase db,long playlistId,String url) {
@@ -116,6 +117,13 @@ public final class VavooDeduplicator {
             try(Cursor c=db.rawQuery("SELECT id FROM Playlist WHERE url=? LIMIT 1",
                 new String[]{PROFILE_URL})) {
                 if(c.moveToFirst())playlistId=c.getLong(0);
+            }
+            if(playlistId<0) {
+                try(Cursor c=db.rawQuery(
+                    "SELECT id FROM Playlist WHERE url=? LIMIT 1",
+                    new String[]{LOCAL_URL})) {
+                    if(c.moveToFirst())playlistId=c.getLong(0);
+                }
             }
             if(playlistId<0)return 0;
             int removed=0,unresolved=0;
