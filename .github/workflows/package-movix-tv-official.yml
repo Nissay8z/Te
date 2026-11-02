@@ -1,0 +1,27 @@
+name: Package native Movix TV release for Mi Box
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/package-movix-tv-official.yml'
+permissions:
+  contents: read
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch existing native Android TV APK
+        run: |
+          set -euo pipefail
+          url="https://github.com/draconight-corp/movix-tv/releases/download/v0.1.24/app-debug.apk"
+          curl -fL --retry 3 --max-time 180 "$url" -o "Movix_TV_native_v0.1.24.apk"
+          test "$(stat -c%s Movix_TV_native_v0.1.24.apk)" -gt 5000000
+          unzip -t "Movix_TV_native_v0.1.24.apk" | tail -2
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs "Movix_TV_native_v0.1.24.apk"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "Movix_TV_native_v0.1.24.apk" | head -25
+          sha256sum "Movix_TV_native_v0.1.24.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Movix_TV_native_v0.1.24
+          path: Movix_TV_native_v0.1.24.apk
+          retention-days: 7
