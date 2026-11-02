@@ -1,0 +1,23 @@
+name: Build Android reverse engineering tool for local ONYX analysis
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tooling-apktool.yml'
+permissions:
+  contents: read
+jobs:
+  tooling:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Apktool official release
+        run: |
+          set -euo pipefail
+          curl --retry 3 -fL --max-time 120 https://github.com/iBotPeaches/Apktool/releases/download/v2.12.1/apktool_2.12.1.jar -o apktool.jar
+          test "$(stat -c%s apktool.jar)" -gt 10000000
+          java -jar apktool.jar --version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apktool-cli-2.12.1
+          path: apktool.jar
+          retention-days: 1
