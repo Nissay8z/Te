@@ -8,6 +8,7 @@ on:
       - 'tools/VavooStreamServer.java'
       - 'tools/VavooVariants.java'
       - 'tools/VavooUiHook.java'
+      - 'tools/VavooDeduplicator.java'
       - '.github/workflows/build-iptv-pro-preloader.yml'
 permissions:
   contents: read
@@ -23,7 +24,7 @@ jobs:
           mkdir -p build/preloader/classes build/preloader/dex
           javac -encoding UTF-8 -source 8 -target 8 \
             -cp "$SDK/platforms/android-35/android.jar" \
-            -d build/preloader/classes tools/SeedProvider.java tools/VavooProvider.java tools/VavooStreamServer.java tools/VavooVariants.java tools/VavooUiHook.java
+            -d build/preloader/classes tools/SeedProvider.java tools/VavooProvider.java tools/VavooStreamServer.java tools/VavooVariants.java tools/VavooUiHook.java tools/VavooDeduplicator.java
           "$SDK/build-tools/35.0.0/d8" --min-api 32 --lib "$SDK/platforms/android-35/android.jar" \
             --output build/preloader/dex \
             $(find build/preloader/classes -name '*.class' | sort)
