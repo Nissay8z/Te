@@ -24,6 +24,15 @@ public final class VavooStreamServer {
     public static final int PORT=18497;
     private static final String TAG="VavooStream";
     private static volatile ServerSocket listener;
+    private static volatile String activeLogicalId="";
+    private static volatile long activeAt=0L;
+    public static String playingId(){return activeLogicalId;}
+    public static boolean wasPlayingRecently(long maxMs){
+        return !activeLogicalId.isEmpty() &&
+          System.currentTimeMillis()-activeAt<maxMs;
+    }
+    public static void invalidate(String logicalId){resolved.remove(logicalId);}
+
     private static final Pattern ATTR_URI=Pattern.compile("URI=\"([^\"]+)\"");
     private static final ConcurrentHashMap<String,Cache> resolved=new ConcurrentHashMap<>();
     private static final class Cache {
@@ -74,10 +83,25 @@ public final class VavooStreamServer {
         Cache c=resolved.get(id);
         long now=System.currentTimeMillis();
         if(c!=null&&c.until>now)return c.url;
-        String u=VavooProvider.resolveStream(id);
-        if(u==null||!u.startsWith("http"))throw new IOException("No VAVOO media URL");
-        resolved.put(id,new Cache(u,now+75000));
-        return u;
+        java.util.List<VavooVariants.Source> options=VavooVariants.ranked(id);
+        if(options.isEmpty()){
+            String url=VavooProvider.resolveStream(id);
+            if(url==null||!url.startsWith("http"))throw new IOException("No VAVOO media URL");
+            resolved.put(id,new Cache(url,now+75000));
+            return url;
+        }
+        Exception last=null;
+        for(VavooVariants.Source opt:options){
+            try{
+                String url=VavooProvider.resolveStream(opt.id);
+                if(url==null||!url.startsWith("http"))continue;
+                resolved.put(id,new Cache(url,System.currentTimeMillis()+75000L));
+                Log.i(TAG,"Resolved logical "+id+" through "+opt.name);
+                return url;
+            }catch(Exception e){last=e;Log.w(TAG,"Alternative failed: "+opt.name,e);}
+        }
+        if(last!=null)throw last;
+        throw new IOException("No VAVOO variants could be resolved");
     }
 
     private static void serve(Socket socket){
@@ -107,6 +131,9 @@ public final class VavooStreamServer {
                 if(!id.matches("[A-Za-z0-9_-]{4,120}")) {
                     reply(s,400,"text/plain","Invalid id".getBytes(StandardCharsets.UTF_8));return;
                 }
+                activeLogicalId=id;
+                activeAt=System.currentTimeMillis();
+                VavooUiHook.onPlaying();
                 media=resolve(id);
             } else if(route.startsWith("/hls?u=")){
                 media=URLDecoder.decode(route.substring(7),"UTF-8");
