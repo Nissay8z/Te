@@ -29,15 +29,17 @@ import java.util.UUID;
  * when a channel is played. No separate Python/Node service is required.
  */
 public final class VavooProvider {
+    // Matches the signature fallbacks inspected in ONYX 1.8.11.
     private static final String[] PING_URLS = {
-        "https://www.vavoo.tv/api/app/ping",
-        "https://vavoo.tv/api/app/ping"
+        "https://www.vypn.net/api/app/ping",
+        "https://www.lokke.app/api/app/ping",
+        "https://www.vavoo.tv/api/app/ping"
     };
     private static final String[] BASE_URLS = {
+        "https://vavoo.net",
         "https://vavoo.to",
-        "https://kool.to",
-        "https://vavoo.top",
-        "https://vavoo.net"
+        "https://kool.ws",
+        "https://vavoo.top"
     };
     private static final String LANGUAGE = "fr";
     // A broad region returns a larger catalog; channels are grouped by their own country metadata.
@@ -135,7 +137,7 @@ public final class VavooProvider {
     // happens to answer first. An ID may originate from kool-iptv or vavoo-iptv;
     // test the two legal namespaces on the selected service.
     public static final String[] MIRRORS={
-        "kool.to","vavoo.to","vavoo.top","vavoo.net"
+        "vavoo.net","vavoo.to","kool.ws","vavoo.top"
     };
     public static String resolveStream(String id,String mirror) throws IOException, JSONException {
         if(id==null || !id.matches("[A-Za-z0-9_-]{4,120}"))
@@ -147,9 +149,13 @@ public final class VavooProvider {
         String base="https://"+mirror;
         String safeId=Uri.encode(id);
         // The catalogue used for our snapshot was returned by kool.to.
+        // Catalogues from ONYX and the older VAVOO snapshot may refer to
+        // different source namespaces. Preserve both on playback.
         String[] sourceRefs={
             "https://kool.to/kool-iptv/play/"+safeId,
-            "https://vavoo.to/vavoo-iptv/play/"+safeId
+            "https://kool.ws/kool-iptv/play/"+safeId,
+            "https://vavoo.to/vavoo-iptv/play/"+safeId,
+            "https://vavoo.net/vavoo-iptv/play/"+safeId
         };
         IOException last=null;
         for(String original:sourceRefs){
