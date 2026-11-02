@@ -15,8 +15,12 @@ jobs:
           cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" ./zipalign
           chmod +x ./zipalign
           file ./zipalign
+          cp "$ANDROID_HOME/build-tools/35.0.0/lib64/libc++.so" ./libc++.so
+          ls -l ./libc++.so
       - uses: actions/upload-artifact@v4
         with:
           name: zipalign-linux-sdk35
-          path: zipalign
+          path: |
+            zipalign
+            libc++.so
           retention-days: 1
