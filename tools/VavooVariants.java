@@ -119,6 +119,19 @@ public final class VavooVariants {
         }
         return false;
     }
+    /** Carry a chosen source across logical-channel alias regrouping. */
+    public static synchronized void migrateSaved(String oldLogicalId,String newLogicalId){
+        if(prefs==null||oldLogicalId==null||newLogicalId==null)return;
+        if(prefs.contains(newLogicalId))return;
+        String saved=prefs.getString(oldLogicalId,"");
+        if(saved.isEmpty())return;
+        for(Source source:sources(newLogicalId)){
+            if(saved.equals(source.id)){
+                prefs.edit().putString(newLogicalId,saved).apply();
+                return;
+            }
+        }
+    }
     public static synchronized String getSelected(String logicalId) {
         return prefs==null ? "" : prefs.getString(logicalId,"");
     }
