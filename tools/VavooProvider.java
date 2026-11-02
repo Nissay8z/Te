@@ -123,46 +123,51 @@ public final class VavooProvider {
     }
 
     public static String resolveStream(String id) throws IOException, JSONException {
-        if (id == null || id.trim().isEmpty())
-            throw new IOException("ID de chaîne VAVOO vide.");
-        String signature = getAddonSignature();
-        IOException lastError = null;
-        // The actual 2026 international snapshot was obtained from kool.to:
-        // its catalogue URLs are /kool-iptv/play/ID, NOT /vavoo-iptv/play/ID.
-        // The previous IPTV Pro build always supplied the wrong source URL.
-        String safeId = Uri.encode(id.trim());
-        String[] originalUrls = {
-            "https://kool.to/kool-iptv/play/" + safeId,
-            "https://vavoo.to/vavoo-iptv/play/" + safeId
-        };
-        String[] hostOrder = {
-            "https://kool.to",
-            "https://vavoo.to",
-            "https://vavoo.top",
-            "https://vavoo.net"
-        };
-        for (String original : originalUrls) {
-            for (String base : hostOrder) {
-                try {
-                    JSONObject payload = new JSONObject();
-                    payload.put("language", LANGUAGE);
-                    payload.put("region", REGION);
-                    payload.put("url", original);
-                    payload.put("clientVersion", CLIENT_VERSION);
-                    String response = postJson(base + "/mediahubmx-resolve.json",
-                                               payload, signature, true);
-                    String stream = extractResolvedUrl(response);
-                    if (stream != null && (stream.startsWith("http://")
-                            || stream.startsWith("https://"))) return stream;
-                    lastError = new IOException("No VAVOO stream from " + host(base));
-                } catch (IOException | JSONException e) {
-                    lastError = e instanceof IOException
-                            ? (IOException)e : new IOException(e.getMessage(), e);
-                }
-            }
+        IOException last = null;
+        for (String mirror : MIRRORS) {
+            try { return resolveStream(id, mirror); }
+            catch (IOException err) { last = err; }
         }
-        throw lastError != null ? lastError
-             : new IOException("Impossible de résoudre ce flux VAVOO.");
+        throw last == null ? new IOException("Aucun miroir VAVOO disponible") : last;
+    }
+
+    // The actual mirror is part of the user choice, not merely the host that
+    // happens to answer first. An ID may originate from kool-iptv or vavoo-iptv;
+    // test the two legal namespaces on the selected service.
+    public static final String[] MIRRORS={
+        "kool.to","vavoo.to","vavoo.top","vavoo.net"
+    };
+    public static String resolveStream(String id,String mirror) throws IOException, JSONException {
+        if(id==null || !id.matches("[A-Za-z0-9_-]{4,120}"))
+            throw new IOException("Invalid VAVOO channel id");
+        boolean allowed = false;
+        for(String candidate:MIRRORS)if(candidate.equals(mirror))allowed=true;
+        if(!allowed)throw new IOException("Unknown VAVOO mirror");
+        String signature=getAddonSignature();
+        String base="https://"+mirror;
+        String safeId=Uri.encode(id);
+        // The catalogue used for our snapshot was returned by kool.to.
+        String[] sourceRefs={
+            "https://kool.to/kool-iptv/play/"+safeId,
+            "https://vavoo.to/vavoo-iptv/play/"+safeId
+        };
+        IOException last=null;
+        for(String original:sourceRefs){
+            try{
+                JSONObject payload=new JSONObject();
+                payload.put("language",LANGUAGE);
+                payload.put("region",REGION);
+                payload.put("url",original);
+                payload.put("clientVersion",CLIENT_VERSION);
+                String raw=postJson(base+"/mediahubmx-resolve.json",payload,signature,true);
+                String stream=extractResolvedUrl(raw);
+                if(stream!=null&&(stream.startsWith("https://")||stream.startsWith("http://")))
+                    return stream;
+                last=new IOException("No playable URL returned by "+mirror);
+            }catch(IOException e){last=e;}
+              catch(JSONException e){last=new IOException("Invalid resolver reply from "+mirror,e);}
+        }
+        throw last==null?new IOException("VAVOO mirror not available: "+mirror):last;
     }
 
     /**
