@@ -1,0 +1,36 @@
+name: Build signature-preserving MovieFR TV launcher
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/moviefr-tv-launcher/**'
+      - '.github/workflows/build-moviefr-tv-launcher.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - name: Compile standalone TV launcher
+        working-directory: tools/moviefr-tv-launcher
+        run: gradle --no-daemon --console plain :app:assembleDebug
+      - name: Verify APK signature, manifest, and target package
+        run: |
+          set -euo pipefail
+          f=tools/moviefr-tv-launcher/app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$f"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$f" | head -12
+          cp "$f" MovieFR_TV_Lanceur_Original_NonModifie.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MovieFR_TV_Lanceur_Original_NonModifie
+          path: MovieFR_TV_Lanceur_Original_NonModifie.apk
+          retention-days: 7
