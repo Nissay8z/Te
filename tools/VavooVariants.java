@@ -26,23 +26,33 @@ public final class VavooVariants {
     private static final Map<String, List<Source>> SOURCES=new HashMap<>();
     private static SharedPreferences prefs;
     private static boolean initialized=false;
-    public static final String[] MIRRORS={"kool.to","vavoo.to","vavoo.top","vavoo.net"};
-    public static boolean knownMirror(String mirror){
-        for(String s:MIRRORS)if(s.equals(mirror))return true;
+    // ONYX 1.8.11 VavooMirrorSettings: preferred mirror is app-wide.
+    public static final String[] MIRRORS={"vavoo.net","vavoo.to","kool.ws","vavoo.top"};
+    public static boolean knownMirror(String name){
+        for(String mirror:MIRRORS)if(mirror.equals(name))return true;
         return false;
     }
     public static String mirror(String logicalId){
         if(prefs==null)return "";
-        String m=prefs.getString("mirror:"+logicalId,"");
-        return knownMirror(m)?m:"";
+        String saved=prefs.getString("vavoo_preferred_mirror","");
+        return knownMirror(saved)?saved:"";
+    }
+    public static String[] orderedMirrors(String logicalId){
+        String preferred=mirror(logicalId);
+        if(preferred.isEmpty())return MIRRORS.clone();
+        java.util.ArrayList<String> ordered=new java.util.ArrayList<>();
+        ordered.add(preferred);
+        for(String m:MIRRORS)if(!m.equals(preferred))ordered.add(m);
+        return ordered.toArray(new String[0]);
     }
     public static synchronized boolean selectMirror(String logicalId,String mirror){
         if(prefs==null)return false;
         if(mirror!=null&&!mirror.isEmpty()&&!knownMirror(mirror))return false;
         if(mirror==null||mirror.isEmpty())
-            prefs.edit().remove("mirror:"+logicalId).apply();
-        else prefs.edit().putString("mirror:"+logicalId,mirror).apply();
-        VavooStreamServer.invalidate(logicalId);
+            prefs.edit().remove("vavoo_preferred_mirror").apply();
+        else prefs.edit().putString("vavoo_preferred_mirror",mirror).apply();
+        // ONYX uses the same preference across the Live TV catalogue.
+        VavooStreamServer.invalidateAll();
         return true;
     }
     private VavooVariants() {}
