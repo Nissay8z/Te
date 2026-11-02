@@ -25,6 +25,8 @@ public final class SeedProvider extends ContentProvider {
   private static final String TAG="TVSeedV6";
   private static final String PREFIX="https://raw.githubusercontent.com/Nissay8z/Te/main/";
   private static final String V5_URL=PREFIX+"iptv-pro-vavoo-organized.m3u";
+  // This file never existed in the private GitHub repo: never use it for refresh.
+  private static final String LOCAL_VAVOO_URL=VavooStreamServer.M3U_URL;
   private static final String V4_URL=PREFIX+"iptv-pro-vavoo-local.m3u";
   private static final String V3_URL=PREFIX+"iptv-global.m3u";
   private static final String EPG=PREFIX+"epg.xml";
@@ -32,8 +34,8 @@ public final class SeedProvider extends ContentProvider {
   // Only the two standalone M3U profiles explicitly requested.
   // ONYX's Vegeta/OLA/TV Hub remain native ONYX providers, NOT fake M3U links.
   private static final String[][] FEEDS={
-    {"iptv_org","IPTV-org · Pays du monde","https://iptv-org.github.io/iptv/index.country.m3u","900"},
-    {"vavoo","VAVOO · TV organisée",V5_URL,"3500"}
+    {"vavoo","VAVOO · Chaînes regroupées",LOCAL_VAVOO_URL,"3500"},
+    {"iptv_org","IPTV-org · Pays du monde","https://iptv-org.github.io/iptv/index.country.m3u","900"}
   };
   private static final String[] RETIRED_FEEDS={
     "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
@@ -229,6 +231,30 @@ public final class SeedProvider extends ContentProvider {
     }catch(Exception e){Log.w(TAG,"Retired profiles cleanup skipped",e);}
     finally{if(db!=null)db.close();}
   }
+  private static void migrateOldSourceToLocal(Context ctx){
+    SQLiteDatabase db=SQLiteDatabase.openDatabase(
+        ctx.getDatabasePath("iptv.db").getPath(),null,SQLiteDatabase.OPEN_READWRITE);
+    try {
+      if(getId(db,LOCAL_VAVOO_URL)>=0)return;
+      long oldId=getId(db,V5_URL);
+      if(oldId<0)oldId=getId(db,V4_URL);
+      if(oldId<0)oldId=getId(db,V3_URL);
+      if(oldId<0)return;
+      db.beginTransaction();
+      try{
+        ContentValues values=new ContentValues();
+        values.put("url",LOCAL_VAVOO_URL);
+        values.put("name","VAVOO · Chaînes regroupées");
+        values.put("accessTime",now()+15000);
+        values.put("status",2);
+        if(column(db,"Playlist","pages"))values.put("pages",7);
+        if(db.update("Playlist",values,"id=?",new String[]{""+oldId})!=1)
+            throw new IllegalStateException("VAVOO profile migration failed");
+        db.setTransactionSuccessful();
+        Log.i(TAG,"Restored VAVOO local playlist URL, channelCount="+count(db,oldId));
+      }finally{db.endTransaction();}
+    }finally{db.close();}
+  }
   private static void restart(Context ctx){
     try{
       Intent app=ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
@@ -242,7 +268,7 @@ public final class SeedProvider extends ContentProvider {
     Context ctx=getContext().getApplicationContext();
     VavooVariants.init(ctx);
     VavooUiHook.install((android.app.Application)ctx);
-    VavooStreamServer.start();
+    VavooStreamServer.start(ctx);
     Thread worker=new Thread(()->{
       for(int i=0;i<90&&!ctx.getDatabasePath("iptv.db").exists();i++)
         SystemClock.sleep(2000);
@@ -255,12 +281,15 @@ public final class SeedProvider extends ContentProvider {
       int merged=0;
       try{merged=VavooDeduplicator.migrate(ctx);}
       catch(Exception e){Log.e(TAG,"VAVOO duplicate migration failed; SQLite rollback",e);}
+      // After deduplication, replace missing GitHub M3U with localhost,
+      // so all future native IPTV Pro refreshes load the embedded 7052 rows.
+      try{migrateOldSourceToLocal(ctx);}
+      catch(Exception e){Log.e(TAG,"VAVOO local source migration failed",e);}
       removeRetiredTestProfiles(ctx);
       long base=now();
       boolean addedAny=merged>0;
       int countOK=0;
-      // IPTV-org first: opens a directly playable public TV catalogue.
-      // VAVOO remains the second native source, with alternative stream drawer.
+      // VAVOO first, IPTV-org second: exactly the two requested sources.
       for(int i=0;i<FEEDS.length;i++){
         String[] feed=FEEDS[i];
         long access=base-((long)i*12000L);
