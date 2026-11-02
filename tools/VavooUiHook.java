@@ -64,12 +64,12 @@ public final class VavooUiHook {
             if(root==null)return;
             View existing=root.findViewById(DRAWER_ID);
             if(existing instanceof TextView){
-                ((TextView)existing).setText("⇄ Flux ("+VavooVariants.sources(id).size()+")");
+                ((TextView)existing).setText("⇄ Flux ("+VavooVariants.sources(id).size()+") · 4 miroirs");
                 return;
             }
             TextView button=new TextView(a);
             button.setId(DRAWER_ID);
-            button.setText("⇄ Flux ("+VavooVariants.sources(id).size()+")");
+            button.setText("⇄ Flux ("+VavooVariants.sources(id).size()+") · 4 miroirs");
             button.setTextSize(14);
             button.setTypeface(null,Typeface.BOLD);
             button.setTextColor(Color.WHITE);
@@ -103,36 +103,64 @@ public final class VavooUiHook {
         final String id=VavooStreamServer.playingId();
         final List<VavooVariants.Source> variants=VavooVariants.sources(id);
         if(variants.isEmpty()){
-            Toast.makeText(a,"Chaîne VAVOO indisponible",Toast.LENGTH_LONG).show();
+            Toast.makeText(a,"Cette chaîne n'a pas d'alternative VAVOO",Toast.LENGTH_LONG).show();
             return;
         }
         ArrayList<String> names=new ArrayList<>();
-        names.add("⚡ Automatique — meilleure source, puis secours");
+        String mirror=VavooVariants.mirror(id);
+        names.add("🌐 Miroir : "+(mirror.isEmpty()?"AUTO (4 serveurs)":mirror)+"  ▾");
+        names.add("⚡ Flux automatique : qualité puis secours");
         String selected=VavooVariants.getSelected(id);
-        int checked=selected.isEmpty()?0:-1;
+        int checked=selected.isEmpty()?1:-1;
         for(int i=0;i<variants.size();i++){
-            VavooVariants.Source s=variants.get(i);
-            names.add((i+1)+". "+s.name);
-            if(s.id.equals(selected))checked=i+1;
+            VavooVariants.Source option=variants.get(i);
+            names.add((i+1)+". "+option.name+"  ["+option.score+"]");
+            if(option.id.equals(selected))checked=i+2;
         }
         new AlertDialog.Builder(a)
-            .setTitle("⇄ Sources VAVOO · "+variants.size()+" variantes")
+            .setTitle("⇄ VAVOO · "+variants.size()+" flux / 4 miroirs")
             .setSingleChoiceItems(names.toArray(new String[0]),checked,
                 (dialog,which)->{
-                    String idToSet=which==0?"":variants.get(which-1).id;
+                    dialog.dismiss();
+                    if(which==0){showMirrors(a,id);return;}
+                    String idToSet=which==1?"":variants.get(which-2).id;
                     if(!VavooVariants.select(id,idToSet)){
-                        Toast.makeText(a,"Source indisponible",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(a,"Variante indisponible",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    dialog.dismiss();
-                    boolean replay=replayOnSameScreen(a,id);
-                    Toast.makeText(a,replay?
-                        "Source appliquée au lecteur":
-                        "Source enregistrée · relance la chaîne pour l'appliquer",
-                        Toast.LENGTH_LONG).show();
+                    refreshPlayback(a,id);
                 })
             .setNegativeButton("Fermer",null)
             .show();
+    }
+    private static void showMirrors(final Activity a,final String id){
+        String selected=VavooVariants.mirror(id);
+        ArrayList<String> labels=new ArrayList<>();
+        labels.add("⚡ Automatique — rechercher sur les 4 miroirs");
+        int checked=selected.isEmpty()?0:-1;
+        for(int i=0;i<VavooVariants.MIRRORS.length;i++){
+            String name=VavooVariants.MIRRORS[i];
+            labels.add("🌐 "+name);
+            if(name.equals(selected))checked=i+1;
+        }
+        new AlertDialog.Builder(a).setTitle("🌐 Choisir un miroir VAVOO")
+            .setSingleChoiceItems(labels.toArray(new String[0]),checked,
+                (dialog,which)->{
+                    String mirror=which==0?"":VavooVariants.MIRRORS[which-1];
+                    if(VavooVariants.selectMirror(id,mirror)){
+                        dialog.dismiss();
+                        refreshPlayback(a,id);
+                    }
+                })
+            .setNegativeButton("Retour",(dialog,which)->show(a)).show();
+    }
+    private static void refreshPlayback(Activity a,String id){
+        // Never destroy or recreate the current Activity merely to switch a
+        // stream. For non-VideoView players, record choice for next Play.
+        boolean replay=replayOnSameScreen(a,id);
+        Toast.makeText(a,replay?"Source appliquée au lecteur":
+            "Choix enregistré · relance la lecture sur cette chaîne",
+            Toast.LENGTH_LONG).show();
     }
     private static boolean replayOnSameScreen(Activity a,String id){
         // Supported direct Android VideoView players can restart without
