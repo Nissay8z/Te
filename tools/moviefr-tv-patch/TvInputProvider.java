@@ -172,6 +172,7 @@ public final class TvInputProvider extends ContentProvider implements Applicatio
         private final Activity activity;
         private final Paint paint=new Paint(3);
         private float x=-1,y=-1;
+        private boolean longPressed=false;
         private final int step;
         CursorOverlay(Activity a,FrameLayout target) {
             super(a);activity=a;root=target;
@@ -191,7 +192,7 @@ public final class TvInputProvider extends ContentProvider implements Applicatio
             paint.setColor(0xdd0a1425);
             canvas.drawRoundRect(10,getHeight()-54,getWidth()-10,getHeight()-8,8,8,paint);
             paint.setColor(Color.WHITE);paint.setTextSize(17);
-            canvas.drawText("TV | Fleches: curseur   OK: clic   MENU/INFO: qualite",
+            canvas.drawText("TV | Fleches: curseur   OK: clic   OK long: qualite",
                 25,getHeight()-29,paint);
             paint.setTextSize(13);paint.setColor(0xffa3baf0);
             canvas.drawText(QUALITY[mode(activity)],25,getHeight()-13,paint);
@@ -223,13 +224,21 @@ public final class TvInputProvider extends ContentProvider implements Applicatio
                 case KeyEvent.KEYCODE_DPAD_DOWN:y=Math.min(getHeight()-6,y+step);break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
                 case KeyEvent.KEYCODE_ENTER:
-                    if(e.getRepeatCount()==0)click();
-                    break;
+                    if(e.getRepeatCount()>=5 && !longPressed) {
+                        longPressed=true;
+                        choose(activity,root,this);
+                    }
+                    return true;
                 default:return super.onKeyDown(key,e);
             }
             invalidate();return true;
         }
         @Override public boolean onKeyUp(int key,KeyEvent e){
+            if(key==KeyEvent.KEYCODE_DPAD_CENTER || key==KeyEvent.KEYCODE_ENTER){
+                if(!longPressed)click();
+                longPressed=false;
+                return true;
+            }
             if(key==KeyEvent.KEYCODE_DPAD_LEFT || key==KeyEvent.KEYCODE_DPAD_RIGHT ||
                key==KeyEvent.KEYCODE_DPAD_UP || key==KeyEvent.KEYCODE_DPAD_DOWN ||
                key==KeyEvent.KEYCODE_DPAD_CENTER || key==KeyEvent.KEYCODE_ENTER ||
